@@ -1,0 +1,605 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{896CECB0-F220-42D0-A6D1-22DC66324FFA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FW.Data</RootNamespace>
+    <AssemblyName>FW.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.4.4\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EFs\Configurations\AreaConfiguration.cs" />
+    <Compile Include="EFs\Configurations\BaseEntityConfiguration.cs" />
+    <Compile Include="EFs\Configurations\BiddingNewsBookmarkConfiguration.cs" />
+    <Compile Include="EFs\Configurations\BiddingDetailConfiguration.cs" />
+    <Compile Include="EFs\Configurations\BiddingDetailFilesConfiguration.cs" />
+    <Compile Include="EFs\Configurations\BiddingNewsAbilityEquipmentConfiguration.cs" />
+    <Compile Include="EFs\Configurations\BiddingNewsAbilityHRConfiguration.cs" />
+    <Compile Include="EFs\Configurations\BiddingNewsConfiguration.cs" />
+    <Compile Include="EFs\Configurations\BiddingPackageOtherConfiguration.cs" />
+    <Compile Include="EFs\Configurations\BiddingPackageConfiguration.cs" />
+    <Compile Include="EFs\Configurations\CompanyAbilityEquipmentConfiguration.cs" />
+    <Compile Include="EFs\Configurations\CompanyAbilityExpConfiguration.cs" />
+    <Compile Include="EFs\Configurations\CompanyAbilityFinanceConfiguration.cs" />
+    <Compile Include="EFs\Configurations\CompanyAbilityHRConfiguration.cs" />
+    <Compile Include="EFs\Configurations\CompanyAbilityHRDetailConfiguration.cs" />
+    <Compile Include="EFs\Configurations\NotificationConfiguration.cs" />
+    <Compile Include="EFs\Configurations\CompanyConfiguration.cs" />
+    <Compile Include="EFs\Configurations\CompanyProfileConfiguration.cs" />
+    <Compile Include="EFs\Configurations\CompanyStaffConfiguration.cs" />
+    <Compile Include="EFs\Configurations\ContractFormConfiguration.cs" />
+    <Compile Include="EFs\Configurations\ConstructionConfiguration.cs" />
+    <Compile Include="EFs\Configurations\LoginHistoryConfiguration.cs" />
+    <Compile Include="EFs\Configurations\BiddingNewsTechnicalOtherConfiguration.cs" />
+    <Compile Include="EFs\Configurations\UsersConfiguration.cs" />
+    <Compile Include="EFs\Configurations\WorkContentConfiguration.cs" />
+    <Compile Include="EFs\Configurations\WorkContentOtherConfiguration.cs" />
+    <Compile Include="EFs\MyFWDbContext.cs" />
+    <Compile Include="EFs\Repositories\BiddingDetailFilesRepository.cs" />
+    <Compile Include="EFs\Repositories\BiddingFilterNewsRepository.cs" />
+    <Compile Include="EFs\Repositories\BiddingNewsAbilityHRRepository.cs" />
+    <Compile Include="EFs\Repositories\BiddingDetailRepository.cs" />
+    <Compile Include="EFs\Repositories\AreaManageRepository.cs" />
+    <Compile Include="EFs\Repositories\BiddingNewsBookmarkRepository.cs" />
+    <Compile Include="EFs\Repositories\BiddingNewsDetailRepository.cs" />
+    <Compile Include="EFs\Repositories\BiddingNewsRegistrationRepository.cs" />
+    <Compile Include="EFs\Repositories\BiddingNewsRepository.cs" />
+    <Compile Include="EFs\Repositories\BiddingPackageRepository.cs" />
+    <Compile Include="EFs\Repositories\CompanyAbilityEquipmentRepository.cs" />
+    <Compile Include="EFs\Repositories\CompanyAbilityExpRepository.cs" />
+    <Compile Include="EFs\Repositories\CompanyAbilityFinanceRepository.cs" />
+    <Compile Include="EFs\Repositories\CompanyAbilityHrDetailRepository.cs" />
+    <Compile Include="EFs\Repositories\CompanyAbilityHrRepository.cs" />
+    <Compile Include="EFs\Repositories\CompanyProfileRepository.cs" />
+    <Compile Include="EFs\Repositories\CompanyStaffRepository.cs" />
+    <Compile Include="EFs\Repositories\ContractFormRepository.cs" />
+    <Compile Include="EFs\Repositories\ConstructionRepository.cs" />
+    <Compile Include="EFs\Repositories\HomeRepository.cs" />
+    <Compile Include="EFs\Repositories\LoginHistoryRepository.cs" />
+    <Compile Include="EFs\Repositories\LoginRepository.cs" />
+    <Compile Include="EFs\Repositories\NotificationRepository.cs" />
+    <Compile Include="EFs\Repositories\RegisterRepository.cs" />
+    <Compile Include="EFs\Repositories\UserMasterRepository.cs" />
+    <Compile Include="EFs\Repositories\CompanyRepository.cs" />
+    <Compile Include="EFs\Repositories\WorkContentRepository.cs" />
+    <Compile Include="Infrastructure\CustomEntityTypeConfiguration.cs" />
+    <Compile Include="Infrastructure\DbExecutionResult.cs" />
+    <Compile Include="Infrastructure\DbFactory.cs" />
+    <Compile Include="Infrastructure\Disposable.cs" />
+    <Compile Include="Infrastructure\FWDbContext.cs" />
+    <Compile Include="Infrastructure\Interfaces\IDbFactory.cs" />
+    <Compile Include="Infrastructure\Interfaces\IEntityDetacher.cs" />
+    <Compile Include="Infrastructure\Interfaces\IRepository.cs" />
+    <Compile Include="Infrastructure\Interfaces\IUnitOfWork.cs" />
+    <Compile Include="Infrastructure\RepositoryBase.cs" />
+    <Compile Include="Infrastructure\UnitOfWork.cs" />
+    <Compile Include="Migrations\201803211329237_initial_wabu_20180321.cs" />
+    <Compile Include="Migrations\201803211329237_initial_wabu_20180321.Designer.cs">
+      <DependentUpon>201803211329237_initial_wabu_20180321.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805281227053_UpdateEvidenceFieldsOfAbility_AddNewFieldAbilityEquiment.cs" />
+    <Compile Include="Migrations\201805281227053_UpdateEvidenceFieldsOfAbility_AddNewFieldAbilityEquiment.Designer.cs">
+      <DependentUpon>201805281227053_UpdateEvidenceFieldsOfAbility_AddNewFieldAbilityEquiment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806240922062_ModifyBiddingNews_20180624.cs" />
+    <Compile Include="Migrations\201806240922062_ModifyBiddingNews_20180624.Designer.cs">
+      <DependentUpon>201806240922062_ModifyBiddingNews_20180624.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806241140019_AddNewTableBiddingPackageOther_ModifySomeFieldOfBiddingNews.cs" />
+    <Compile Include="Migrations\201806241140019_AddNewTableBiddingPackageOther_ModifySomeFieldOfBiddingNews.Designer.cs">
+      <DependentUpon>201806241140019_AddNewTableBiddingPackageOther_ModifySomeFieldOfBiddingNews.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806241442203_AddPowerEquipmentToAbilityEquipment.cs" />
+    <Compile Include="Migrations\201806241442203_AddPowerEquipmentToAbilityEquipment.Designer.cs">
+      <DependentUpon>201806241442203_AddPowerEquipmentToAbilityEquipment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806251153395_AdditionalFieldsToBiddingDetail_20180625.cs" />
+    <Compile Include="Migrations\201806251153395_AdditionalFieldsToBiddingDetail_20180625.Designer.cs">
+      <DependentUpon>201806251153395_AdditionalFieldsToBiddingDetail_20180625.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807021200055_AddNewTableBiddingDetailFiles_AddNewFieldImageToContruction.cs" />
+    <Compile Include="Migrations\201807021200055_AddNewTableBiddingDetailFiles_AddNewFieldImageToContruction.Designer.cs">
+      <DependentUpon>201807021200055_AddNewTableBiddingDetailFiles_AddNewFieldImageToContruction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807021225093_AddForeignKeyToBiddingDetail.cs" />
+    <Compile Include="Migrations\201807021225093_AddForeignKeyToBiddingDetail.Designer.cs">
+      <DependentUpon>201807021225093_AddForeignKeyToBiddingDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807021240507_AddForeignKeyCompanyForCompanyProfile.cs" />
+    <Compile Include="Migrations\201807021240507_AddForeignKeyCompanyForCompanyProfile.Designer.cs">
+      <DependentUpon>201807021240507_AddForeignKeyCompanyForCompanyProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807091319460_AddFileNameColumn.cs" />
+    <Compile Include="Migrations\201807091319460_AddFileNameColumn.Designer.cs">
+      <DependentUpon>201807091319460_AddFileNameColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807281004438_AddCompanyProfileToBiddingDetail.cs" />
+    <Compile Include="Migrations\201807281004438_AddCompanyProfileToBiddingDetail.Designer.cs">
+      <DependentUpon>201807281004438_AddCompanyProfileToBiddingDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808131142431_AddImageForContruction.cs" />
+    <Compile Include="Migrations\201808131142431_AddImageForContruction.Designer.cs">
+      <DependentUpon>201808131142431_AddImageForContruction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808160339169_AddSelectContractorForInvestor.cs" />
+    <Compile Include="Migrations\201808160339169_AddSelectContractorForInvestor.Designer.cs">
+      <DependentUpon>201808160339169_AddSelectContractorForInvestor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808310721246_AddFilesToBiddingDetail.cs" />
+    <Compile Include="Migrations\201808310721246_AddFilesToBiddingDetail.Designer.cs">
+      <DependentUpon>201808310721246_AddFilesToBiddingDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809100320014_UpdateBiddingDetailFiles.cs" />
+    <Compile Include="Migrations\201809100320014_UpdateBiddingDetailFiles.Designer.cs">
+      <DependentUpon>201809100320014_UpdateBiddingDetailFiles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809231214050_Rename_Column_ConstructionTable.cs" />
+    <Compile Include="Migrations\201809231214050_Rename_Column_ConstructionTable.Designer.cs">
+      <DependentUpon>201809231214050_Rename_Column_ConstructionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809231238483_Rename_Construction_BiddingNews.cs" />
+    <Compile Include="Migrations\201809231238483_Rename_Construction_BiddingNews.Designer.cs">
+      <DependentUpon>201809231238483_Rename_Construction_BiddingNews.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809240951153_AddCollumnPageContractBid.cs" />
+    <Compile Include="Migrations\201809240951153_AddCollumnPageContractBid.Designer.cs">
+      <DependentUpon>201809240951153_AddCollumnPageContractBid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809280318270_UpdatePageContracBid.cs" />
+    <Compile Include="Migrations\201809280318270_UpdatePageContracBid.Designer.cs">
+      <DependentUpon>201809280318270_UpdatePageContracBid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810150933119_Modify_Construction.cs" />
+    <Compile Include="Migrations\201810150933119_Modify_Construction.Designer.cs">
+      <DependentUpon>201810150933119_Modify_Construction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810210501103_ModifyStatusBiddingNews.cs" />
+    <Compile Include="Migrations\201810210501103_ModifyStatusBiddingNews.Designer.cs">
+      <DependentUpon>201810210501103_ModifyStatusBiddingNews.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810290335293_AddActiveStatusBiddingNews.cs" />
+    <Compile Include="Migrations\201810290335293_AddActiveStatusBiddingNews.Designer.cs">
+      <DependentUpon>201810290335293_AddActiveStatusBiddingNews.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811141622353_ModifyColumnFileUpLoadTLKDK.cs" />
+    <Compile Include="Migrations\201811141622353_ModifyColumnFileUpLoadTLKDK.Designer.cs">
+      <DependentUpon>201811141622353_ModifyColumnFileUpLoadTLKDK.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811141659269_RemoveWorkContentColumnOfBiddingNews_AddColumnBiddingPackageTypeForBiddingPackage.cs" />
+    <Compile Include="Migrations\201811141659269_RemoveWorkContentColumnOfBiddingNews_AddColumnBiddingPackageTypeForBiddingPackage.Designer.cs">
+      <DependentUpon>201811141659269_RemoveWorkContentColumnOfBiddingNews_AddColumnBiddingPackageTypeForBiddingPackage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811141710003_RemoveContractFormId_AddContractFormType_BiddingNews.cs" />
+    <Compile Include="Migrations\201811141710003_RemoveContractFormId_AddContractFormType_BiddingNews.Designer.cs">
+      <DependentUpon>201811141710003_RemoveContractFormId_AddContractFormType_BiddingNews.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811151844169_ModifiedDateTimeToDateTimeNullable_BiddingNews.cs" />
+    <Compile Include="Migrations\201811151844169_ModifiedDateTimeToDateTimeNullable_BiddingNews.Designer.cs">
+      <DependentUpon>201811151844169_ModifiedDateTimeToDateTimeNullable_BiddingNews.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811100645380_AddColumnUserIdTo_BiddingNews_And_Company.cs" />
+    <Compile Include="Migrations\201811100645380_AddColumnUserIdTo_BiddingNews_And_Company.Designer.cs">
+      <DependentUpon>201811100645380_AddColumnUserIdTo_BiddingNews_And_Company.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811180453359_Merge_Fix.cs" />
+    <Compile Include="Migrations\201811180453359_Merge_Fix.Designer.cs">
+      <DependentUpon>201811180453359_Merge_Fix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811221022386_Modify_BiddingNewsFile.cs" />
+    <Compile Include="Migrations\201811221022386_Modify_BiddingNewsFile.Designer.cs">
+      <DependentUpon>201811221022386_Modify_BiddingNewsFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811231648335_Update_biddingdetailfiles.cs" />
+    <Compile Include="Migrations\201811231648335_Update_biddingdetailfiles.Designer.cs">
+      <DependentUpon>201811231648335_Update_biddingdetailfiles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812231156523_Create_BiddingNews_Bookmark_Table.cs" />
+    <Compile Include="Migrations\201812231156523_Create_BiddingNews_Bookmark_Table.Designer.cs">
+      <DependentUpon>201812231156523_Create_BiddingNews_Bookmark_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812280912086_Update_BiddingNewsBookmark_Relation.cs" />
+    <Compile Include="Migrations\201812280912086_Update_BiddingNewsBookmark_Relation.Designer.cs">
+      <DependentUpon>201812280912086_Update_BiddingNewsBookmark_Relation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901100824309_UpdateUserAvatar.cs" />
+    <Compile Include="Migrations\201901100824309_UpdateUserAvatar.Designer.cs">
+      <DependentUpon>201901100824309_UpdateUserAvatar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901111019203_Add_NoBusinessLicense_File.cs" />
+    <Compile Include="Migrations\201901111019203_Add_NoBusinessLicense_File.Designer.cs">
+      <DependentUpon>201901111019203_Add_NoBusinessLicense_File.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901111522312_UpdateUserId_ForBiddingNewsBookmark.cs" />
+    <Compile Include="Migrations\201901111522312_UpdateUserId_ForBiddingNewsBookmark.Designer.cs">
+      <DependentUpon>201901111522312_UpdateUserId_ForBiddingNewsBookmark.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901120557001_Add_ContructionForm_Collumn.cs" />
+    <Compile Include="Migrations\201901120557001_Add_ContructionForm_Collumn.Designer.cs">
+      <DependentUpon>201901120557001_Add_ContructionForm_Collumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901120706505_Add_ContructionForm_CollumnName.cs" />
+    <Compile Include="Migrations\201901120706505_Add_ContructionForm_CollumnName.Designer.cs">
+      <DependentUpon>201901120706505_Add_ContructionForm_CollumnName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901120822002_Add_BiddingNews_Budget_Col.cs" />
+    <Compile Include="Migrations\201901120822002_Add_BiddingNews_Budget_Col.Designer.cs">
+      <DependentUpon>201901120822002_Add_BiddingNews_Budget_Col.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901281749120_AddConfirmationEmail.cs" />
+    <Compile Include="Migrations\201901281749120_AddConfirmationEmail.Designer.cs">
+      <DependentUpon>201901281749120_AddConfirmationEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901291611367_Modify__Columnname.cs" />
+    <Compile Include="Migrations\201901291611367_Modify__Columnname.Designer.cs">
+      <DependentUpon>201901291611367_Modify__Columnname.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902160616199_AddColumn_BiddingNews_DateInvestorSelected.cs" />
+    <Compile Include="Migrations\201902160616199_AddColumn_BiddingNews_DateInvestorSelected.Designer.cs">
+      <DependentUpon>201902160616199_AddColumn_BiddingNews_DateInvestorSelected.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902170951574_UpdateColumn_Company_TotalBiddedNews_ProjectImplemented.cs" />
+    <Compile Include="Migrations\201902170951574_UpdateColumn_Company_TotalBiddedNews_ProjectImplemented.Designer.cs">
+      <DependentUpon>201902170951574_UpdateColumn_Company_TotalBiddedNews_ProjectImplemented.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902171027491_AddColumn_Company_ProjectsComplete.cs" />
+    <Compile Include="Migrations\201902171027491_AddColumn_Company_ProjectsComplete.Designer.cs">
+      <DependentUpon>201902171027491_AddColumn_Company_ProjectsComplete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902210615588_Add_Notification_Table.cs" />
+    <Compile Include="Migrations\201902210615588_Add_Notification_Table.Designer.cs">
+      <DependentUpon>201902210615588_Add_Notification_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902261335351_MergeFix.cs" />
+    <Compile Include="Migrations\201902261335351_MergeFix.Designer.cs">
+      <DependentUpon>201902261335351_MergeFix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903121422564_AddColumnForBiddingNews.cs" />
+    <Compile Include="Migrations\201903121422564_AddColumnForBiddingNews.Designer.cs">
+      <DependentUpon>201903121422564_AddColumnForBiddingNews.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903161451092_AddColumn_Notification_UserId.cs" />
+    <Compile Include="Migrations\201903161451092_AddColumn_Notification_UserId.Designer.cs">
+      <DependentUpon>201903161451092_AddColumn_Notification_UserId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903170541035_AddColumn_BiddingDetail_NumberOfDaysImplement.cs" />
+    <Compile Include="Migrations\201903170541035_AddColumn_BiddingDetail_NumberOfDaysImplement.Designer.cs">
+      <DependentUpon>201903170541035_AddColumn_BiddingDetail_NumberOfDaysImplement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903251338402_AddColumn_Construction_Basement.cs" />
+    <Compile Include="Migrations\201903251338402_AddColumn_Construction_Basement.Designer.cs">
+      <DependentUpon>201903251338402_AddColumn_Construction_Basement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904081457206_Modified_MaxLength_Company_CompanyName.cs" />
+    <Compile Include="Migrations\201904081457206_Modified_MaxLength_Company_CompanyName.Designer.cs">
+      <DependentUpon>201904081457206_Modified_MaxLength_Company_CompanyName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904301056151_UpdateColumn_Construction_Basement_Byte_to_Int.cs" />
+    <Compile Include="Migrations\201904301056151_UpdateColumn_Construction_Basement_Byte_to_Int.Designer.cs">
+      <DependentUpon>201904301056151_UpdateColumn_Construction_Basement_Byte_to_Int.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905011040399_UpdateColumn_Construction_Basement_Int_to_IntNullable.cs" />
+    <Compile Include="Migrations\201905011040399_UpdateColumn_Construction_Basement_Int_to_IntNullable.Designer.cs">
+      <DependentUpon>201905011040399_UpdateColumn_Construction_Basement_Int_to_IntNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908120445428_Update_AdvertisingCompany.cs" />
+    <Compile Include="Migrations\201908120445428_Update_AdvertisingCompany.Designer.cs">
+      <DependentUpon>201908120445428_Update_AdvertisingCompany.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryInterfaces\IAreaManageRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IBiddingDetailFilesRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IBiddingFilterNewsRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IBiddingNewsAbilityHRRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IBiddingNewsBookmarkRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IBiddingNewsDetailRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IBiddingNewsRegistrationRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IBiddingNewsRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IBiddingDetailRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IBiddingPackageRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ICompanyAbilityEquipmentRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ICompanyAbilityExpRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ICompanyAbilityFinanceRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ICompanyAbilityHrDetailRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ICompanyAbilityHrRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ICompanyProfileRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ICompanyStaffRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IContractContruction.cs" />
+    <Compile Include="RepositoryInterfaces\IContractFormRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IConstructionRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IHomeRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ILoginHistoryRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ILoginRepository.cs" />
+    <Compile Include="RepositoryInterfaces\INotificationRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IRegisterRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IUserMasterRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ICompanyRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IWorkContentRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EFs\Interception\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FW.Common\FW.Common.csproj">
+      <Project>{3E345D99-C7E2-4D97-A68E-279745C6158C}</Project>
+      <Name>FW.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FW.Models\FW.Models.csproj">
+      <Project>{2c97f753-b44e-403a-b7a2-ab3ca48dce28}</Project>
+      <Name>FW.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FW.Resources\FW.Resources.csproj">
+      <Project>{ffb169e4-ea96-4995-90b4-1c9120e047db}</Project>
+      <Name>FW.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FW.ViewModels\FW.ViewModels.csproj">
+      <Project>{E251791E-436A-4D00-B575-22E93EE6F5AD}</Project>
+      <Name>FW.ViewModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201803211329237_initial_wabu_20180321.resx">
+      <DependentUpon>201803211329237_initial_wabu_20180321.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805281227053_UpdateEvidenceFieldsOfAbility_AddNewFieldAbilityEquiment.resx">
+      <DependentUpon>201805281227053_UpdateEvidenceFieldsOfAbility_AddNewFieldAbilityEquiment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806240922062_ModifyBiddingNews_20180624.resx">
+      <DependentUpon>201806240922062_ModifyBiddingNews_20180624.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806241140019_AddNewTableBiddingPackageOther_ModifySomeFieldOfBiddingNews.resx">
+      <DependentUpon>201806241140019_AddNewTableBiddingPackageOther_ModifySomeFieldOfBiddingNews.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806241442203_AddPowerEquipmentToAbilityEquipment.resx">
+      <DependentUpon>201806241442203_AddPowerEquipmentToAbilityEquipment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806251153395_AdditionalFieldsToBiddingDetail_20180625.resx">
+      <DependentUpon>201806251153395_AdditionalFieldsToBiddingDetail_20180625.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807021200055_AddNewTableBiddingDetailFiles_AddNewFieldImageToContruction.resx">
+      <DependentUpon>201807021200055_AddNewTableBiddingDetailFiles_AddNewFieldImageToContruction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807021225093_AddForeignKeyToBiddingDetail.resx">
+      <DependentUpon>201807021225093_AddForeignKeyToBiddingDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807021240507_AddForeignKeyCompanyForCompanyProfile.resx">
+      <DependentUpon>201807021240507_AddForeignKeyCompanyForCompanyProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807091319460_AddFileNameColumn.resx">
+      <DependentUpon>201807091319460_AddFileNameColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807281004438_AddCompanyProfileToBiddingDetail.resx">
+      <DependentUpon>201807281004438_AddCompanyProfileToBiddingDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808131142431_AddImageForContruction.resx">
+      <DependentUpon>201808131142431_AddImageForContruction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808160339169_AddSelectContractorForInvestor.resx">
+      <DependentUpon>201808160339169_AddSelectContractorForInvestor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808310721246_AddFilesToBiddingDetail.resx">
+      <DependentUpon>201808310721246_AddFilesToBiddingDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809100320014_UpdateBiddingDetailFiles.resx">
+      <DependentUpon>201809100320014_UpdateBiddingDetailFiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809231214050_Rename_Column_ConstructionTable.resx">
+      <DependentUpon>201809231214050_Rename_Column_ConstructionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809231238483_Rename_Construction_BiddingNews.resx">
+      <DependentUpon>201809231238483_Rename_Construction_BiddingNews.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809240951153_AddCollumnPageContractBid.resx">
+      <DependentUpon>201809240951153_AddCollumnPageContractBid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809280318270_UpdatePageContracBid.resx">
+      <DependentUpon>201809280318270_UpdatePageContracBid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810150933119_Modify_Construction.resx">
+      <DependentUpon>201810150933119_Modify_Construction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810210501103_ModifyStatusBiddingNews.resx">
+      <DependentUpon>201810210501103_ModifyStatusBiddingNews.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810290335293_AddActiveStatusBiddingNews.resx">
+      <DependentUpon>201810290335293_AddActiveStatusBiddingNews.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811141622353_ModifyColumnFileUpLoadTLKDK.resx">
+      <DependentUpon>201811141622353_ModifyColumnFileUpLoadTLKDK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811141659269_RemoveWorkContentColumnOfBiddingNews_AddColumnBiddingPackageTypeForBiddingPackage.resx">
+      <DependentUpon>201811141659269_RemoveWorkContentColumnOfBiddingNews_AddColumnBiddingPackageTypeForBiddingPackage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811141710003_RemoveContractFormId_AddContractFormType_BiddingNews.resx">
+      <DependentUpon>201811141710003_RemoveContractFormId_AddContractFormType_BiddingNews.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811151844169_ModifiedDateTimeToDateTimeNullable_BiddingNews.resx">
+      <DependentUpon>201811151844169_ModifiedDateTimeToDateTimeNullable_BiddingNews.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811100645380_AddColumnUserIdTo_BiddingNews_And_Company.resx">
+      <DependentUpon>201811100645380_AddColumnUserIdTo_BiddingNews_And_Company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811180453359_Merge_Fix.resx">
+      <DependentUpon>201811180453359_Merge_Fix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811221022386_Modify_BiddingNewsFile.resx">
+      <DependentUpon>201811221022386_Modify_BiddingNewsFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811231648335_Update_biddingdetailfiles.resx">
+      <DependentUpon>201811231648335_Update_biddingdetailfiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812231156523_Create_BiddingNews_Bookmark_Table.resx">
+      <DependentUpon>201812231156523_Create_BiddingNews_Bookmark_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812280912086_Update_BiddingNewsBookmark_Relation.resx">
+      <DependentUpon>201812280912086_Update_BiddingNewsBookmark_Relation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901100824309_UpdateUserAvatar.resx">
+      <DependentUpon>201901100824309_UpdateUserAvatar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901111019203_Add_NoBusinessLicense_File.resx">
+      <DependentUpon>201901111019203_Add_NoBusinessLicense_File.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901111522312_UpdateUserId_ForBiddingNewsBookmark.resx">
+      <DependentUpon>201901111522312_UpdateUserId_ForBiddingNewsBookmark.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901120557001_Add_ContructionForm_Collumn.resx">
+      <DependentUpon>201901120557001_Add_ContructionForm_Collumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901120706505_Add_ContructionForm_CollumnName.resx">
+      <DependentUpon>201901120706505_Add_ContructionForm_CollumnName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901120822002_Add_BiddingNews_Budget_Col.resx">
+      <DependentUpon>201901120822002_Add_BiddingNews_Budget_Col.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901281749120_AddConfirmationEmail.resx">
+      <DependentUpon>201901281749120_AddConfirmationEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901291611367_Modify__Columnname.resx">
+      <DependentUpon>201901291611367_Modify__Columnname.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902160616199_AddColumn_BiddingNews_DateInvestorSelected.resx">
+      <DependentUpon>201902160616199_AddColumn_BiddingNews_DateInvestorSelected.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902170951574_UpdateColumn_Company_TotalBiddedNews_ProjectImplemented.resx">
+      <DependentUpon>201902170951574_UpdateColumn_Company_TotalBiddedNews_ProjectImplemented.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902171027491_AddColumn_Company_ProjectsComplete.resx">
+      <DependentUpon>201902171027491_AddColumn_Company_ProjectsComplete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902210615588_Add_Notification_Table.resx">
+      <DependentUpon>201902210615588_Add_Notification_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902261335351_MergeFix.resx">
+      <DependentUpon>201902261335351_MergeFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903121422564_AddColumnForBiddingNews.resx">
+      <DependentUpon>201903121422564_AddColumnForBiddingNews.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903161451092_AddColumn_Notification_UserId.resx">
+      <DependentUpon>201903161451092_AddColumn_Notification_UserId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903170541035_AddColumn_BiddingDetail_NumberOfDaysImplement.resx">
+      <DependentUpon>201903170541035_AddColumn_BiddingDetail_NumberOfDaysImplement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903251338402_AddColumn_Construction_Basement.resx">
+      <DependentUpon>201903251338402_AddColumn_Construction_Basement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904081457206_Modified_MaxLength_Company_CompanyName.resx">
+      <DependentUpon>201904081457206_Modified_MaxLength_Company_CompanyName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904301056151_UpdateColumn_Construction_Basement_Byte_to_Int.resx">
+      <DependentUpon>201904301056151_UpdateColumn_Construction_Basement_Byte_to_Int.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905011040399_UpdateColumn_Construction_Basement_Int_to_IntNullable.resx">
+      <DependentUpon>201905011040399_UpdateColumn_Construction_Basement_Int_to_IntNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908120445428_Update_AdvertisingCompany.resx">
+      <DependentUpon>201908120445428_Update_AdvertisingCompany.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
+    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

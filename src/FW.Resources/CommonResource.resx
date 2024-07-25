@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ERR_LOGIN_FAIL" xml:space="preserve">
+    <value>Đăng nhập thất bại</value>
+  </data>
+  <data name="LoggerAppStart" xml:space="preserve">
+    <value>Application started.</value>
+  </data>
+  <data name="LoggerBeginMethod" xml:space="preserve">
+    <value>---------Begin method {0}.</value>
+  </data>
+  <data name="LoggerEndMethod" xml:space="preserve">
+    <value>---------End method {0}.</value>
+  </data>
+  <data name="LoggerException" xml:space="preserve">
+    <value>{{Exception}} !!! \n</value>
+  </data>
+  <data name="MSG_ERROR_EXIST_RECORD" xml:space="preserve">
+    <value>Item đã tồn tại. Vui lòng kiểm tra lại hệ thống</value>
+  </data>
+  <data name="MSG_ERROR_NOT_EXIST_RECORD" xml:space="preserve">
+    <value>Không tồn tại item trong hệ thống. Vui lòng kiểm tra lại.</value>
+  </data>
+  <data name="MSG_ERROR_RECORD_OUT_OF_DATE" xml:space="preserve">
+    <value>Dữ liệu hiện tại không phải là dữ liệu mới nhất. Vui lòng kiểm tra lại dữ liệu hệ thống.</value>
+  </data>
+  <data name="MSG_ERROR_SYSTEM" xml:space="preserve">
+    <value>Đã xảy ra lỗi hệ thống. Vui lòng liên hệ quản trị hệ thống của bạn.</value>
+  </data>
+  <data name="SRC_LOGIN_ACT_AuthorityCheck" xml:space="preserve">
+    <value>AuthorityCheck</value>
+  </data>
+  <data name="SRC_LOGIN_ACT_Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="TABLE_LOGIN_HISTORY" xml:space="preserve">
+    <value>tbl_LOGIN_HISTORY</value>
+  </data>
+  <data name="TABLE_USERS" xml:space="preserve">
+    <value>tbl_users</value>
+  </data>
+  <data name="TABLE_CONSTRUCTION" xml:space="preserve">
+    <value>tbl_construction</value>
+  </data>
+  <data name="TABLE_COMPANYABILITYEXP" xml:space="preserve">
+    <value>tbl_CompanyAbilityExp</value>
+  </data>
+  <data name="TABLE_COMPANYABILITYFINANCE" xml:space="preserve">
+    <value>tbl_CompanyAbilityFinance</value>
+  </data>
+  <data name="TABLE_COMPANYABILITYEQUIPMENT" xml:space="preserve">
+    <value>tbl_CompanyAbilityEquipment</value>
+  </data>
+  <data name="TABLE_COMPANYABILITYHR" xml:space="preserve">
+    <value>tbl_CompanyAbilityHr</value>
+  </data>
+  <data name="TABLE_COMPANYPROFILE" xml:space="preserve">
+    <value>tbl_CompanyProfile</value>
+  </data>
+  <data name="TABLE_BIDDING_NEWS" xml:space="preserve">
+    <value>tbl_BiddingNews</value>
+  </data>
+  <data name="TABLE_BIDDINGDETAIL" xml:space="preserve">
+    <value>tbl_BiddingDetail</value>
+  </data>
+  <data name="IsBankruptTCHL" xml:space="preserve">
+    <value>Không bị kết luận đang lâm vào tình trạng phá sản hoặc nợ không có khả năng chi trả theo quy định của pháp luật</value>
+  </data>
+  <data name="IsBuildingPermitAbilityExp" xml:space="preserve">
+    <value>Giấy phép xây dựng hoặc văn bản phê duyệt dự án</value>
+  </data>
+  <data name="IsContractAbilityEquipment" xml:space="preserve">
+    <value>Hợp đồng mua bán hoặc hợp đồng thuê mượn hoặc hóa đơn mua thiết bị</value>
+  </data>
+  <data name="IsContractAbilityExp" xml:space="preserve">
+    <value>Hợp đồng</value>
+  </data>
+  <data name="IsDecisionAbilityHR" xml:space="preserve">
+    <value>Quyết định bổ nhiệm nhân sự (đối với những vị trí yêu cầu về số lượng công trình tương tự đã tham gia thực hiện)</value>
+  </data>
+  <data name="IsDeclarationAbilityFinance" xml:space="preserve">
+    <value>Tờ khai tự quyết toán thuế (thuế GTGT và thuế thu nhập doanh nghiệp), có xác nhận của cơ quan thuế về thời điểm đã nộp tờ khai trong 02 năm tài chính nêu trên</value>
+  </data>
+  <data name="IsDissolutionProcessTCHL" xml:space="preserve">
+    <value>Không đang trong quá trình giải thể</value>
+  </data>
+  <data name="IsDocumentAbilityFinance" xml:space="preserve">
+    <value>Văn bản xác nhận của cơ quan quản lý thuế (xác nhận nộp cả năm) về việc thực hiện nghĩa vụ nộp thuế trong 02 năm tài chính nêu trên</value>
+  </data>
+  <data name="IsDocumentRequestAbilityHR" xml:space="preserve">
+    <value>Văn bằng yêu cầu</value>
+  </data>
+  <data name="IsDrawingConstructionMKT" xml:space="preserve">
+    <value>Bảng vẽ và thuyết minh biện pháp thi công</value>
+  </data>
+  <data name="IsEnvironmentalSanitationMKT" xml:space="preserve">
+    <value>Thuyết minh biện pháp đảm bảo vệ sinh môi trường</value>
+  </data>
+  <data name="FinanceSituationAbilityFinance" xml:space="preserve">
+    <value>Tình hình tài chính trong {0} năm gần nhất không bị lỗ, có xác nhận hợp lệ của cơ quan tài chính cấp trên hoặc kiểm toán độc lập.</value>
+  </data>
+  <data name="IsFinancialTCHL" xml:space="preserve">
+    <value>Hạch toán tài chính độc lập</value>
+  </data>
+  <data name="IsFireProtectionMKT" xml:space="preserve">
+    <value>Thuyết minh phòng chống cháy nổ trên cổng trường</value>
+  </data>
+  <data name="IsLaborContractAbilityHR" xml:space="preserve">
+    <value>Hợp đồng lao động</value>
+  </data>
+  <data name="IsLiquidationAbilityExp" xml:space="preserve">
+    <value>Bản thanh lý hợp đồng hoặc biên bản nghiệm thu bàn giao công trình</value>
+  </data>
+  <data name="IsMaterialsUseMKT" xml:space="preserve">
+    <value>Bảng đề xuất vật tư sử dụng</value>
+  </data>
+  <data name="IsProfileAbilityEquipment" xml:space="preserve">
+    <value>Hồ sơ kiểm định của các máy móc (đối với các máy móc phải có yêu cầu kiểm định)</value>
+  </data>
+  <data name="IsProgressScheduleMKT" xml:space="preserve">
+    <value>Bảng vẽ tiến độ thực hiện</value>
+  </data>
+  <data name="IsProtocolAbilityFinance" xml:space="preserve">
+    <value>Biên bản kiểm tra quyết toán của nhà thầu trong 02 năm tài chính nêu trên</value>
+  </data>
+  <data name="IsQuotationMKT" xml:space="preserve">
+    <value>Bảng báo giá</value>
+  </data>
+  <data name="IsRegisEstablishmentTCHL" xml:space="preserve">
+    <value>Có đăng ký thành lập, hoạt động do cơ quan có thẩm quyền của nước mà nhà thầu, nhà đầu tư đang hoạt động cấp</value>
+  </data>
+  <data name="IsReportAbilityFinance" xml:space="preserve">
+    <value>Báo cáo kiểm toán</value>
+  </data>
+  <data name="IsWorkSafetyMKT" xml:space="preserve">
+    <value>Thuyết minh phương pháp đảm bảo an toàn lao động</value>
+  </data>
+  <data name="MSG_ERROR_RECORD_IS_DELETED" xml:space="preserve">
+    <value>Item đã bị xóa.</value>
+  </data>
+  <data name="ERR_CONFIRM_EMAIL" xml:space="preserve">
+    <value>Xác nhận đăng ký tài khoản thất bại</value>
+  </data>
+</root>
