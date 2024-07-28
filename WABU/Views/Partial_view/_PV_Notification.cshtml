@@ -1,0 +1,229 @@
+﻿@using WABU.Utilities;
+@*@model List<FW.ViewModels.NotificationVM>*@
+
+@{
+    var notifyList = ViewBag.NotifyList;
+    var notifyCount = ViewBag.NotifyCount;
+}
+
+@{
+    if (SessionObjects.UserProfile != null)
+    {
+        <li class="dropdown">
+            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                <i class="fa fa-bell"></i>  <span class="label label-danger">@notifyCount</span>
+            </a>
+            <ul class="dropdown-menu dropdown-alerts">
+                <li>
+                    <h3>Thông báo</h3>
+                </li>
+                <li class="divider"></li>
+                @if (notifyList != null)
+                {
+                    foreach (var item in notifyList)
+                    {
+                        <li>
+                            <a>
+                                <div>
+                                    <i class="fa fa-address-card fa-fw"></i> @item.Message
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                    }
+                }
+            </ul>
+        </li>
+
+        <li>
+            <a class="dropdown-toggle account-info" data-toggle="dropdown" href="#">
+                @if (SessionObjects.UserProfile.UserName != null)
+                {
+
+                    if (!string.IsNullOrEmpty(SessionObjects.UserProfile.AvatarPath))
+                    {
+                        <div class="box_avatar">
+                            <img src="/@SessionObjects.UserProfile.AvatarPath" alt="@SessionObjects.UserProfile.AvatarName" />
+                        </div>
+                        @SessionObjects.UserProfile.UserName
+                    }
+                    else
+                    {
+                        <i class="fa fa-user-circle-o"></i> @SessionObjects.UserProfile.UserName
+                    }
+                }
+            </a>
+            <ul class="dropdown-menu dropdown-menu-account">
+                @if (SessionObjects.UserProfile.Authority == 1)
+                {
+                    <li class="divider"></li>
+                    <li>
+                        <span class="fs15">QUẢN LÝ</span>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="@Url.Action("Index", "FilterBiddingNews")">
+                            <div>
+                                <i class="fa fa-address-book"></i> Duyệt tin
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("IndexInvalid", "FilterBiddingNews")">
+                            <div>
+                                <i class="fa fa-address-book"></i> Quản lý tin thầu
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "UserMaster")">
+                            <div>
+                                <i class="fa fa-address-book"></i> Quản lý User
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "ConstructionManagement")">
+                            <div>
+                                <i class="fa fa-address-book"></i> Quản lý công trình
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                }
+
+                @if (SessionObjects.UserProfile.Authority == 2 || SessionObjects.UserProfile.Authority == 3)
+                {
+                    <li class="divider"></li>
+                    <li>
+                        <span class="fs15">QUẢN LÝ TÀI KHOẢN</span>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="@Url.Action("ProfileManagement", "Account")">
+                            <div>
+                                <i class="fa fa-address-book"></i> Cập nhật thông tin
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="divider"></li>
+                }
+
+                @if (SessionObjects.UserProfile.Authority == 2)
+                {
+                    <li>
+                        <span class="fs15">QUẢN LÝ DỰ ÁN</span>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="@Url.Action("Index", "Construction")" target="_self">
+                            <div>
+                                <i class="fa fa-list-ul"></i> Danh sách công trình
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("PagePackage", "Account")">
+                            <div class="flex_row">
+                                <i class="fa fa-list-ul custom_icon_list_notification"></i>
+                                <p class="title_list_notification">
+                                    Danh sách tin thầu
+                                    <br>
+                                    Lựa chọn nhà thầu
+                                </p>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li><a href="@Url.Action("Index", "BiddingNewsRegistration")" target="_blank"><i class="fa fa-plus"></i> Đăng tin thầu</a></li>
+                }
+                else if (SessionObjects.UserProfile.Authority == 3)
+                {
+                    <li>
+                        <span class="fs15">QUẢN LÝ ĐẤU THẦU</span>
+                    </li>
+
+                    <li class="divider"></li>
+
+                    <li>
+                        <a href="@Url.Action("PageContract", "Account")">
+                            <div>
+                                <i class="fa fa-list-ul"></i> Hồ sơ năng lực
+                            </div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="@Url.Action("PagePackage", "Account")">
+                            <div class="flex_row">
+                                <i class="fa fa-list-ul custom_icon_list_notification"></i>
+                                <p class="title_list_notification">
+                                    Danh sách tin thầu
+                                </p>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="@Url.Action("Index", "BiddingNewsBookmark")">
+                            <div>
+                                <i class="fa fa-list-ul"></i> Tin thầu quan tâm
+                            </div>
+                        </a>
+                    </li>
+                }
+                <li>
+                    <a href="" onclick="logout();">
+                        <i class="fa fa-sign-out"></i> Thoát
+                    </a>
+                </li>
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li>
+            <h4 class="fix-menu-margin">
+                <a href="#" onclick="login();">
+                    <i class="fa fa-sign-in"></i> Đăng Nhập
+                </a>
+            </h4>
+        </li>
+        <li>
+            <h4 class="fix-menu-margin">
+                <a href="#" onclick="register();">
+                    <i class="fa fa-user-circle-o"></i> Đăng Ký
+                </a>
+            </h4>
+        </li>
+    }
+
+
+}
+
+<script>
+    function login() {
+        if ($("#returnURL").val() === "/") {
+            location = "/dangnhap?returnURL=/trangchu";
+        } else {
+            location = "/dangnhap?returnURL=" + $("#returnURL").val();
+        }
+    }
+
+    function register() {
+        if ($("#returnURL").val() === "/") {
+            location = "/dangky?returnURL=/confirmEmail";
+        } else {
+            location = "/dangky?returnURL=" + $("#returnURL").val();
+        }
+    }
+
+    function logout() {
+        if ($("#returnURL").val() === "") {
+            $("#returnURL").val("/");
+        }
+
+        $.post("/Login/Logout", { returnURL: $("#returnURL").val() });
+    }
+</script>

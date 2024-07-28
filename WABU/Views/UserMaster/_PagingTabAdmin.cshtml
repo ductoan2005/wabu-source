@@ -1,0 +1,86 @@
+﻿@{
+    var pagingUserAdmin = ViewBag.pagingUserAdmin;
+
+    var currentPage = int.Parse(ViewData["CurrentPageAdmin"].ToString());
+    var itemsPerPage = int.Parse(ViewData["ItemsPerPageAdmin"].ToString());
+    var totalItems = int.Parse(ViewData["TotalItemsAdmin"].ToString());
+    var maxPageShow = 5;// int.Parse(ViewData["MaxPageShow"].ToString());
+
+    int totalPage = pagingUserAdmin.TotalPages;
+    if (totalPage > 0 && currentPage > totalPage)
+    {
+        currentPage = totalPage;
+    }
+    var halfPage = maxPageShow / 2;
+    var startPage = currentPage - halfPage;
+    if (startPage < 1)
+    {
+        startPage = 1;
+    }
+    var endPage = currentPage + halfPage;
+    if (endPage > totalPage)
+    {
+        endPage = totalPage;
+    }
+}
+<div class="row">
+    <div class="col-sm-6">
+        <div class="dataTables_info" id="paging-info" role="status" aria-live="polite">
+            @{
+                if (pagingUserAdmin.TotalItems > 0)
+                {
+                    if (totalPage == startPage)
+                    {
+                        <span>Tổng item(s) là @totalItems</span>
+                    }
+                    else if(currentPage == 1)
+                    {
+                        <span>Hiển thị @currentPage đến @(itemsPerPage * currentPage) của tổng @totalItems items</span>
+                    }
+                    else if (currentPage < endPage)
+                    {
+                        <span>Hiển thị @(((currentPage - 1) * itemsPerPage) + 1) đến @(itemsPerPage * currentPage) của tổng @totalItems items</span>
+                    }
+                    else if (currentPage == endPage)
+                    {
+                        <span>Hiển thị @(((currentPage - 1) * itemsPerPage) + 1) đến @totalItems của tổng @totalItems items</span>
+                    }
+                }
+                else
+                {
+                    <span>Tổng item(s) là 0</span>
+                }
+            }
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="dataTables_paginate paging_simple_numbers text-right" id="paging-list-admin">
+            <ul class="pagination">
+                @{
+                    if (pagingUserAdmin.TotalItems > 0)
+                    {
+                        if (startPage > 1)
+                        {
+                            <li class="prev"><a href="#" onclick="userMaster.changePageOnListAdmin(@(currentPage-1), event);">← Previous</a></li>
+                        }
+                        for (int i = startPage; i < endPage + 1; i++)
+                        {
+                            if (i == currentPage)
+                            {
+                                <li class="active"><a href="javascript:void(0)">@i</a></li>
+                            }
+                            else
+                            {
+                                <li class="paginate_button"><a href="#" onclick="userMaster.changePageOnListAdmin(@i, event)">@i</a></li>
+                            }
+                        }
+                        if (endPage < totalPage)
+                        {
+                            <li class="next"><a href="#" onclick="userMaster.changePageOnListAdmin(@(currentPage+1), event);"> Next → </a></li>
+                        }
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>

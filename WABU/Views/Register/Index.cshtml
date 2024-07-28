@@ -1,0 +1,118 @@
+﻿@{
+    /**/
+    ViewBag.Title = "Đăng Ký Tài Khoản";
+    Layout = "~/Views/Shared/_Layout_Login.cshtml";
+}
+<link href="/Content/Common/css/plugins/iCheck/custom.css" rel="stylesheet">
+<div class="row">
+    <div class="col-md-4 fix-content-center">
+        <div class="m-t-register animated fadeInDown text-center">
+            <form id="frmRegister">
+                @Html.AntiForgeryToken()
+                <h5 class="font_20 text-white">Đăng Ký Tài Khoản</h5>
+                <div class="form-group">
+                    <input type="text"
+                           placeholder="Username"
+                           class="form-control"
+                           id="UserName"
+                           name="UserName"
+                           data-val-length-max="20"
+                           data-val-length="Tên đăng nhập bạn không quá 50 ký tự"
+                           data-val-required="Tên đăng nhập bạn là gì?"
+                           data-val="true"
+                           aria-describedby="msg-err-UserName" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="UserName">
+                        <span id="msg-err-UserName" class=""></span>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input type="password"
+                           placeholder="Password"
+                           class="form-control"
+                           id="Password"
+                           name="Password"
+                           data-val-length-min="8"
+                           data-val-length-max="20"
+                           data-val-length="Mật khẩu của bạn phải từ 8 - 20 ký tự"
+                           data-val-required="Mật khẩu của bạn là gì?"
+                           data-val="true"
+                           aria-describedby="msg-err-Password" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Password">
+                        <span id="msg-err-Password" class=""></span>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input type="password"
+                           placeholder="Xác nhận Password"
+                           class="form-control"
+                           id="PasswordConfirm"
+                           name="PasswordConfirm"
+                           data-val-length-min="8"
+                           data-val-length-max="20"
+                           data-val-length="Mật khẩu của bạn phải từ 8 - 20 ký tự"
+                           data-val-equalto-other="Password"
+                           data-val-equalto="Password xác nhận không đúng"
+                           @*data-val-required="Mật khẩu của bạn là gì?"*@
+                           data-val="true"
+                           aria-describedby="msg-err-PasswordConfirm" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="PasswordConfirm">
+                        <span id="msg-err-PasswordConfirm" class=""></span>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input type="email"
+                           placeholder="Email"
+                           class="form-control"
+                           id="Email"
+                           name="Email"
+                           data-val-length-max="50"
+                           data-val-length="Email của bạn không quá 50 ký tự"
+                           data-val-required="Email của bạn là gì?"
+                           data-val-email="Định dạng Email của bạn không đúng"
+                           data-val="true"
+                           aria-describedby="msg-err-Email" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Email">
+                        <span id="msg-err-Email" class=""></span>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <label class="col-sm-12 control-label text-center text-white">Bạn là ai?</label>
+                        </div>
+                        <div class="row">
+                            <div class="i-checks col-sm-12 text-white text-left"><label><input type="radio" value="2" id="auth-two-person" name="auth"><i></i> Bên mời thầu (Cá nhân)</label></div>
+                        </div>
+                        <div class="row">
+                            <div class="i-checks col-sm-12 text-white text-left"><label><input type="radio" value="2" id="auth-two-company" name="auth"><i></i> Bên mời thầu (Doanh nghiệp)</label></div>
+                        </div>
+                        <div class="row">
+                            <div class="i-checks col-sm-12 text-white text-left"><label><input type="radio" value="3" id="auth-three" name="auth"><i></i> Nhà thầu</label></div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="i-checks text-white"><label> <input type="checkbox" value="" id="IsAgreeTerm" /> <i></i>Đồng ý với <a href="/Home/Advisory" target="_blank">điều khoản sử dụng</a> và <a href="/Home/Security" target="_blank">bảo mật</a> của Want to Build.</label></div>
+                    </div>
+                </div>
+                <input id="returnURL" type="hidden" value="@ViewBag.returnURL" />
+            </form>
+            <div class="clear"></div>
+            <button type="submit" class="btn btn-primary block full-width m-b mt15" onclick="registerJS.registerFunc();" id="btnRegister">Đăng Ký</button>
+            <p class="text-muted text-center text-white"><small>Bạn có tài khoản rồi?</small></p>
+            <a class="btn btn-sm btn-white btn-block" href="@Url.Action("Index", "Login")">Đăng Nhập</a>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Common/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/app/Register/register.js"></script>
+    <script>
+        registerJS.init();
+        $(document).ready(function () {
+        });</script>
+}
+

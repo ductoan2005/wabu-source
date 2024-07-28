@@ -1,0 +1,83 @@
+﻿@model FW.Models.Company
+
+@{
+    var listCompOnOverContructor = ViewBag.ReadCompayLogoOnOver;
+}
+<div class="slick_product">
+    
+    @if (listCompOnOverContructor != null)
+    {
+        foreach (var item in listCompOnOverContructor)
+        {
+            <div>
+                <div class="background_fix">
+                    
+                    @{ 
+                        string advertisingBackgroundImage = "../Content/Common/img/no-thumbnail.png";
+
+                        if (item.AdvertisingIsOn)
+                        {
+                            advertisingBackgroundImage = "/" + item.AdvertisingBackgroundImage;
+                        }
+                    }
+                    <div class="background_contractor_top" style="background-image: url(@advertisingBackgroundImage);background-position:top;"></div>
+                </div>
+                <div class="go_contractor_top">
+                    <div class="row">
+                        <div class="col-md-8 col-md-push-2">
+                            <div class="info-container">
+                                <div class="row">
+                                   <div class="image-item">
+                                        <a href="@item.Link" target="_blank">
+                                            @{ 
+                                                string logo = string.Empty;
+                                                if(item.Logo == null || item.Logo == "")
+                                                {
+                                                    logo = "/Content/Common/img/no-thumbnail.png";
+                                                }
+                                                else
+                                                {
+                                                    logo = item.Logo;
+                                                }
+                                            }
+                                            <img class="img-responsive" src="@logo" alt="logo">
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-12 contractor-home-info">
+                                        <a href="@item.Link" target="_blank" class="text-clip"><h2 class="mt0">@item.CompanyName </h2></a>
+                                        <p><em class="text-clip">Địa chỉ: @item.Address</em></p>
+                                        <p><em class="text-clip">Số điện thoại: @item.PhoneNumber</em></p>
+                                        <p>@Html.Raw(item.Introduction)</p>
+                                        <div class="view-center-sp">
+                                            <a href="@item.Link" target="_blank" class="btn btn-primary btn-outline">
+                                                Xem thêm
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+
+    @*foreach (var item in listCompContructor)
+    {
+        var sumRating = (item.OneStar * 1) + (item.TwoStar * 2) + (item.ThreeStar * 3) + (item.FourStar * 4) + (item.FiveStar * 5);
+        var countRating = item.OneStar + item.TwoStar + item.ThreeStar + item.FourStar + item.FiveStar;
+        var roundRating = Math.Round((decimal)(sumRating / countRating));
+        var star = roundRating;
+        if (star > 2)
+        {
+            <div class="col-md-2 col-sm-6 col-xs-6">
+                <a class="single-bnr" target="_blank" href="#">
+                    <img class="salesLogoImage" src="~/Content/Common/img/@item.Logo" width="88" height="43" alt="@item.CompanyName">
+                    <span class="ad-slogan">@item.CompanyName</span>
+                </a>
+            </div>
+        }
+    }*@

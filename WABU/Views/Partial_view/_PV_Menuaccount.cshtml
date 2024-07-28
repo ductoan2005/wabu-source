@@ -1,0 +1,86 @@
+﻿@using WABU.Utilities;
+@{
+    var authority = ViewBag.Authority;
+}
+
+<div class="file-manager">
+    <h5>Thông tin tài khoản</h5>
+    <ul class="folder-list m-b-md" style="padding: 0">
+        @{
+            if (ViewBag.Nameaccount == "account")
+            {
+                <li class="active_menu_account"> <i class="fa fa-address-book-o "></i> Cập nhật thông tin </li>
+            }
+            else
+            {
+                <li><a href="@Url.Action("ProfileManagement", "Account")"> <i class="fa fa-address-book-o "></i> Cập nhật thông tin </a></li>
+            }
+        }
+    </ul>
+    <h5>Danh sách</h5>
+    <ul class="folder-list m-b-md" style="padding: 0">
+        @{
+            if (SessionObjects.UserProfile.Authority == 2)
+            {
+                if (ViewBag.Nameaccount == "listcontractor")
+                {
+                    <li class="active_menu_account"> <i class="fa fa-list "></i> Danh sách công trình </li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("Index", "Construction")"> <i class="fa fa-list "></i> Danh sách công trình </a></li>
+                }
+            }
+
+            if (SessionObjects.UserProfile.Authority == 3)
+            {
+                if (ViewBag.Nameaccount == "listcontract")
+                {
+
+                    <li class="active_menu_account"><i class="fa fa-list"></i> Hồ sơ đấu thầu @*<span class="label label-primary pull-right">2</span>*@</li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("PageContract", "Account")"><i class="fa fa-list"></i> Hồ sơ đấu thầu @*<span class="label label-primary pull-right">2</span>*@</a></li>
+                }
+                if (ViewBag.Nameaccount == "listpackage")
+                {
+                    if (authority == 3)
+                    {
+                        <li class="active_menu_account"><i class="fa fa-list "></i> Danh sách đấu thầu @*<span class="label label-primary pull-right">16</span>*@</li>
+                    }
+                    else
+                    {
+                        <li class="active_menu_account"><i class="fa fa-list "></i> Danh sách tin thầu @*<span class="label label-primary pull-right">16</span>*@</li>
+                    }
+                }
+                else
+                {
+                    <li><a href="@Url.Action("PagePackage", "Account")"><i class="fa fa-list"></i> Danh sách tin thầu @*<span class="label label-primary pull-right">16</span>*@</a></li>
+                }
+            }
+            else
+            {
+                if (ViewBag.Nameaccount == "listpackage")
+                {
+                    <li class="active_menu_account"><i class="fa fa-list "></i> Danh sách tin thầu @*<span class="label label-primary pull-right">16</span>*@</li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("PagePackage", "Account")"><i class="fa fa-list"></i> Danh sách tin thầu @*<span class="label label-primary pull-right">16</span>*@</a></li>
+                }
+            }
+            if (SessionObjects.UserProfile.Authority == 3)
+            {
+                <li><a href="@Url.Action("Index", "BiddingNewsBookmark")"><i class="fa fa-list"></i> Tin Thầu Quan Tâm </a></li>
+            }
+            if (SessionObjects.UserProfile.Authority == 2)
+            {
+                <li class="customize-newregister"><a href="@Url.Action("Index", "BiddingNewsRegistration")" target="_blank" class="btn btn-primary"> <i class="fa fa-plus"></i> Đăng tin thầu </a></li>
+            }
+        }
+
+    </ul>
+    <div class="clearfix"></div>
+</div>
+

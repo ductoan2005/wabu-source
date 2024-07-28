@@ -1,0 +1,209 @@
+﻿@{
+    Layout = null;
+}
+@using WABU.Utilities;
+<!DOCTYPE html>
+
+<html>
+<head>
+    @*<meta name="viewport" content="width=device-width" />*@
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @*<meta name="viewport" content="width=1024" />*@
+    <meta charset="utf-8">
+    <title>WABU</title>
+
+    <link href="/Content/Common/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Content/Common/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/Content/Common/css/animate.css" rel="stylesheet">
+    <link href="/Content/Common/css/plugins/slick/slick.css" rel="stylesheet">
+    <link href="/Content/Common/css/plugins/slick/slick-theme.css" rel="stylesheet">
+    <link href="/Content/Common/css/style.css?v=2019110312" rel="stylesheet">
+    <link href="/Content/Common/css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet">
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/WABU.css?v=2019110312" rel="stylesheet" />
+</head>
+<body class="top-navigation">
+    <!-- Load Facebook SDK for JavaScript -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js"></script>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                xfbml: true,
+                version: 'v4.0'
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+
+    <!-- Your customer chat code -->
+    <div class="fb-customerchat"
+         attribution=setup_tool
+         page_id="301680523828176"
+         logged_in_greeting="Xin chào! Chúng tôi có thể giúp gì được cho bạn?"
+         logged_out_greeting="Xin chào! Chúng tôi có thể giúp gì được cho bạn?">
+    </div>
+
+
+    <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row gray-bg">
+                <div class="container">
+                    <ul class="nav navbar-top-links navbar-right" id="notif-bar">
+                        @Html.Partial("../Partial_view/_PV_Notification")
+                    </ul>
+                </div>
+            </div>
+            <div class="row border-bottom white-bg">
+                <div class="container">
+                    <nav class="navbar navbar-static-top" role="navigation">
+                        <div class="navbar-header">
+                            <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+                                <i class="fa fa-reorder"></i>
+                            </button>
+                            <a href="@Url.Action("Index", "Home")" class="navbar-brand">
+                                <img src="~/Content/Common/img/logo.png" class="img-responsive" />
+                            </a>
+                            @if (SessionObjects.UserProfile == null || SessionObjects.UserProfile.Authority != 3)
+                            {
+                                <a href="@Url.Action("Index", "BiddingNewsRegistration")" class="btn-success btn-register-top-mobile">ĐĂNG TIN MỜI THẦU</a>
+                            }
+                        </div>
+                        <div class="navbar-collapse collapse" id="navbar">
+                            @Html.Partial("../Partial_view/_PV_Menutop")
+                        </div>
+                    </nav>
+                </div>
+
+            </div>
+
+            @RenderBody()
+
+            <div class="footer">
+                <div class="clicktop gray-bg300 text-center">
+                    <a href="#"><i class="fa fa-angle-up font_30"></i></a>
+                </div>
+                <div class="row">
+                    <div class="container">
+                        <div class="pull-right">
+
+                            @*<div class="input-group">
+                                    <input type="text" name="name" value="" class="form-control gray-textbox" placeholder="Email" />
+                                    <button type="button" class="btn btn_subrice">Subrice</button>
+                                </div>*@
+                            <div class="social-facebook">
+                                <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fwabu.vn%2F&tabs&width=450&height=214&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=268428370758913" width="100%" height="214" style="border:none;" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                            </div>
+                        </div>
+                        <div>
+                            <h1>WABU.VN</h1>
+                            <ul class="col-md-6 footer-menu-top">
+                                @*<li><a href="@Url.Action("Index", "About")">About</a></li>*@
+                                @*<li><a href="#">Shop</a></li>
+                                    <li><a href="#">Blog</a></li>
+                                    <li><a href="#">FAQ</a></li>*@
+                                @*<li><a href="/Contact/index">Contact</a></li>*@
+                                <li><a href="@Url.Action("Search", "BiddingNews")">Thông tin nhà thầu</a></li>
+                                <li><a href="@Url.Action("Advisory", "Home")">Thông tin bảo mật</a></li>
+                                <li><a href="@Url.Action("Security", "Home")">Điều khoản sử dụng</a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="container">
+                        <p class="pull-left">Site design and build by <a href="http://phongkim.net">phongkim.net</a></p>
+                        <div class="pull-right">
+                            <ul class="social-all">
+                                <li><a href="#"><i class="fa fa-facebook-square font_30 text-white"></i></a></li>
+                                <li><a href="#"><i class="fa fa-google-plus-square font_30 text-white"></i></a></li>
+                                <li><a href="#"><i class="fa fa-tumblr-square font_30 text-white"></i></a></li>
+                                <li><a href="#"><i class="fa fa-youtube font_30 text-white"></i></a></li>
+                            </ul>
+                        </div>
+                        <p class="pull-right">Đăng ký để nhận lấy thông tin công việc mới nhất</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="/Scripts/Common/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="/Scripts/Common/bootstrap.min.js"></script>
+    <script src="/Scripts/Common/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/Scripts/Common/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <!-- Chosen -->
+    <script src="/Scripts/Common/plugins/chosen/chosen.jquery.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="/Scripts/Common/inspinia.js"></script>
+    <script src="/Scripts/Common/plugins/pace/pace.min.js"></script>
+
+    <!-- autocomplete -->
+    <script src="/Scripts/Common/plugins/typehead/bootstrap3-typeahead.min.js"></script>
+
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/WABU.js"></script>
+    <!--Start of Tawk.to Script-->
+    @*<script type="text/javascript">
+            var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+            (function () {
+                var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+                s1.async = true;
+                s1.src = 'https://embed.tawk.to/5c550a7b7cf662208c93b785/default';
+                s1.charset = 'UTF-8';
+                s1.setAttribute('crossorigin', '*');
+                s0.parentNode.insertBefore(s1, s0);
+            })();
+        </script>*@
+    <!--End of Tawk.to Script-->
+    <script src="~/Scripts/jquery.signalR-2.4.0.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+    @RenderSection("scripts", required: false)
+    <input type="hidden" id="returnURL" name="returnURL" value="@ViewBag.returnURL">
+</body>
+</html>
+
+<script>
+$(function () {
+    var returnURL = "@HttpContext.Current.Request.Url.AbsolutePath";
+    $("#returnURL").val(returnURL);
+
+    var notification = $.connection.signalRNotificationHub;
+
+    // Create a function that the hub can call to broadcast messages.
+    notification.client.sendMessages = function () {
+        getNotifications();
+    };
+
+    // Start the connection.
+    $.connection.hub.start().done(function () {
+        getNotifications();
+        }).fail(function (e) {
+    });
+
+
+});
+
+    function getNotifications() {
+        $.post("/Notification/GetNotifications", null, function () {
+        }).done(function (response) {
+
+            $("#notif-bar").empty().append(response);
+        });
+    }
+
+
+</script>

@@ -1,0 +1,1333 @@
+﻿@using FW.Resources
+@using FW.Models
+@using FW.Common.Enum
+@using FW.Common.Helpers
+@using FW.Common.Utilities
+@model FW.ViewModels.BiddingNews.BiddingNewsBidContractionDetailVM
+@{
+    ViewBag.Title = "BidDetail";
+    Layout = "~/Views/Shared/_Layout_Home.cshtml";
+    var userProfile = ViewBag.UserProfile as UserProfile;
+    BiddingDetail biddingDetail = null;
+    if (Model.BiddingDetails.Any() && ViewBag.Authority != null)
+    {
+        biddingDetail = Model.BiddingDetails.FirstOrDefault(x => x.IsDeleted != true && x.CompanyProfile.Company.UserId == userProfile.UserID);
+    }
+
+    // Check tin thau da luu hay chua
+    bool hasBiddingBookmark = false;
+    if (Model.BiddingNewsBookmarks.Any())
+    {
+        hasBiddingBookmark = Model.BiddingNewsBookmarks.Any(x => x.IsDeleted != true);
+    }
+}
+<link href="/Content/Common/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/dropzone/basic.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+
+<div id="biddingNewsRegistration-screen">
+    <section class="Createbuilder">
+        <div class="row">
+            <div class="background-top-new"></div>
+            <div class="container">
+                <div id="title-box-DT">
+                    <div class="ibox">
+                        <div class="ibox-content pd_top15_bottom15">
+                            <div class="row">
+                                <div class="col-md-10 text-left">
+                                    <h1>THÔNG TIN ĐẤU THẦU</h1>
+                                    <hr />
+                                    <div class="addresscontruction">
+                                        <p><strong>Công trình:</strong> @Model.Construction.ConstructionName.ToUpper()</p>
+                                        <p><strong>Mã tin thầu:</strong> @("WB" + Model.Id.Value.ToString("000000"))</p>
+                                        <p><strong>Chủ đầu tư:</strong> @Model.Construction.InvestorName</p>
+                                        <p><strong>Địa điểm xây dựng:</strong> @Model.Construction.AddressBuild</p>
+                                        <p><strong>Khu vực:</strong> @Model.Construction.AreaId</p>
+                                        <p>@*<strong>Khu vực:</strong> @Model.Construction.Area.AreaName*@</p>
+                                    </div>
+                                    <h2 class="fix-inline-block"> @Model.ContructionName</h2>
+                                    @if (ViewBag.Authority == 3 && biddingDetail == null && Model.BidCloseDate > DateTime.Now)
+                                    {
+                                        <div class="action-bid-detail">
+                                            <button type="button" class="btn btn-w-m btn-bid-top" data-toggle="modal" data-target="#pop-up-bid" id="btn_ctr_ALL_save">Đấu Thầu</button>
+                                        </div>
+                                    }
+                                    @if (biddingDetail != null && Model.BidCloseDate > DateTime.Now)
+                                    {
+                                        <div class="action-bid-detail">
+                                            <a href="#" class="btn check-delete" data-toggle="modal" data-target="#pop-up-delete-biddingInfo"><i class="fa fa-times"></i> Hủy Bỏ Đấu Thầu</a>
+                                        </div>
+                                    }
+                                    else if (ViewBag.Authority == 3 && !hasBiddingBookmark)
+                                    {
+
+                                    }
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="time_bid center">
+                                        <input type="hidden" id="bidCloseDateVal" value="@Model.BidCloseDate.ToString("yyyy/MM/dd hh:mm:ss")" />
+                                        <span id="countdownBidCloseDate" class="time"></span>
+                                        <br />
+                                        <span>Thời gian đóng thầu @Model.BidCloseDate.ToString("hh:mm:ss") @Model.BidCloseDate.ToString("dd/MM/yyyy")</span>
+                                    </div>
+                                    @if (ViewBag.Authority == 2 && Model.BiddingDetails.Any())
+                                    {
+                                        <div class="center btn-lcnt">
+                                            <a href="#dsnttg" class="btn btn-w-m btn-bookmark-bid">Lựa chọn nhà thầu</a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="bidcontractiondetail">
+            <div class="container">
+                <div class="background-body-bid">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="ibox-title">
+                                <h5><i class="fa fa-info-circle"></i> Thông tin gói thầu</h5>
+                            </div>
+                            <div class="ibox">
+                                <div class="ibox-content pd_top15_bottom15">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="slick_images">
+                                                @{
+                                                    string imageContruction1 = string.IsNullOrEmpty(Model.Construction.Image1FilePath) ? "Content/Common/img/no-thumbnail.png" : Model.Construction.Image1FilePath;
+
+                                                    //string imageContruction2 = string.IsNullOrEmpty(Model.Construction.Image2FilePath) ? "Content/Common/img/no-thumbnail.png" : Model.Construction.Image2FilePath;
+
+                                                    //string imageContruction3 = string.IsNullOrEmpty(Model.Construction.Image3FilePath) ? "Content/Common/img/no-thumbnail.png" : Model.Construction.Image3FilePath;
+                                                }
+                                                <div>
+                                                    <img src="~/@imageContruction1" alt="" width="100%" class="img-thumbnail" />
+                                                </div>
+                                                @*<div>
+                                                    <img src="~/@imageContruction2" alt="" width="100%" class="img-thumbnail" />
+                                                </div>
+                                                <div>
+                                                    <img src="~/@imageContruction3" alt="" width="100%" class="img-thumbnail" />
+                                                </div>*@
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="col-md-5 text-left"><strong>Gói thầu</strong></label>
+                                                    <label class="col-md-6 text-left word-break">
+                                                        @Model.BiddingPackage.BiddingPackageName
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-5 text-left"><strong>Hình thức hợp đồng</strong></label>
+                                                    <label class="col-md-7 text-left word-break">
+                                                        @{ var contractFormType = EnumHelper<EContractFormForCreateAndEdit>.GetDisplayValue((EContractFormForCreateAndEdit)Model.ContractFormType);}
+                                                        @contractFormType
+                                                    </label>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-5 text-left"><strong>Ngân sách thực hiện</strong></label>
+                                                    <label class="col-md-7 text-left word-break">
+                                                        @(Model.BudgetImplementation != 0 ? Model.BudgetImplementation.ToString("###,###") + " vnđ" : "Chưa xác định")
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-5 text-left"><strong>Thời gian thực hiện</strong></label>
+                                                    <label class="col-md-7 text-left word-break">
+                                                        @(Model.NumberOfDaysImplement != 0 ? Model.NumberOfDaysImplement.ToString() + " ngày" : "Chưa xác định")
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-5 text-left"><strong>Ngày bắt đầu</strong></label>
+                                                    <label class="col-md-7 text-left word-break">@(Model.DurationContract != DateTime.MinValue ? Model.DurationContract.ToString("dd/MM/yyyy") : "Chưa xác định")</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-12 text-left"><strong>Mô tả gói thầu</strong></label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-12 text-left word-break ml-10">
+                                                        @Model.BiddingPackageDescription
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(Model.ConstructionDrawingFilePath)
+                                        || !string.IsNullOrEmpty(Model.EstimateVolumeFilePath)
+                                        || Model.IsSelfMakeEstimateVolume
+                                        || !string.IsNullOrEmpty(Model.RequireMaterialFilePath)
+                                        || Model.IsSelfMakeRequireMaterial)
+                                    {
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label>Các tài liệu đính kèm</label><br />
+                                                @if (!string.IsNullOrEmpty(Model.ConstructionDrawingFilePath))
+                                                {
+                                                    <label>- Hồ sơ thiết kế: </label>
+                                                    <a href="#" class="downloadDocument" data-path="~/@Model.ConstructionDrawingFilePath">
+                                                        @Model.ConstructionDrawingFileName
+                                                    </a>
+                                                    <br />
+                                                }
+
+                                                @if (!string.IsNullOrEmpty(Model.EstimateVolumeFilePath))
+                                                {
+                                                    <label>- Bảng dự toán khối lượng: </label>
+                                                    <a href="#" class="downloadDocument" data-path="@Model.EstimateVolumeFilePath">
+                                                        @Model.EstimateVolumeFileName
+                                                    </a>
+                                                    <br />
+                                                }
+
+                                                @if (Model.IsSelfMakeEstimateVolume)
+                                                {
+                                                    <label>- Bảng dự toán khối lượng: </label>
+                                                    <span>Nhà thầu tự lập bảng khối lượng thực hiện</span>
+                                                    <br />
+                                                }
+
+                                                @if (!string.IsNullOrEmpty(Model.RequireMaterialFilePath))
+                                                {
+                                                    <label>- Bảng vật tư yêu cầu: </label>
+                                                    <a href="#" class="downloadDocument" data-path="@Model.RequireMaterialFilePath">
+                                                        @Model.RequireMaterialFileName
+                                                    </a>
+                                                    <br />
+                                                }
+
+                                                @if (Model.IsSelfMakeRequireMaterial)
+                                                {
+                                                    <label>- Bảng vật tư yêu cầu: </label>
+                                                    <span>Nhà thầu tự đề xuất bảng chủng loại vật tư sử dụng</span>
+                                                    <br />
+                                                }
+
+                                                <form id="downloadDocumentForm" action="@Url.Action("Download", "BidContractionDetail")" method="post">
+                                                    @Html.AntiForgeryToken()
+                                                    <input name="path" type="hidden">
+                                                    <input name="authority" type="hidden" value="@ViewBag.Authority">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            @if (Model.IsRegisEstablishmentTCHL == true
+|| Model.IsFinancialTCHL == true
+|| Model.IsDissolutionProcessTCHL == true
+|| Model.IsBankruptTCHL == true)
+                            {
+                                <div class="ibox-title">
+                                    <h5><i class="fa fa-gavel"></i> Tư cách hợp lệ nhà thầu</h5>
+                                </div>
+                                <div class="ibox">
+                                    <div class="ibox-content pd_top15_bottom15">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p>
+                                                    <b>Các yêu cầu tư cách hợp lệ nhà thầu</b>
+                                                </p>
+                                                <div id="ctr_TCHL">
+                                                    <br />
+                                                    <div class="form-horizontal">
+                                                        <div class="optioncheck">
+                                                            @if (Model.IsRegisEstablishmentTCHL == true)
+                                                            {
+                                                                <label>- @CommonResource.IsRegisEstablishmentTCHL </label>
+                                                            }
+                                                            @if (Model.IsFinancialTCHL == true)
+                                                            {
+                                                                <label>- @CommonResource.IsFinancialTCHL </label>
+                                                                <br />
+                                                            }
+                                                            @if (Model.IsDissolutionProcessTCHL == true)
+                                                            {
+                                                                <label>- @CommonResource.IsDissolutionProcessTCHL </label>
+                                                            }
+                                                            @if (Model.IsBankruptTCHL == true)
+                                                            {
+                                                                <label>- @CommonResource.IsBankruptTCHL </label>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.IsContractAbilityExp == true
+|| Model.IsLiquidationAbilityExp == true
+|| Model.IsBuildingPermitAbilityExp == true
+|| Model.NumberYearActivityAbilityExp != 0 || Model.NumberSimilarContractAbilityExp != 0)
+                            {
+                                <div class="ibox-title">
+                                    <h5><i class="fa fa-vcard" aria-hidden="true"></i> Năng lực kinh nghiệm</h5>
+                                </div>
+                                <div class="ibox">
+                                    <div class="ibox-content pd_top15_bottom15">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p>
+                                                    <b>Thông tin năng lực kinh nghiệm của bạn chủ đầu tư muốn biết</b>
+                                                </p>
+                                                <div id="ctr_NLKN">
+                                                    <br />
+                                                    <div class="form-horizontal">
+                                                        <div class="optioncheck">
+                                                            <div class="i-checks" id="div-chk-NumberYearActivity">
+                                                                <label>
+                                                                    - Số năm hoạt động trong lĩnh vực mời thầu: <span class="font_20">@Model.NumberYearActivityAbilityExp</span>
+                                                                    năm
+                                                                </label>
+                                                            </div>
+                                                            <div class="i-checks" id="div-chk-NumberSimilarContract">
+                                                                <label>
+                                                                    - Số lượng các hợp đồng tương tự đã thực hiện trong những năm qua: <span class="font_20">@Model.NumberSimilarContractAbilityExp</span>
+                                                                    hợp đồng
+                                                                </label>
+                                                            </div>
+                                                            <br />
+                                                            <span><b>Tài liệu chứng minh</b></span>
+                                                            <br /><br />
+                                                            @if (Model.IsContractAbilityExp == true)
+                                                            {
+                                                                <label> <i class="fa fa-check"></i> @CommonResource.IsContractAbilityExp.</label>
+                                                                <br />
+                                                            }
+                                                            @if (Model.IsLiquidationAbilityExp == true)
+                                                            {
+                                                                <label> <i class="fa fa-check"></i> @CommonResource.IsLiquidationAbilityExp. </label>
+                                                                <br />
+                                                            }
+                                                            @if (Model.IsBuildingPermitAbilityExp == true)
+                                                            {
+                                                                <label> <i class="fa fa-check"></i> @CommonResource.IsBuildingPermitAbilityExp. </label>
+                                                                <br />
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.BiddingNewsAbilityHRs.Any()
+|| Model.IsLaborContractAbilityHR == true
+|| Model.IsDocumentRequestAbilityHR == true
+|| Model.IsDecisionAbilityHR == true)
+                            {
+                                <div class="ibox-title">
+                                    <h5><i class="fa fa-user-circle-o" aria-hidden="true"></i> Năng lực nhân sự</h5>
+                                </div>
+                                <div class="ibox">
+                                    <div class="ibox-content pd_top15_bottom15">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p>
+                                                    <b>Thông tin năng lực nhân sự của bạn chủ đầu tư muốn biết</b>
+                                                </p>
+                                                <div>
+                                                    <br />
+                                                    <div class="form-horizontal">
+                                                        <div class="form-group">
+                                                            <div class="overflow-x-sp">
+                                                                @if (Model.BiddingNewsAbilityHRs != null && Model.BiddingNewsAbilityHRs.Any())
+                                                                {
+                                                                    <table class="table table-bordered" id="tbl-NLNS">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="text-center">Vị trí công việc</th>
+                                                                                <th class="text-center">Bằng cấp yêu cầu</th>
+                                                                                <th class="text-center">Năm kinh nghiệm</th>
+                                                                                <th class="text-center">Số lượng</th>
+                                                                                <th class="text-center">Ctr tương tự đã tham gia</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody class="center">
+                                                                            @foreach (var item in Model.BiddingNewsAbilityHRs)
+                                                                            {
+                                                                                <tr id="row-default">
+                                                                                    <td>@item.JobPosition</td>
+                                                                                    <td>@item.QualificationRequired</td>
+                                                                                    <td>@item.YearExp</td>
+                                                                                    <td>@item.NumberRequest</td>
+                                                                                    <td>@item.SimilarProgram</td>
+                                                                                </tr>
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                }
+                                                                <br />
+                                                            </div>
+                                                            <div class="optioncheck">
+                                                                <span><b>Tài liệu chứng minh</b></span>
+                                                                <br /><br />
+                                                                @if (Model.IsLaborContractAbilityHR == true)
+                                                                {
+                                                                    <label> <i class="fa fa-check"></i> @CommonResource.IsLaborContractAbilityHR.</label>
+                                                                    <br />
+                                                                }
+                                                                @if (Model.IsDocumentRequestAbilityHR == true)
+                                                                {
+                                                                    <label> <i class="fa fa-check"></i> @CommonResource.IsDocumentRequestAbilityHR.</label>
+                                                                }
+                                                                @if (Model.IsDecisionAbilityHR == true)
+                                                                {
+                                                                    <label> <i class="fa fa-check"></i> @CommonResource.IsDecisionAbilityHR.</label>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.YearOfTurnoverAbilityFinance != 0
+|| Model.Turnover2YearAbilityFinance != 0
+|| Model.YearFinanceSituationAbilityFinance != 0
+)
+                            {
+                                <div class="ibox-title">
+                                    <h5><i class="fa fa-dollar" aria-hidden="true"></i> Năng lực tài chính</h5>
+                                </div>
+                                <div class="ibox">
+                                    <div class="ibox-content pd_top15_bottom15">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p>
+                                                    <b>Thông tin năng lực tài chính của bạn chủ đầu tư muốn biết</b>
+                                                </p>
+                                                <div id="ctr_NLTC">
+                                                    <br />
+                                                    <div class="form-horizontal">
+                                                        <div class="optioncheck">
+                                                            <label>- Doanh thu trung bình trong @Model.YearOfTurnoverAbilityFinance năm gần nhất >= <label class="font_20">@Model.Turnover2YearAbilityFinance.ToString("###,###")</label> vnđ </label>
+                                                            @if (Model.YearFinanceSituationAbilityFinance != 0)
+                                                            {
+                                                                <label>- @string.Format(CommonResource.FinanceSituationAbilityFinance, Model.YearFinanceSituationAbilityFinance)</label>
+                                                            }
+                                                            <br />
+                                                            @if (Model.IsProtocolAbilityFinance == true
+|| Model.IsDeclarationAbilityFinance == true
+|| Model.IsDocumentAbilityFinance == true
+|| Model.IsReportAbilityFinance == true)
+                                                            {
+                                                                <span><b>Tài liệu chứng minh</b></span>
+                                                                <br /><br />
+
+                                                                if (Model.IsProtocolAbilityFinance == true)
+                                                                {
+                                                                    <label> <i class="fa fa-check"></i> @CommonResource.IsProtocolAbilityFinance.</label>
+                                                                }
+
+                                                                if (Model.IsDeclarationAbilityFinance == true)
+                                                                {
+                                                                    <label> <i class="fa fa-check"></i> @CommonResource.IsDeclarationAbilityFinance. </label>
+                                                                }
+
+                                                                if (Model.IsDocumentAbilityFinance == true)
+                                                                {
+                                                                    <label> <i class="fa fa-check"></i> @CommonResource.IsDocumentAbilityFinance. </label>
+                                                                }
+
+                                                                if (Model.IsReportAbilityFinance == true)
+                                                                {
+                                                                    <label> <i class="fa fa-check"></i> @CommonResource.IsReportAbilityFinance. </label>
+                                                                }
+                                                            }
+
+
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.BiddingNewsAbilityEquipments.Any()
+|| Model.IsContractAbilityEquipment == true
+|| Model.IsProfileAbilityEquipment == true)
+                            {
+                                <div class="ibox-title">
+                                    <h5><i class="fa fa-cog" aria-hidden="true"></i> Năng lực thiết bị, máy móc</h5>
+                                </div>
+                                <div class="ibox">
+                                    <div class="ibox-content pd_top15_bottom15">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p>
+                                                    <b>Thông tin năng lực thiết bị, máy móc của bạn chủ đầu tư muốn biết</b>
+                                                </p>
+                                                <div id="ctr_NLMM">
+                                                    <br />
+                                                    <div class="overflow-x-sp">
+                                                        @if (Model.BiddingNewsAbilityEquipments.Any())
+                                                        {
+                                                            <table class="table table-bordered" id="tbl-NLMM">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="text-center">Tên thiết bị máy móc</th>
+                                                                        <th class="text-center">Số lượng</th>
+                                                                        <th class="text-center">Kiểm định</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="center">
+                                                                    @foreach (var item in Model.BiddingNewsAbilityEquipments)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@item.EquipmentName</td>
+                                                                            <td>@item.QuantityEquipment</td>
+                                                                            @if (item.IsAccreditation.Value)
+                                                                            {
+                                                                                <td>Yêu cầu kiểm định</td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td> Không Y/C kiểm định</td>
+                                                                            }
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        }
+                                                    </div>
+                                                    <br />
+                                                    <br />
+                                                    <span><b>Tài liệu chứng minh</b></span>
+                                                    <br /><br />
+                                                    @if (Model.IsContractAbilityEquipment == true)
+                                                    {
+                                                        <label> <i class="fa fa-check"></i> @CommonResource.IsContractAbilityEquipment.</label>
+                                                    }
+                                                    @if (Model.IsProfileAbilityEquipment == true)
+                                                    {
+                                                        <label> <i class="fa fa-check"></i> @CommonResource.IsProfileAbilityEquipment.</label>
+                                                    }
+                                                    <br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            @*Các tài liệu yêu cầu*@
+                            @if (Model.IsProgressScheduleMKT == true ||
+Model.IsQuotationMKT == true ||
+Model.IsMaterialsUseMKT == true ||
+Model.IsDrawingConstructionMKT == true ||
+Model.IsWorkSafetyMKT == true ||
+Model.IsEnvironmentalSanitationMKT == true ||
+Model.IsFireProtectionMKT == true ||
+Model.BiddingNewsTechnicalOthers.Any())
+                            {
+                                <div class="ibox-title">
+                                    <h5><i class="fa fa-database" aria-hidden="true"></i> Các tài liệu yêu cầu</h5>
+                                </div>
+                                <div class="ibox">
+                                    <div class="ibox-content pd_top15_bottom15">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p>
+                                                    <b>Tài liệu yêu cầu nhà thầu cần cung cấp</b>
+                                                </p>
+                                                <div id="ctr_MKT">
+                                                    <br />
+                                                    @if (Model.IsProgressScheduleMKT == true)
+                                                    {
+                                                        <span> <i class="fa fa-check"></i> Bảng tiến độ thực hiện.</span>
+                                                        <br>
+                                                    }
+
+                                                    @if (Model.IsQuotationMKT == true)
+                                                    {
+                                                        <span> <i class="fa fa-check"></i> Bảng báo giá.</span>
+                                                        <br>
+                                                    }
+
+                                                    @if (Model.IsMaterialsUseMKT == true)
+                                                    {
+                                                        <span> <i class="fa fa-check"></i> Bảng đề xuất vật tư sử dụng.</span>
+                                                        <br>
+                                                    }
+
+                                                    @if (Model.IsDrawingConstructionMKT == true)
+                                                    {
+                                                        <span> <i class="fa fa-check"></i> Bản vẽ và thuyết minh biện pháp thi công.</span>
+                                                        <br>
+                                                    }
+
+                                                    @if (Model.IsWorkSafetyMKT == true)
+                                                    {
+                                                        <span> <i class="fa fa-check"></i> Thuyết minh phương án đảm bảo an toàn lao động.</span>
+                                                        <br>
+                                                    }
+
+                                                    @if (Model.IsEnvironmentalSanitationMKT == true)
+                                                    {
+                                                        <span> <i class="fa fa-check"></i> Thuyết minh biện pháp đảm bảo vệ sinh môi trường.</span>
+                                                        <br>
+                                                    }
+
+                                                    @if (Model.IsFireProtectionMKT == true)
+                                                    {
+                                                        <span> <i class="fa fa-check"></i> Thuyết minh phòng chống cháy nổ trên công trường.</span>
+                                                        <br>
+                                                    }
+
+                                                    @foreach (var item in Model.BiddingNewsTechnicalOthers)
+                                                    {
+                                                        <span> <i class="fa fa-check"></i> @item.TechnicalRequirementName.</span>
+                                                        <br>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-lg-4 col-sm-12 pull-right">
+                            <div class="ibox-title">
+                                <h5><i class="fa fa-building"></i> Thông tin công trình</h5>
+                            </div>
+                            <div class="ibox">
+                                <div class="ibox-content pd_top15_bottom15">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="col-lg-12 biddingNewsDetails" id="cluster_info_right">
+                                                <div class="form-horizontal">
+                                                    <div class="form-group">
+                                                        <label class="col-lg-6 text-left"><strong>Giấy phép xây dựng</strong></label>
+                                                        <label class="col-lg-5 text-left word-break" style="padding-left:0px;">
+                                                            @(!string.IsNullOrEmpty(Model.Construction.BuildingPermit) ? Model.Construction.BuildingPermit : "Chưa xác định" )
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-lg-6 text-left"><strong>Hình thức xây dựng</strong></label>
+                                                        <label class="col-lg-5 text-left word-break" style="padding-left:0px;">
+                                                            @{
+                                                                var contructionForm = Model.Construction.ConstructionForm;
+                                                                var contructionFormTextDisplay = EnumHelper<EConstructionForm>.GetDisplayValue((EConstructionForm)contructionForm);
+                                                            }
+                                                            @contructionFormTextDisplay
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-6 text-left"><strong>Số tầng</strong></label>
+                                                        <label class="col-lg-5 text-left word-break" style="padding-left:0px;">
+                                                            @Model.Construction.Scale
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-6 text-left"><strong>Số tầng hầm</strong></label>
+                                                        <label class="col-lg-5 text-left word-break" style="padding-left:0px;">
+                                                            @(Model.Construction.Basement != 0 ? Model.Construction.BuildingPermit : "0")
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-6 text-left"><strong>Tổng diện tích (m²)</strong></label>
+                                                        <label class="col-lg-5 text-left word-break" style="padding-left:0px;">
+                                                            @(Model.Construction.AcreageBuild != 0 ? Model.Construction.AcreageBuild.ToString() : "Chưa xác định")
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-lg-12 text-left"><strong>Mô tả hiện trạng công trình</strong></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-12 text-left word-break ml-10">
+                                                            @(!string.IsNullOrEmpty(Model.Construction.ConstructionDescription) ? Model.Construction.ConstructionDescription : "Chưa xác định")
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @if (biddingDetail != null && (ViewBag.Authority == 1 || ViewBag.Authority == 3))
+                            {
+                                <div class="ibox-title">
+                                    <h5><i class="fa fa-list"></i> Thông Tin Hồ Sơ Đấu Thầu</h5>
+                                </div>
+                                <div class="scroll_content">
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-md-12 text-center">
+                                            <a href="#" class="title-news">
+                                                <h3 class="word-break">@biddingDetail.CompanyProfile.Company.CompanyName</h3>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="box-thumnail-image">
+                                                @if (string.IsNullOrEmpty(biddingDetail.CompanyProfile.Company?.Logo))
+                                                {
+                                                    <img src="~/Content/Common/img/no-thumnail.jpg" alt="" class="img-thumbnail" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/@biddingDetail.CompanyProfile.Company.Logo" alt="" class="img-thumbnail" />
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        @*<div class="col-md-3 reset-pd-left reset-pd-right">
+                                                <div class="box-thumnail-image">
+                                                    @if (string.IsNullOrEmpty(biddingDetail.CompanyProfile.Company?.Logo))
+                                                    {
+                                                        <img src="~/Content/Common/img/no-thumnail.jpg" alt="" class="img-thumbnail" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/@biddingDetail.CompanyProfile.Company.Logo" alt="" class="img-thumbnail" />
+                                                    }
+                                                </div>
+                                            </div>*@
+
+                                        <div class="col-md-12" style="margin-bottom: 20px">
+                                            <h3 class="word-break">Hồ Sơ: @biddingDetail.CompanyProfile.NameProfile</h3>
+                                            <div class="div-content">
+                                                <p class="mb5"><b>Ngày đấu:</b> @biddingDetail.BiddingDate.ToString("dd/MM/yyyy")</p>
+                                                <p class="mb5">
+                                                    <b>Giá thầu:</b> @($"{biddingDetail.Price:0,0} vnđ ")
+                                                </p>
+                                                <p class="mb5">
+                                                    <b>Thời gian thực hiện:</b> @(biddingDetail.NumberOfDaysImplement + " ngày")
+                                                </p>
+
+                                                @if (Model.BidCloseDate > DateTime.Now)
+                                                {
+                                                    <a href="#" style="width: 180px; margin-top: 10px;" class="btn btn-default attachfile-view text-center" data-toggle="modal" data-target="#pop-up-edit-biddingInfo" onclick="bidContractionDetail.getBiddingInfoDetail(@biddingDetail.Id, @Model.Id)"><i class="fa fa fa-file font_20 greenblue"></i> Chỉnh Sửa Hồ Sơ</a>
+                                                }
+
+                                                <input type="hidden" id="currentBiddingDetailId" value="@biddingDetail.Id" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <div id="dsnttg" class="ibox-title">
+                                <h5><i class="fa fa-list"></i> Danh sách nhà thầu tham gia</h5>
+                            </div>
+                            <div class="scroll_content">
+                                @foreach (var item in Model.BiddingDetails.Where(x => x.IsDeleted != true))
+                                {
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-md-12 reset-pd-left reset-pd-right">
+                                            @if (Model.IsOwnerBiddingNews)
+                                            {
+                                                <a href="@Url.Action("Index","BidShowContractDetail", new { Id = item.CompanyProfileId, biddingNewsId = Model.Id })" class="title-news">
+                                                    @{ var companyName = item.CompanyProfile.Company != null ? item.CompanyProfile.Company.CompanyName : ""; }
+                                                    <h3 class="word-break">@companyName</h3>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a class="title-news">
+                                                    @{ var companyName = item.CompanyProfile.Company != null ? item.CompanyProfile.Company.CompanyName : ""; }
+                                                    <h3 class="word-break">@companyName</h3>
+                                                </a>
+                                            }
+                                        </div>
+                                        <div class="col-md-3 reset-pd-left reset-pd-right">
+                                            <div class="box-thumnail-image">
+                                                @if (string.IsNullOrEmpty(item.CompanyProfile.Company?.Logo))
+                                                {
+                                                    <img src="~/Content/Common/img/no-thumnail.jpg" alt="" class="img-thumbnail img-thumbnail-listContractor" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/@item.CompanyProfile.Company.Logo" alt="" class="img-thumbnail" />
+                                                }
+                                            </div>
+                                            <div class='rating-stars'>
+                                                @{
+                                                    int oneStar = item.CompanyProfile.Company.OneStar;
+                                                    int twoStar = item.CompanyProfile.Company.TwoStar;
+                                                    int threeStar = item.CompanyProfile.Company.ThreeStar;
+                                                    int fourStar = item.CompanyProfile.Company.FourStar;
+                                                    int fiveStar = item.CompanyProfile.Company.FiveStar;
+                                                    int countRating = oneStar + twoStar + threeStar + fourStar + fiveStar;
+                                                    double ratingStar = CalculateRatingStar.GetRating(oneStar, twoStar, threeStar, fourStar, fiveStar);
+                                                }
+                                                <ul id='stars' class="">
+                                                    @if (ratingStar >= 1) // vang
+                                                    {
+                                                        <li class='star' title='@(oneStar > 0 ? oneStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw yellow-star'></i>
+                                                        </li>
+                                                    }
+                                                    else //xam
+                                                    {
+                                                        <li class='star' title='@(oneStar > 0 ? oneStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw grey-star'></i>
+                                                        </li>
+                                                    }
+
+                                                    @if (ratingStar >= 2) // vang
+                                                    {
+                                                        <li class='star' title='@(twoStar > 0 ? twoStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw yellow-star'></i>
+                                                        </li>
+                                                    }
+                                                    else //xam
+                                                    {
+                                                        <li class='star' title='@(twoStar > 0 ? twoStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw grey-star'></i>
+                                                        </li>
+                                                    }
+
+                                                    @if (ratingStar >= 3) // vang
+                                                    {
+                                                        <li class='star' title='@(threeStar > 0 ? threeStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw yellow-star'></i>
+                                                        </li>
+                                                    }
+                                                    else //xam
+                                                    {
+                                                        <li class='star' title='@(threeStar > 0 ? threeStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw grey-star'></i>
+                                                        </li>
+                                                    }
+
+                                                    @if (ratingStar >= 4) // vang
+                                                    {
+                                                        <li class='star' title='@(fourStar > 0 ? fourStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw yellow-star'></i>
+                                                        </li>
+                                                    }
+                                                    else //xam
+                                                    {
+                                                        <li class='star' title='@(fourStar > 0 ? fourStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw grey-star'></i>
+                                                        </li>
+                                                    }
+
+                                                    @if (ratingStar >= 5) // vang
+                                                    {
+                                                        <li class='star' title='@(fiveStar > 0 ? fiveStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw yellow-star'></i>
+                                                        </li>
+                                                    }
+                                                    else //xam
+                                                    {
+                                                        <li class='star' title='@(fiveStar > 0 ? fiveStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw grey-star'></i>
+                                                        </li>
+                                                    }
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9" style="margin-left: 0px; padding-left:0px;">
+                                            @*@if (Model.IsOwnerBiddingNews)
+                                                {
+                                                    <a href="@Url.Action("Index","BidShowContractDetail", new { Id = item.CompanyProfileId, biddingNewsId = Model.Id })" class="title-news">
+                                                        @{ var companyName = item.CompanyProfile.Company != null ? item.CompanyProfile.Company.CompanyName : ""; }
+                                                        <h3>@companyName</h3>
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="title-news">
+                                                        @{ var companyName = item.CompanyProfile.Company != null ? item.CompanyProfile.Company.CompanyName : ""; }
+                                                        <h3>@companyName</h3>
+                                                    </a>
+                                                }*@
+
+                                            <div class="div-content">
+                                                <p class="mb5"><b>Tỉ lệ trúng thầu:</b> @item.CompanyProfile.Company.ProjectImplemented/@item.CompanyProfile.Company.TotalBiddedNews - <b>Hoàn thành:</b> @item.CompanyProfile.Company.ProjectsComplete</p>
+
+                                                <p class="mb5">
+                                                    <b>Ngày đấu:</b> @item.BiddingDate.ToString("dd/MM/yyyy")
+                                                </p>
+                                                @if (ViewBag.Authority != 3 && ViewBag.Authority != null && Model.IsOwnerBiddingNews)
+                                                {
+                                                    <p class="mb5">
+                                                        <b>Giá thầu:</b> @($"{item.Price:0,0} vnđ ")
+                                                    </p>
+                                                }
+                                                @if (ViewBag.Authority != 3 && ViewBag.Authority != null && Model.IsOwnerBiddingNews)
+                                                {
+                                                    <p class="mb5">
+                                                        <b>Thời gian thực hiện:</b> @(item.NumberOfDaysImplement + " ngày")
+                                                    </p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        @if (ViewBag.Authority != 3 && item.InvestorSelected && ViewBag.Authority != null)
+                                        {
+
+                                            <p class="mb5 success">
+                                                Nhà thầu bạn đã chọn
+                                            </p>
+
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="modal inmodal fade in" id="pop-up-bid" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Xuất Thông Tin Đấu Giá</h4>
+            </div>
+            <form id="PrintInfoBidding" class="form-horizontal" method="post" enctype="multipart/form-data">
+                <div class="modal-body reset-pd">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="ibox-title">
+                                <h5><i class="fa fa-list"></i> Danh Sách Hồ Sơ</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="scroll_content_table">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center with_text80">Chọn</th>
+                                            <th class="text-center with_text300">Tên hồ sơ</th>
+                                            <th class="text-center with_text150">Ngày tạo hồ sơ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.CompanyProfile != null && Model.CompanyProfile.Any())
+                                        {
+                                            foreach (var companyProfile in Model.CompanyProfile)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <div class="i-checks text-center pdt5">
+                                                            <input type="checkbox" value="@companyProfile.Id" class="printBiddingInfo">
+                                                            <input type="hidden" value="@companyProfile.Company.CompanyName" name="CompanyName" />
+                                                        </div>
+                                                    </td>
+                                                    <td>@companyProfile.NameProfile</td>
+                                                    <td class="center">@companyProfile.DateInserted.Value.ToString("dd/MM/yyyy")</td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <a href="@Url.Action("Index", "PageContractBid")" class="btn btn-primary pull-right mr_left10 mr_top10 PC" target="_blank">Tạo Profile Mới</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="ibox-title">
+                                <h5><i class="fa fa-gavel"></i> Đấu Thầu</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mr_top10">
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label pd_top10">Giá đấu thầu *</label>
+                                <div class="col-lg-4">
+                                    <input type="text" placeholder="Giá bạn cần nhập" class="form-control" name="Price">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label pd_top10">Thời gian thực hiện *</label>
+                                <div class="col-lg-4">
+                                    <input type="text" placeholder="Nhập tổng số ngày thực hiện" class="form-control" name="NumberOfDaysImplement">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label pd_top10">Tài liệu<br />(*.pdf)</label>
+                                <div class="col-lg-4 scroll_content_price">
+                                    @if (Model.IsProgressScheduleMKT == true)
+                                    {
+                                        <label>@CommonResource.IsProgressScheduleMKT</label>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <span class="btn btn-file">
+                                                <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span><input type="file" name="FileAttachProgressScheduleMKT" onchange="bidContractionDetail.validateSingleInput(this);" />
+                                            </span>
+                                            <span class="fileinput-filename"></span>
+                                            <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                        </div>
+                                        <br />
+                                    }@if (Model.IsQuotationMKT == true)
+                                    {
+                                        <label>@CommonResource.IsQuotationMKT</label>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <span class="btn btn-file">
+                                                <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span><input type="file" name="FileAttachQuotationMKT" onchange="bidContractionDetail.validateSingleInput(this);" />
+                                            </span>
+                                            <span class="fileinput-filename"></span>
+                                            <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                        </div>
+                                        <br />
+                                    }@if (Model.IsMaterialsUseMKT == true)
+                                    {
+                                        <label>@CommonResource.IsMaterialsUseMKT</label>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <span class="btn btn-file">
+                                                <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span><input type="file" name="FileAttachMaterialsUseMKT" onchange="bidContractionDetail.validateSingleInput(this);" />
+                                            </span>
+                                            <span class="fileinput-filename"></span>
+                                            <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                        </div>
+                                        <br />
+                                    }@if (Model.IsDrawingConstructionMKT == true)
+                                    {
+                                        <label>@CommonResource.IsDrawingConstructionMKT</label>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <span class="btn btn-file">
+                                                <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span><input type="file" name="FileAttachDrawingConstructionMKT" onchange="bidContractionDetail.validateSingleInput(this);" />
+                                            </span>
+                                            <span class="fileinput-filename"></span>
+                                            <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                        </div>
+                                        <br />
+                                    } @if (Model.IsWorkSafetyMKT == true)
+                                    {
+                                        <label>@CommonResource.IsWorkSafetyMKT</label>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <span class="btn btn-file">
+                                                <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span><input type="file" name="FileAttachWorkSafetyMKT" onchange="bidContractionDetail.validateSingleInput(this);" />
+                                            </span>
+                                            <span class="fileinput-filename"></span>
+                                            <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                        </div>
+                                        <br />
+                                    }@if (Model.IsEnvironmentalSanitationMKT == true)
+                                    {
+                                        <label>@CommonResource.IsEnvironmentalSanitationMKT</label>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <span class="btn btn-file">
+                                                <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span><input type="file" name="FileAttachEnvironmentalSanitationMKT" onchange="bidContractionDetail.validateSingleInput(this);" />
+                                            </span>
+                                            <span class="fileinput-filename"></span>
+                                            <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                        </div>
+                                        <br />
+                                    }@if (Model.IsFireProtectionMKT == true)
+                                    {
+                                        <label>@CommonResource.IsFireProtectionMKT</label>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <span class="btn btn-file">
+                                                <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span><input type="file" name="FileAttachFireProtectionMKT" onchange="bidContractionDetail.validateSingleInput(this);" />
+                                            </span>
+                                            <span class="fileinput-filename"></span>
+                                            <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                        </div>
+                                        <br />
+                                    }
+                                    @{ var isRequiredAttachFile = Model.BiddingNewsTechnicalOthers.Any(x => x.BiddingNewsId == Model.Id && x.IsDeleted != true);}
+                                    @if (isRequiredAttachFile)
+                                    {
+                                        var attachFiles = Model.BiddingNewsTechnicalOthers.Where(x => x.BiddingNewsId == Model.Id && x.IsDeleted != true);
+                                        foreach (var attachFile in attachFiles)
+                                        {
+                                            <label>@attachFile.TechnicalRequirementName</label>
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <span class="btn btn-file">
+                                                    <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                    <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                    <input type="file" name="OtherFiles" onchange="bidContractionDetail.validateSingleInput(this);"
+                                                           data-fileNameType="@attachFile.TechnicalRequirementName" data-technicalOtherId="@attachFile.Id" />
+                                                </span>
+                                                <span class="fileinput-filename"></span>
+                                                <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                            </div>
+                                            <br />
+                                        }
+                                    }
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" value="@Model.Id" name="BiddingNewsId" id="BiddingNewsId" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <a class="btn btn-primary pull-right mr_left10" onclick="bidContractionDetail.printInfoToBidding(event);">Đấu Thầu</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal fade in" id="pop-up-edit-biddingInfo" tabindex="-1" role="dialog" aria-hidden="true">
+</div>
+<div class="modal inmodal" id="pop-up-update-biddingInfo" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div class="">Bạn có thực sự muốn cập nhật đấu thầu?</div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Hủy bỏ</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary" onclick="bidContractionDetail.updateBiddingInfoDetail(event);">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="pop-up-delete-biddingInfo" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div class="">Bạn có thực sự muốn hủy bỏ đấu thầu?</div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Hủy bỏ</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary" onclick="bidContractionDetail.deleteBiddingInfoDetail()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="pop-up-saveBiddingBookmark" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div class="">Bạn có muốn lưu tin thầu?</div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Hủy bỏ</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary" onclick="bidContractionDetail.saveBiddingBookmark(event);">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal" id="pop-up-complete-construction" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div class="">Bạn có muốn xác nhận nghiệm thu công trình?</div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Hủy bỏ</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary" onclick="CompletedConstruction();">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal" id="pop-up-evaluate" tabindex="-1" role="dialog" aria-hidden="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="title-review">ĐÁNH GIÁ NHÀ THẦU</p>
+            </div>
+            <div class="modal-body">
+                <div class="box-contractor text-center review-contractor">
+                    <img src="~/Content/Common/img/profile.jpg" alt="logo contractor" width="30%" class="img-thumbnail" />
+                    <div class="star-box">
+                        <div class='rating-widget'>
+                            <!-- Rating Stars Box -->
+                            <div class='rating-stars text-center'>
+                                <ul id='stars'>
+                                    <li class='star' title='Quá tệ' data-value='1'>
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                    <li class='star' title='Không tốt' data-value='2'>
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                    <li class='star' title='Bình thường' data-value='3'>
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                    <li class='star' title='Tốt' data-value='4'>
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                    <li class='star' title='Rất tốt' data-value='5'>
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='success-box'>
+                        <div class='clearfix'></div>
+                        @*<img alt='tick image' width='32' src='data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA0MjYuNjY3IDQyNi42NjciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyNi42NjcgNDI2LjY2NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxwYXRoIHN0eWxlPSJmaWxsOiM2QUMyNTk7IiBkPSJNMjEzLjMzMywwQzk1LjUxOCwwLDAsOTUuNTE0LDAsMjEzLjMzM3M5NS41MTgsMjEzLjMzMywyMTMuMzMzLDIxMy4zMzMgIGMxMTcuODI4LDAsMjEzLjMzMy05NS41MTQsMjEzLjMzMy0yMTMuMzMzUzMzMS4xNTcsMCwyMTMuMzMzLDB6IE0xNzQuMTk5LDMyMi45MThsLTkzLjkzNS05My45MzFsMzEuMzA5LTMxLjMwOWw2Mi42MjYsNjIuNjIyICBsMTQwLjg5NC0xNDAuODk4bDMxLjMwOSwzMS4zMDlMMTc0LjE5OSwzMjIuOTE4eiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K' />*@
+                        <div class='text-message'></div>
+                        <div class='clearfix'></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default" onclick="RatingStarForCompany();">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <!-- slick carousel-->
+    <script src="/Scripts/Common/plugins/slick/slick.min.js"></script>
+    <!-- iCheck -->
+    <script src="/Scripts/Common/plugins/iCheck/icheck.min.js"></script>
+    <script src="/Scripts/Common/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script src="~/Scripts/carousel-bid.js"></script>
+    <script src="/Scripts/Common/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script src="~/Scripts/app/BiddingNewsRegistration/BidContractionDetail.js"></script>
+    <script src="~/Scripts/app/WabuCommonJS/commonJS.js"></script>
+    <script src="~/Scripts/jquery.countdown.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            /* 1. Visualizing things on Hover - See next part for action on click */
+            $('#stars li').on('mouseover', function () {
+                var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+
+                // Now highlight all the stars that's not after the current hovered star
+                $(this).parent().children('li.star').each(function (e) {
+                    if (e < onStar) {
+                        $(this).addClass('hover');
+                    }
+                    else {
+                        $(this).removeClass('hover');
+                    }
+                });
+
+            }).on('mouseout', function () {
+                $(this).parent().children('li.star').each(function (e) {
+                    $(this).removeClass('hover');
+                });
+            });
+
+            var bidCloseDateVal = $("#bidCloseDateVal").val();
+            $('#countdownBidCloseDate').countdown(bidCloseDateVal,
+                function (event) {
+                    $(this).html(event.strftime('%D ngày %H:%M:%S'));
+                });
+
+            var dateInvestorSelected = $("#dateInvestorSelectedVal").val();
+            $('#countdownDateInvestorSelected').countdown(dateInvestorSelected,
+                function (event) {
+                    $(this).html(event.strftime('%H:%M:%S'));
+                });
+
+            /* 2. Action to perform on click */
+            $('#stars li').on('click', function () {
+                var onStar = parseInt($(this).data('value'), 10); // The star currently selected
+                var stars = $(this).parent().children('li.star');
+
+                for (i = 0; i < stars.length; i++) {
+                    $(stars[i]).removeClass('selected');
+                }
+
+                for (i = 0; i < onStar; i++) {
+                    $(stars[i]).addClass('selected');
+                }
+
+                var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10);
+                var msg = "";
+                if (ratingValue > 4) {
+                    msg = "Cảm ơn bạn! Bạn đã đánh giá " + ratingValue + " sao cho chúng tôi.";
+                }
+                else if (ratingValue > 2) {
+                    msg = "Cảm ơn bạn! Bạn đã đánh giá " + ratingValue + " sao, chúng tôi sẽ nổ lực hơn nữa để phục vụ bạn tốt hơn.";
+                }
+                else {
+                    msg = "Chúng tôi sẽ phát triển hơn nữa trong tương lai để phục vụ bạn tốt hơn.";
+                }
+                responseMessageRatingStar(msg);
+            });
+
+            $('.slick_images').slick({
+                dots: true,
+                autoplay: true,
+                autoplaySpeed: 5000,
+                arrows: false
+            });
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $('input.printBiddingInfo').on('ifChanged',
+                function (e) {
+                    $('input.printBiddingInfo').not(this).prop('checked', false);
+                    $('input.printBiddingInfo').not(this).closest(".icheckbox_square-green").removeClass("checked");
+                });
+
+            $('#pop-up-edit-biddingInfo').on('ifChanged', 'input.printBiddingInfo', function (e) {
+                $('input.printBiddingInfo').not(this).prop('checked', false);
+                $('input.printBiddingInfo').not(this).closest(".icheckbox_square-green").removeClass("checked");
+            });
+
+            //Count down time bidding news will close
+            var bidCloseDateVal = $("#bidCloseDateVal").val();
+            $('#countdownBidCloseDate').countdown(bidCloseDateVal,
+                function (event) {
+                    $(this).html(event.strftime('%D ngày %H:%M:%S'));
+                });
+
+            // format price
+            commonJS.formatPriceValue('Price');
+            commonJS.appendDayText('NumberOfDaysImplement');
+
+            //download Document
+            bidContractionDetail.downloadDocument();
+        });
+        $('.scroll_content_table').slimscroll({ height: '250px' });
+        $('.scroll_content_price').slimscroll({ height: '150px' });
+
+        function RatingStarForCompany() {
+            var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10);
+
+            $.ajax({
+                type: "POST",
+                url: "/BidShowContractDetail/RatingStarForCompany",
+                data: { companyProfileId: $('input[name=companyProfileId]').val(), star: ratingValue },
+                success: function (responsed) {
+                    if (responsed && responsed.result === "0") {
+
+                    }
+                }
+            });
+        }
+        function responseMessageRatingStar(msg) {
+            $('.success-box').fadeIn(200);
+            $('.success-box div.text-message').html("<span>" + msg + "</span>");
+        }
+    </script>
+}

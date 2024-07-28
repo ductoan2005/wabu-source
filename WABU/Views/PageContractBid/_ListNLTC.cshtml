@@ -1,0 +1,37 @@
+﻿@{
+    var companyAbilityFinanceList = ViewBag.companyAbilityFinanceList;
+}
+<thead>
+    <tr>
+        <th></th>
+        <th>Năm kê khai</th>
+        <th>Tổng tài sản</th>
+        <th>Doanh thu</th>
+    </tr>
+</thead>
+<tbody>
+    @if (companyAbilityFinanceList != null)
+    {
+        var maxItemQuantity = companyAbilityFinanceList.Count <= 3 ? companyAbilityFinanceList.Count : 3;
+        for (int i = 0; i < maxItemQuantity; i++)
+        {
+            <tr class="footable-even" style="">
+                <td><input type="checkbox" class="i-checks XHS_NLTC" name="input[]" value="@companyAbilityFinanceList[i].Id"></td>
+                <td class="footable-visible footable-first-column">
+                    <span class="footable-toggle"></span>
+                    <a onclick="pageContractBid.getCompanyAbilityFinanceDetail(@companyAbilityFinanceList[i].Id)">
+                        @companyAbilityFinanceList[i].YearDeclare
+                    </a>
+                </td>
+                <td class="footable-visible">
+                    <span class="footable-toggle"></span>
+                    @companyAbilityFinanceList[i].TotalAssets
+                </td>
+                <td class="footable-visible">
+                    <span class="footable-toggle"></span>
+                    @companyAbilityFinanceList[i].Revenue
+                </td>
+            </tr>
+        }
+    }
+</tbody>

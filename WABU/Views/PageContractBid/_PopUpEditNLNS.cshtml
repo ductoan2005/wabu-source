@@ -1,0 +1,239 @@
+﻿@model FW.ViewModels.CompanyAbilityHRVM
+
+<div class="col-lg-12" id="content-NLNS">
+    <div id="ctr_Edit_NLNS" class="bs-transaction">
+        <hr class="border-top-solid" />
+        <div class="ibox-title bg_default_bid color-top-default_bid">
+            <h5><i class="fa fa-user-circle-o" aria-hidden="true"></i> Năng lực nhân sự </h5>
+            <a href="#" class="close close-tab btn_ctr_NLNS_out">×</a>
+        </div>
+        <br />
+        <form id="frmEditCompanyAbilityHr" class="form-horizontal" method="post" enctype="multipart/form-data">
+            @Html.HiddenFor(x => x.Id)
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Họ tên*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Họ tên" class="form-control" name="FullName"
+                           data-val="true"
+                           data-val-required="Vui lòng nhập họ tên đầy đủ"
+                           aria-describedby="msg-err-FullName"
+                           value="@Model.FullName" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="FullName">
+                        <span id="msg-err-FullName" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Vị trí*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Vị trí" class="form-control" name="Title"
+                           data-val="true"
+                           data-val-required="Vui lòng nhập vị trí"
+                           aria-describedby="msg-err-Title"
+                           value="@Model.Title" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Title">
+                        <span id="msg-err-Title" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Bằng cấp*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Bằng cấp" class="form-control" name="Certificate"
+                           data-val="true"
+                           data-val-required="Vui lòng nhập bằng cấp"
+                           aria-describedby="msg-err-Certificate"
+                           value="@Model.Certificate" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Certificate">
+                        <span id="msg-err-Certificate" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Trường*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Trường" class="form-control" name="School"
+                           data-val="true"
+                           data-val-required="Vui lòng nhập tên trường"
+                           aria-describedby="msg-err-School"
+                           value="@Model.School" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="School">
+                        <span id="msg-err-School" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Ngành*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Ngành" class="form-control" name="Branch"
+                           data-val="true"
+                           data-val-required="Vui lòng nhập tên ngành"
+                           aria-describedby="msg-err-Branch"
+                           value="@Model.Branch" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Branch">
+                        <span id="msg-err-Branch" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Địa chỉ liên hệ</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Địa chỉ liên hệ" class="form-control" name="Address"
+                           value="@Model.Address">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Số điện thoại</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Số điện thoại" class="form-control" name="PhoneNumber"
+                           data-rule-number="true"
+                           data-msg-number="Vui lòng chỉ nhập số."
+                           aria-describedby="msg-err-PhoneNumber"
+                           value="@Model.PhoneNumber" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="PhoneNumber">
+                        <span id="msg-err-PhoneNumber" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Hợp đồng lao động<br />(.pdf)</label>
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-file">
+                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <input type="file" name="EvidenceLaborContractFile"
+                               data-val-required="Vui lòng chọn hợp đồng lao động"
+                               aria-describedby="msg-err-EvidenceLaborContractFile"
+                               onchange="accountPage.validateSingleInput(this, 'file');" />
+                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="EvidenceLaborContractFile">
+                            <span id="msg-err-EvidenceLaborContractFile" class=""></span>
+                        </span>
+                    </span>
+                    <span class="fileinput-filename">@Model.EvidenceLaborContractFileName</span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Văn bằng<br />(.pdf)</label>
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-file">
+                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <input type="file" name="EvidenceSimilarCertificatesFile"
+                               data-val-required="Vui lòng chọn văn bằng"
+                               aria-describedby="msg-err-ContractPrices"
+                               onchange="accountPage.validateSingleInput(this, 'file');" />
+                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="EvidenceSimilarCertificatesFile">
+                            <span id="msg-err-EvidenceSimilarCertificatesFile" class=""></span>
+                        </span>
+                    </span>
+                    <span class="fileinput-filename">@Model.EvidenceSimilarCertificatesFileName</span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                </div><br />
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Quyết định bổ nhiệm<br />(.pdf)</label>
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-file">
+                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <input type="file" name="EvidenceAppointmentStaffFile"
+                               data-val-required="Vui lòng chọn quyết định bổ nhiệm"
+                               aria-describedby="msg-err-EvidenceAppointmentStaffFile"
+                               onchange="accountPage.validateSingleInput(this, 'file');" />
+                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="EvidenceAppointmentStaffFile">
+                            <span id="msg-err-EvidenceAppointmentStaffFile" class=""></span>
+                        </span>
+                    </span>
+                    <span class="fileinput-filename">@Model.EvidenceAppointmentStaffFileName</span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <table class="footable table table-stripped toggle-arrow-tiny default breakpoint footable-loaded" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th style="width: 200px;">Dự án tham gia</th>
+                                <th style="width: 100px;">Từ ngày</th>
+                                <th style="width: 100px;">Đến ngày</th>
+                                <th style="width: auto;">Vị trí tương tự</th>
+                            </tr>
+                        </thead>
+                        <tbody id="NLNS_Edit_Detail">
+                            @if (Model.CompanyAbilityHRDetails != null && Model.CompanyAbilityHRDetails.Any())
+                            {
+                                foreach (var companyAbilityHRDetail in Model.CompanyAbilityHRDetails)
+                                {
+                                    var fromYear = companyAbilityHRDetail.FromYear?.ToString("dd/MM/yyyy");
+                                    var toYear = companyAbilityHRDetail.ToYear?.ToString("dd/MM/yyyy");
+                                    <tr class="footable-even">
+                                        @Html.Hidden("HRDetail_Id", companyAbilityHRDetail.Id)
+                                        <td class="footable-visible">
+                                            <input type="text" placeholder="Dự án tham gia" class="form-control" name="ProjectSimilar" value="@companyAbilityHRDetail.ProjectSimilar">
+                                        </td>
+                                        <td class="footable-visible footable-first-column">
+                                            <div class="input-group date">
+                                                <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span>
+                                                <input type="text" class="form-control datepicker FromYear" placeholder="dd/MM/yyyy" value='@fromYear' name="FromYear">
+                                            </div>
+                                        </td>
+                                        <td class="footable-visible">
+                                            <div class="input-group date">
+                                                <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span>
+                                                <input type="text" class="form-control datepicker ToYear" placeholder="dd/MM/yyyy" value='@toYear' name="ToYear">
+                                            </div>
+                                        </td>
+                                        <td class="footable-visible">
+                                            <input type="text" placeholder="Vị trí" class="form-control" name="PositionSimilar" value="@companyAbilityHRDetail.PositionSimilar">
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr class="footable-even">
+                                    <td class="footable-visible">
+                                        <input type="text" placeholder="Dự án tham gia" class="form-control" name="ProjectSimilar">
+                                    </td>
+                                    <td class="footable-visible footable-first-column">
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span>
+                                            <input type="text" class="form-control datepicker FromYear" placeholder="dd/MM/yyyy" value="" name="FromYear">
+                                        </div>
+                                    </td>
+                                    <td class="footable-visible">
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span>
+                                            <input type="text" class="form-control datepicker ToYear" placeholder="dd/MM/yyyy" value="" name="ToYear">
+                                        </div>
+                                    </td>
+                                    <td class="footable-visible">
+                                        <input type="text" placeholder="Vị trí" class="form-control" name="PositionSimilar">
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <a href="javascript:void(0)" onclick="pageContractBid.appendRowNLNSDetail(event, 'NLNS_Edit_Detail')" id="btn-add-row" class="display-normal"><i class="pull-right fa fa-plus-square font_30 greenblue"></i></a>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-2 col-md-push-4 col-xs-6 text-center">
+                    <button class="btn btn-sm btn-primary" type="button" onclick="pageContractBid.showConfirmHSNLBox(event, 'frmEditCompanyAbilityHr', 'edit')">Lưu lại</button>
+                </div>
+                <div class="col-lg-2 col-md-push-4 col-xs-6 text-center">
+                    <button type="button" class="btn btn-sm btn-default btn_ctr_NLNS_out">Thoát</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+﻿@{
+    var pagingConstructionList = ViewBag.pagingConstructionList;
+    var currentPage = int.Parse(ViewData["CurrentPageConstruction"].ToString());
+    var totalPage = pagingConstructionList.TotalPages;
+    var maxPageShow = 5;
+    if (totalPage > 0 && currentPage > totalPage)
+    {
+        currentPage = totalPage;
+    }
+    var halfPage = maxPageShow / 2;
+    var startPage = currentPage - halfPage;
+    if (startPage < 1)
+    {
+        startPage = 1;
+    }
+    var endPage = currentPage + halfPage;
+    if (endPage > totalPage)
+    {
+        endPage = totalPage;
+    }
+}
+
+<tfoot>
+    <tr>
+        <td colspan="6" class="footable-visible">
+            <ul class="pagination pull-right">
+                @{
+                    if (pagingConstructionList.TotalItems > 0)
+                    {
+                        if(startPage > 1)
+                        {
+                        <li class="footable-page-arrow"><a data-page="first" href="#" onclick="constructionJS.changePageOnListConstruction(1, event)">«</a></li>
+                        <li class="footable-page-arrow"><a data-page="prev" href="#" onclick="constructionJS.changePageOnListConstruction(@currentPage - 1, event)">‹</a></li>
+                        }
+                        for (int i = startPage; i < endPage + 1; i++)
+                        {
+                            if (i == currentPage)
+                            {
+                                <li class="active"><a href="javascript:void(0)">@i</a></li>
+                            }
+                            else
+                            {
+                                <li class="footable-page"><a data-page="1" href="#" onclick="constructionJS.changePageOnListConstruction(@i, event)">@i</a></li>
+
+                            }
+                        }
+                        if (endPage < totalPage)
+                        {
+                            <li class="footable-page-arrow"><a data-page="next" href="#" onclick="constructionJS.changePageOnListConstruction(@currentPage + 1, event)">›</a></li>
+                            <li class="footable-page-arrow"><a data-page="last" href="#" onclick="constructionJS.changePageOnListConstruction(@totalPage, event)">»</a></li>
+                        }
+
+                    }
+                }
+            </ul>
+        </td>
+    </tr>
+</tfoot>

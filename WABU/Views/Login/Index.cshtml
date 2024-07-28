@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "Đăng Nhập";
+    Layout = "~/Views/Shared/_Layout_Login.cshtml";
+}
+<div class="row">
+    <div class="col-md-4 fix-content-center">
+        <div class="m-t animated fadeInDown text-center">
+            <form id="frmLogin">
+                <h5 class="font_20 text-white">Đăng Nhập</h5>
+                <div class="form-group">
+                    <input type="text"
+                           placeholder="Username"
+                           class="form-control"
+                           id="UserName"
+                           name="UserName"
+                           data-val-length-max="20"
+                           data-val-length="Tên đăng nhập bạn không quá 50 ký tự"
+                           data-val-required="Tên đăng nhập bạn là gì?"
+                           data-val="true"
+                           aria-describedby="msg-err-UserName" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="UserName">
+                        <span id="msg-err-UserName" class=""></span>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <input type="password"
+                           placeholder="Mật khẩu"
+                           class="form-control"
+                           id="Password"
+                           name="Password"
+                           data-val-length-max="20"
+                           data-val-length="Mật khẩu bạn không quá 50 ký tự"
+                           data-val-required="Mật khẩu của bạn là gì?"
+                           data-val="true"
+                           aria-describedby="msg-err-Password" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Password">
+                        <span id="msg-err-Password" class=""></span>
+                    </span>
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b" id="btnLogin" onclick="loginFunc();">Đăng Nhập</button>
+                <input id="returnURL" type="hidden" value="@ViewBag.returnURL" />
+                <a href="/Login/Forgetpassword" class="forgetpass text-white"><small>Quên mật khẩu rồi?</small></a>
+                <p class="text-muted text-center text-white"><small>Bạn chưa có tài khoản?</small></p>
+                <a class="btn btn-sm btn-white btn-block" href="@Url.Action("Index", "Register")">Tạo tài khoản ngay!</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loginFunc() {
+        //ClearMsgError(); remove mess
+        if (validForm("frmLogin")) {
+            $("#btnLogin").prop('disabled', true);
+
+            var dataform = {
+                UserName: $("#UserName").val(),
+                Password: $("#Password").val()
+            }
+
+            $.post('/Login/AuthorityCheck', { loginVM: dataform, returnURL: $("#returnURL").val() }, function (responsed) {
+                if (responsed.ResultMessageWarnId != null && responsed.ResultMessageWarn != null) {
+                    switch (responsed.ResultMessageWarnId) {
+                        case "1":
+                        case "-1":
+                        case "2":
+                        case "5":
+                            toastr.error(responsed.ResultMessageWarn)
+                            $('#btnLogin').prop('disabled', false);
+                            break;
+                        case "0":
+                            if ($("#returnURL").val()) {
+                                location = $("#returnURL").val();
+                            } else {
+                                location = "@Url.Action("Index", "Home")";
+                            }
+
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+        }
+
+        //hideOverLoad();
+    }
+</script>

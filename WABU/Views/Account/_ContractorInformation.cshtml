@@ -1,0 +1,223 @@
+﻿@using WABU.Utilities;
+@using FW.ViewModels;
+@{
+    var companyInfo = (CompanyVM)ViewBag.CompanyInfo;
+    var hasCompanyStaffs = companyInfo.CompanyStaffs != null;
+    if (hasCompanyStaffs)
+    {
+        companyInfo.CompanyStaffs = companyInfo.CompanyStaffs.Where(x => x.IsDeleted != true).ToList();
+    }
+}
+<div class="ibox-content">
+    <form enctype="multipart/form-data" class="form-horizontal" id="frmEditCompany" name="frmUserCompany" method="post">
+        <div class="row">
+            <div class="col-md-12">
+                <input type="hidden" name="Id" value="@companyInfo.Id" />
+                <input type="hidden" name="userId" value="@SessionObjects.UserProfile.UserID" />
+                <h3 class="m-t-none m-b">Thông tin công ty</h3>
+                @{
+                    if (ViewBag.Authority == 3)
+                    {
+                        <div class="form-group">
+                            <div class="col-lg-3 control-label">
+                                <label class="control-label"><span>Ảnh đại diện *</span></label><br />
+                                <label class="control-label">(logo công ty)</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <span class="btn btn-file reset-pd">
+                                    <input type="file" name="LogoFile" id="LogoFile" data-val-required="Vui lòng thêm ảnh đại diện"   data-val="true" onchange="commonJS.validateSingleInput(this, 'image')" />
+                                    @{
+                                        string src = string.IsNullOrEmpty(companyInfo.Logo) ? "/Content/Common/img/no-thumnail.jpg" : "/" + companyInfo.Logo;
+                                    }
+                                    <img id="previewAvatar" src="@src" alt="Logo" width="140" class="img-thumbnail" />
+
+                                    <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="LogoFile">
+                                        <span id="msg-err-LogoFile" class=""></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    }
+                }
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Giới thiệu công ty *</label>
+                    <div class="col-lg-9">
+                        <textarea placeholder="Giới thiệu vài nét về công ty của bạn."
+                                  name="Introduction"
+                                  id="Introduction"
+                                  rows="6"
+                                  data-val-required="Vui lòng nhập giới thiệu công ty"
+                                  data-val="true"
+                                  class="form-control">@companyInfo.Introduction</textarea>
+                        <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="Introduction">
+                            <span id="msg-err-Introduction" class=""></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Tên công ty *</label>
+                    <div class="col-lg-9">
+                        <input type="text"
+                               placeholder="Tên công ty"
+                               data-val-required="Vui lòng nhập tên công ty"
+                               data-val-length="Tên Công ty không được quá 100 ký tự"
+                               data-val-length-max="100"
+                               class="form-control"
+                               id="CompanyName"
+                               name="CompanyName"
+                               data-val="true"
+                               value="@companyInfo.CompanyName" />
+                        <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="CompanyName">
+                            <span id="msg-err-CompanyName" class=""></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Website</label>
+                    <div class="col-lg-9">
+                        <input type="text"
+                               placeholder="Website"
+                               class="form-control"
+                               id="Link"
+                               name="Link"
+                               data-val="true"
+                               value="@companyInfo.Link" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 col-xs-12 control-label">Đại diện hợp pháp</label>
+                    <div class="col-lg-4 col-xs-12 reset-padding-sp margin-bottom-sp">
+                        <input type="text"
+                               placeholder="Đại diện hợp pháp"
+                               class="form-control"
+                               id="RepresentativeName"
+                               name="RepresentativeName"
+                               data-val="true"
+                               value="@companyInfo.RepresentativeName" />
+                    </div>
+                    <label class="col-lg-2 col-xs-12 control-label">Chức vụ</label>
+                    <div class="col-lg-3 col-xs-12">
+                        <input type="text"
+                               placeholder="Chức vụ"
+                               class="form-control"
+                               id="Position"
+                               name="Position"
+                               data-val="true"
+                               value="@companyInfo.Position" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Địa chỉ công ty *</label>
+                    <div class="col-lg-9">
+                        <input type="text"
+                               placeholder="Địa chỉ công ty"
+                               data-val-required="Vui lòng nhập địa chỉ công ty"
+                               class="form-control"
+                               id="CompanyAddress"
+                               name="CompanyAddress"
+                               data-val="true"
+                               value="@companyInfo.CompanyAddress" />
+                        <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="CompanyAddress">
+                            <span id="msg-err-CompanyAddress" class=""></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Số điện thoại công ty *</label>
+                    <div class="col-lg-9">
+                        <input type="text"
+                               placeholder="Số điện thoại công ty"
+                               class="form-control"
+                               id="CompanyPhoneNumber"
+                               name="CompanyPhoneNumber"
+                               data-val-required="Vui lòng nhập số điên thoại công ty"
+                               data-val="true"
+                               value="@companyInfo.CompanyPhoneNumber" />
+                        <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="CompanyPhoneNumber">
+                            <span id="msg-err-CompanyPhoneNumber" class=""></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Giấy phép đăng ký kinh doanh số</label>
+                    <div class="col-lg-5 col-xs-9 reset-padding-sp">
+                        <input type="text"
+                               placeholder="Giấy phép đăng ký kinh doanh số"
+                               class="form-control"
+                               id="NoBusinessLicense"
+                               name="NoBusinessLicense"
+                               data-val="true"
+                               value="@companyInfo.NoBusinessLicense" />
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <span class="btn btn-file">
+                                <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                <input type="file" name="NoBusinessLicenseFile" data-val="true" onchange="commonJS.validateSingleInput(this, 'file');" />
+                            </span>
+                            <span class="fileinput-filename">@companyInfo.NoBusinessLicenseName</span>
+                            <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Năm thành lập</label>
+                    <div class="col-lg-9">
+                        <input type="text"
+                               placeholder="Năm thành lập"
+                               class="form-control"
+                               id="FoundedYear"
+                               name="FoundedYear"
+                               data-val="true"
+                               value="@companyInfo.FoundedYear" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Vốn điều lệ</label>
+                    <div class="col-lg-9">
+                        <input type="text"
+                               placeholder="Vốn điều lệ"
+                               class="form-control"
+                               id="Capital"
+                               name="Capital"
+                               data-val="true"
+                               value="@companyInfo.Capital" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Mã số thuế</label>
+                    <div class="col-lg-9">
+                        <input type="text"
+                               placeholder="Mã số thuế"
+                               class="form-control"
+                               id="TaxCode"
+                               name="TaxCode"
+                               data-val="true"
+                               value="@companyInfo.TaxCode" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 col-xs-12 control-label">Sơ đồ tổ chức công ty</label>
+                    <div class="col-lg-9 col-xs-2">
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <span class="btn btn-file">
+                                <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                <input type="file" name="OrganizationalChartFile" id="organization" data-val="true" onchange="commonJS.validateSingleInput(this, 'file');" />
+                            </span>
+                            <span class="fileinput-filename">@companyInfo.OrganizationalChartName</span>
+                            <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-12 text-center">
+                        <button class="btn btn-sm btn-primary" type="submit">Cập nhật thông tin công ty</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+

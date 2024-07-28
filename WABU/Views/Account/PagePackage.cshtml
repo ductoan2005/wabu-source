@@ -1,0 +1,127 @@
+﻿@model FW.ViewModels.BiddingNewsVM
+@{
+    ViewBag.Title = "PagePackage";
+    Layout = "~/Views/Shared/_Layout_Home.cshtml";
+    var lstContructionName = ViewBag.lstContructionName;
+    var lstBiddingPackageName = ViewBag.lstBiddingPackageName;
+    var authority = ViewBag.Authority;
+}
+<link href="/Content/Common/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+<br />
+<div class="row">
+    <div class="container">
+        <img src="~/Content/Common/img/step.jpg" width="100%">
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="container">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content mailbox-content">
+                    @Html.Partial("../Partial_view/_PV_Menuaccount")
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 animated fadeInRight no-padding">
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="product_name">Từ Ngày</label>
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span><input id="SearchFromDate" name="FromDate" type="text" class="form-control" placeholder="dd/MM/yyyy">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="price">Đến Ngày</label>
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span><input id="SearchToDate" name="ToDate" type="text" class="form-control" placeholder="dd/MM/yyyy">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="status">Trạng thái</label>
+                            @Html.EnumDropDownListFor(m => m.EnumStatusBidding, new { @class = "form-control", @Name = "Status" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="name">Tên công trình</label>
+                            @Html.DropDownList("ContructionName", new SelectList(lstContructionName as System.Collections.IEnumerable, "Value", "Text"),
+                                               new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label class="control-label" for="name">Tên gói thầu</label>
+                            @Html.DropDownList("BiddingPackageName", new SelectList(lstBiddingPackageName as System.Collections.IEnumerable, "Value", "Text"),
+                                                    new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-2 pull-right">
+                        <button onclick="accountPage.searchPagePackage(event)" class="btn btn-sm btn-primary full100" type="submit">Tìm kiếm</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="overflow-x-sp">
+                    <table id="tblPackageDetail" class="footable table table-stripped toggle-arrow-tiny default breakpoint footable-loaded" data-page-size="15">
+                        @Html.Partial("_LstPackageDetail")
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Hidden("Authority", (object)ViewBag.Authority)
+
+@section scripts{
+    <script src="/Scripts/Common/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script src="/Scripts/Common/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/app/Account/accountPage.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#SearchFromDate').datepicker({
+                todayBtn: "linked",
+                format: 'dd/mm/yyyy',
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: false,
+                autoclose: true
+            });
+            $('#SearchToDate').datepicker({
+                todayBtn: "linked",
+                format: 'dd/mm/yyyy',
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: false,
+                autoclose: true
+            });
+            //check validate fromdate and todate
+            $("#SearchFromDate").on("change", function (e) {
+                var fromdate = $('#SearchFromDate').data("datepicker");
+                var todate = $('#SearchToDate').data("datepicker");
+                if (fromdate.viewDate.valueOf() > todate.viewDate.valueOf()) {
+                    $("#SearchToDate").val(e.target.value);
+                }
+                $('#SearchToDate').data('datepicker').setStartDate(e.target.value);
+            });
+            $("#SearchToDate").on("change", function (e) {
+                if ($('#SearchFromDate').val() != '') {
+                    $('#SearchToDate').data('datepicker').setStartDate($('#SearchFromDate').val());
+                }
+                else {
+                    $("#SearchFromDate").val(e.target.value);
+                }
+            });
+            accountPage.init();
+        })
+    </script>
+}

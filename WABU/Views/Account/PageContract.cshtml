@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "PageContract";
+    Layout = "~/Views/Shared/_Layout_Home.cshtml";
+}
+<link href="/Content/Common/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/dropzone/basic.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+<br />
+<div class="row">
+    <div class="container">
+        <img src="~/Content/Common/img/step.jpg" width="100%">
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="container">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content mailbox-content">
+                    @Html.Partial("../Partial_view/_PV_Menuaccount")
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 animated fadeInRight no-padding">
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-4 pull-right">
+                        <a class="btn btn-sm btn-primary full100" href="@Url.Action("Index", "PageContractBid")">Tạo hồ sợ đấu thầu</a>
+                    </div>
+                </div>
+                <hr />
+                <div class="overflow-x-sp">
+                    <table id="tblContract" class="footable table table-stripped toggle-arrow-tiny default breakpoint footable-loaded text-center" data-page-size="15">
+                        @Html.Partial("_LstContract")
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="/Scripts/Common/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/app/Account/accountPage.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+
+            accountPage.init();
+        });
+    </script>
+}

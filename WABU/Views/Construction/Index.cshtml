@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_Home.cshtml";
+
+    var pagingConstructionList = ViewBag.pagingConstructionList;
+    var currentPage = pagingConstructionList.CurrentPage;
+    var totalPage = pagingConstructionList.TotalItems;
+}
+<link href="/Content/Common/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/dropzone/basic.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+
+<br />
+<div class="row">
+    <div class="container">
+        @*<a class="screen-1200" href="#" target="_blank" title="Thuengay.vn - Thuê thiết kế &amp; marketing từ A đến Z" style="margin: 20px auto 0;">
+            <img src="http://www.vlance.vn/media/banner/thuengay/1200x150.jpg" max-width="100%" alt="">
+        </a>*@
+        <img src="~/Content/Common/img/step.jpg" width="100%">
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="container">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content mailbox-content">
+                    @Html.Partial("../Partial_view/_PV_Menuaccount")
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9 animated fadeInRight padding0px">
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-4 pull-right">
+                        <a class="btn btn-sm btn-primary full100" data-toggle="modal" data-target="#CreateConstruction">Tạo công trình</a>
+                    </div>
+                </div>
+                <hr />
+                <div class="overflow-x-sp">
+                    <table id="tableConstruction" class="footable table table-stripped toggle-arrow-tiny default breakpoint footable-loaded text-center" data-page-size="15">
+                        @Html.Partial("_LstConstruction")
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="CreateConstruction" tabindex="-1" role="dialog" aria-hidden="true">
+    @Html.Partial("_PopUpAddConstruction")
+</div>
+<div class="modal inmodal" id="EditConstruction" tabindex="-1" role="dialog" aria-hidden="true">
+
+</div>
+
+@section scripts{
+    <!-- Data picker -->
+    <script src="/Scripts/Common/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/app/Construction/construction.js"></script>
+    <script src="~/Scripts/app/AreaManage/areaManageJS.js"></script>
+    <script src="~/Scripts/app/WabuCommonJS/commonJS.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('#BuildingPermitDateTime').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: false,
+                autoclose: true,
+                format: "dd/mm/yyyy"
+            });
+           
+            areaManageJS.getArea();
+        })
+    </script>
+}

@@ -1,0 +1,45 @@
+﻿@model FW.ViewModels.ConstructionVM
+@{
+    string src = "../Content/Common/img/no-thumbnail.png";
+    string src1 = string.Empty;
+    //string src2 = string.Empty;
+    //string src3 = string.Empty;
+    if (Model != null && Model.Image1FilePath != null)
+    {
+        src1 = "/" + Model.Image1FilePath;
+    }
+    else
+    {
+        src1 = src;
+    }
+
+    //if (Model != null && Model.Image2FilePath != null)
+    //{
+    //    src2 = "/" + Model.Image2FilePath;
+    //}
+    //else
+    //{
+    //    src2 = src;
+    //}
+
+    //if (Model != null && Model.Image3FilePath != null)
+    //{
+    //    src3 = "/" + Model.Image3FilePath;
+    //}
+    //else
+    //{
+    //    src3 = src;
+    //}
+}
+
+<div class="slick_images">
+    <div>
+        <img src="@src1" alt="" width="100%" class="img-thumbnail" />
+    </div>
+    @*<div>
+        <img src="@src2" alt="" width="100%" class="img-thumbnail" />
+    </div>
+    <div>
+        <img src="@src3" alt="" width="100%" class="img-thumbnail" />
+    </div>*@
+</div>

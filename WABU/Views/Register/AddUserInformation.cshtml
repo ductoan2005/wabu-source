@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewBag.Title = "AddUserInfomation";
+    Layout = "~/Views/Shared/_Layout_Login.cshtml";
+}
+
+<form id="AddUserInformation" class="form-horizontal" method="post" enctype="multipart/form-data">
+    @Html.Hidden("Id", ViewBag.Id as string)
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-12 center">
+            <h2 class="font_30 text-white bold">Thông tin tài khoản</h2>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="ibox-content col-md-8 col-md-offset-2">
+            <div class="form-group">
+                <label class="col-md-4 control-label">Họ và tên hoặc tên DN *</label>
+
+                <div class="col-md-8">
+                    <input type="text" placeholder="Nhập họ tên" class="form-control" id="FullName" name="FullName"
+                           data-val-required="Vui lòng nhập họ tên"
+                           data-val-length-max="250"
+                           data-val-length="Họ và tên bạn không quá 250 ký tự"
+                           data-val="true"
+                           aria-describedby="msg-err-FullName">
+                    <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="FullName">
+                        <span id="msg-err-FullName" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label">Địa chỉ</label>
+
+                <div class="col-md-8">
+                    <input type="text"
+                           data-val-required="Vui lòng nhập địa chỉ người dùng"
+                           placeholder="Địa chỉ người dùng"
+                           class="form-control"
+                           id="Address"
+                           name="Address"
+                           data-val-length-max="250"
+                           data-val-length="Địa chỉ bạn không quá 250 ký tự"
+                           data-val="true"
+                           aria-describedby="msg-err-Address" />
+                    <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="Address">
+                        <span id="msg-err-Address" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label">Điện thoại *</label>
+                <div class="col-md-8">
+                    <input type="text"
+                           data-val-required="Vui lòng nhập số điện thoại liên hệ"
+                           placeholder="Số điện thoại liên hệ"
+                           class="form-control"
+                           id="PhoneNumber"
+                           name="PhoneNumber"
+                           data-val-length-max="11"
+                           data-val-length="Số điện thoại bạn không quá 11 ký tự"
+                           data-val="true" />
+                    <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="PhoneNumber">
+                        <span id="msg-err-PhoneNumber" class=""></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 center">
+            <h2 class="font_30 text-white bold">Thông tin công ty</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="ibox-content col-md-8 col-md-offset-2">
+            <div class="form-group">
+                <label class="col-md-4 control-label">Tên công ty *</label>
+                <div class="col-md-8">
+                    <input type="text"
+                           placeholder="Tên công ty"
+                           data-val-required="Vui lòng nhập tên công ty"
+                           class="form-control"
+                           id="CompanyName"
+                           name="CompanyName"
+                           data-val="true" />
+                    <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="CompanyName">
+                        <span id="msg-err-CompanyName" class=""></span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Địa chỉ công ty *</label>
+                <div class="col-md-8">
+                    <input type="text"
+                           placeholder="Địa chỉ công ty"
+                           data-val-required="Vui lòng nhập địa chỉ công ty"
+                           class="form-control"
+                           id="CompanyAddress"
+                           name="CompanyAddress"
+                           data-val="true" />
+                    <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="CompanyAddress">
+                        <span id="msg-err-CompanyAddress" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label">Số điện thoại công ty *</label>
+                <div class="col-md-8">
+                    <input type="text"
+                           placeholder="Số điện thoại công ty"
+                           class="form-control"
+                           id="CompanyPhoneNumber"
+                           name="CompanyPhoneNumber"
+                           data-val-required="Vui lòng nhập số điên thoại công ty"
+                           data-val="true" />
+                    <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="CompanyPhoneNumber">
+                        <span id="msg-err-CompanyPhoneNumber" class=""></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="m-t-register animated fadeInDown text-center">
+                <div class="clear"></div>
+                <a class="btn btn-primary block full-width m-b mt15" onclick="registerJS.addUserInfo()">Xác nhận</a>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/Scripts/app/Register/register.js"></script>>

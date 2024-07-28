@@ -1,0 +1,78 @@
+﻿@using FW.Common.Enum
+@using FW.Common.Helpers
+@using FW.Common.Utilities
+@{
+
+    var biddingNewsBookmarkList = ViewBag.biddingNewsBookmarkList;
+    var pagingBiddingNewsBookmarkList = ViewBag.pagingBiddingNewsBookmarkList;
+
+    if (pagingBiddingNewsBookmarkList != null)
+    {
+        ViewData["CurrentPagePackage"] = pagingBiddingNewsBookmarkList.CurrentPage;
+        ViewData["ItemsPerPagePackage"] = pagingBiddingNewsBookmarkList.ItemsPerPage;
+        ViewData["TotalItemsPackage"] = pagingBiddingNewsBookmarkList.TotalItems;
+    }
+    else
+    {
+        ViewData["CurrentPagePackage"] = 0;
+        ViewData["ItemsPerPagePackage"] = 1;
+        ViewData["TotalItemsPackage"] = 0;
+    }
+    var authority = ViewBag.Authority;
+}
+<thead>
+    <tr>
+        <th>Tên công trình</th>
+        <th>Tên gói thầu</th>
+        <th>Chủ đầu tư</th>
+        <th>Ngày lưu tin thầu</th>
+        <th>Trạng thái</th>
+        <th class="text-right">Hành động</th>
+    </tr>
+</thead>
+<tbody>
+    @if (biddingNewsBookmarkList != null)
+    {
+        foreach (var biddingNewsVm in biddingNewsBookmarkList)
+        {
+            <tr class="footable-even" style="">
+                <td class="footable-visible footable-first-column">
+                    <span class="footable-toggle"></span>
+                    @biddingNewsVm.BiddingNews.Construction.ConstructionName
+                </td>
+                <td class="footable-visible footable-first-column">
+                    <span class="footable-toggle"></span>
+                    @biddingNewsVm.BiddingNews.BiddingPackage.BiddingPackageName
+                </td>
+                <td class="footable-visible">
+                    @biddingNewsVm.BiddingNews.Construction.InvestorName
+                </td>
+                <td class="footable-visible">
+                    @biddingNewsVm.BookmarkDate.ToString("dd/MM/yyyy")
+                </td>
+                <td class="footable-visible">
+                    @{
+                        var statusBidding = biddingNewsVm.BiddingNews.StatusBiddingNews;
+
+                        var statusTextDisplay = EnumHelper<StatusBidding>.GetDisplayValue((StatusBidding)statusBidding);
+                        if ((StatusBidding)statusBidding == StatusBidding.Opening)
+                        {
+                            <span class="label label-primary">@statusTextDisplay</span>
+                        }
+                        else if ((StatusBidding)statusBidding == StatusBidding.Finished)
+                        {
+                            <span class="label label-default">@statusTextDisplay</span>
+                        }
+                    }
+                </td>
+                <td class="text-right footable-visible footable-last-column">
+                    <div class="btn-group">
+                        <a href="@Url.Action("Index", "BidContractionDetail", new { id = biddingNewsVm.BiddingNewsId})" class="btn-white btn btn-xs">Xem dự án</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+</tbody>
+@Html.Partial("_PagingBiddingBookmarkDetail")
+

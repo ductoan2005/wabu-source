@@ -1,0 +1,213 @@
+﻿@using FW.Models
+@model FW.ViewModels.BiddingNewsVM
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout_Home.cshtml";
+    var userInfo = (UserProfile)ViewBag.userInfo;
+    //var listBiddingNewsBest = ViewBag.BiddingNewsBest;
+    //var listBiddingPackage = ViewBag.BiddingPackage;
+}
+
+<link href="/Content/Common/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/ionRangeSlider/ion.rangeSlider.skinHTML5.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+<div id="biddingNews-screen">
+    <section class="Createbuilder">
+        <form id="biddingNewsSearch">
+            <div class="row PC">
+                <div class="background-top-new"></div>
+                <div class="container">
+                    <div class="col-md-12 col-xs-12 filterPageSearch">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <i class="fa fa-search icon_search_slider"></i><input type="text" placeholder="Gói thầu, giá khởi điểm..." class="form-control" name="TextSearch">
+                            </div>
+                            <div class="col-md-3">
+                                <i class="fa fa-list icon_list_slider"></i>
+                                @Html.EnumDropDownListFor(m => m.EnumBiddingPackageName, new { @class = "form-control chosen-select", Name = "BiddingPackageId", data_placeholder = "Chọn gói thầu...", tabindex = "1" })
+                            </div>
+                            <div class="col-md-3">
+                                <i class="fa fa-location-arrow icon_list_slider"></i>
+                                <select data-placeholder="Chọn khu vực..." class="form-control" id="AreaId" name="AreaId" tabindex="2">
+                                    <option value="-1">Tất cả địa điểm</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-w-m btn-search-top full100" onclick="biddingNewsSearch.search(event)">Tìm Kiếm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-3 PC">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="ibox-title">
+                                <h5><i class="fa fa-cog"></i> TÌM KIẾM GẦN ĐÂY</h5>
+                            </div>
+                            <div class="ibox">
+                                <div id="recentKeyWords" class="ibox-content">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="ibox-title">
+                                <h5><i class="fa fa-cog"></i> Lọc theo</h5>
+                            </div>
+                            <div class="ibox">
+                                <div class="ibox-content">
+                                    <div class="form-group">
+                                        <label>Số năm hoạt động trong lĩnh vực mời thầu</label>
+                                        <input type="text" id="NumberYearActivityAbilityExp" placeholder="Số năm hoạt động trong lĩnh vực mời thầu" class="form-control" name="NumberYearActivityAbilityExp">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Hợp đồng tương tự đã thực hiện</label>
+                                        <input type="text" id="NumberSimilarContractAbilityExp" placeholder="Hợp đồng tương tự đã thực hiện" class="form-control" name="NumberSimilarContractAbilityExp">
+                                    </div>
+                                    @*<div class="form-group">
+                                        <label>Doanh thu trung bình</label>
+                                        <input type="text" id="Turnover2YearAbilityFinance" placeholder=" Doanh thu trung bình ... thanh scroll tu 0 toi max" class="form-control" name="Turnover2YearAbilityFinance">
+                                    </div>*@
+                                    <div class="form-group">
+                                        <label>Vị trí công việc</label>
+                                        <input type="text" id="txt_jobPosition" placeholder="vị trí công việc ..." class="form-control removePaddingLeft" name="JobPosition">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Chọn trạng thái</label>
+                                        @Html.EnumDropDownListFor(m => m.EnumStatusBidding, "Chọn trạng thái", new { @class = "form-control removePaddingLeft", Name = "StatusBidding", data_placeholder = "Chọn gói thầu..." })
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Ngày bắt đầu</label>
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span>
+                                            <input id="FromDate" type="text" name="FromDate" class="form-control" placeholder="Ngày bắt đầu">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="ibox-title">
+                        <p class="pull-right">Xếp theo: <a id="orderByDay" onclick="biddingNewsSearch.changePageOnListBidding(1, event)" data-value="desc">Ngày</a>@*|Độ chính xác*@</p>
+                    </div>
+                    <div id="biddingSearchResult">
+                        @Html.Partial("_BiddingSearchResult")
+                    </div>
+                </div>
+                <div class="col-lg-1"></div>
+                @*<div class="col-lg-2">
+                <div class="ibox-title">
+                    <p>GỬI VIỆC TƯƠNG TỰ</p>
+                </div>
+                <div class="ibox">
+                    <div class="ibox-content">
+                        Tạo và nhận thông báo qua email khi có công việc mới phù hợp.
+                        <a class="btn btn-outline btn-primary">Tạo thông báo việc làm</a>
+                    </div>
+                </div>
+            </div>*@
+            </div>
+            @Html.Hidden("Authority", userInfo?.Authority)
+            @Html.Hidden("UserId", userInfo?.UserID)
+        </form>
+    </section>
+</div>
+
+@section scripts{
+    <script src="/Scripts/Common/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/app/AreaManage/areaManageJS.js"></script>
+    <script src="~/Scripts/app/BiddingNewsSearch/biddingNewsSearch.js"></script>
+    <!-- Data picker -->
+    <script src="/Scripts/Common/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <!-- IonRangeSlider -->
+    <script src="/Scripts/Common/plugins/ionRangeSlider/ion.rangeSlider.min.js"></script>
+    <!-- Data picker -->
+    <script src="/Scripts/Common/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Get all area
+            areaManageJS.getArea();
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $('.chosen-select').chosen({ width: "100%" });
+
+            var from = 0,
+                to = 0;
+
+            var saveResult = function (data) {
+                from = data.from;
+                to = data.to;
+            };
+
+            var writeResult = function () {
+                var result = "from: " + from + ", to: " + to;
+                //console.log(result);
+            };
+
+            $("#NumberYearActivityAbilityExp").ionRangeSlider({
+                type: "double",
+                grid: true,
+                min: 0,
+                max: 20,
+                onFinish: function (data) {
+                    saveResult(data);
+                    writeResult("#NumberYearActivityAbilityExp");
+                },
+            });
+
+            $("#NumberSimilarContractAbilityExp").ionRangeSlider({
+                type: "double",
+                grid: true,
+                min: 0,
+                max: 10,
+                onFinish: function (data) {
+                    saveResult(data);
+                    writeResult("#NumberSimilarContractAbilityExp");
+                },
+            });
+
+            $("#Turnover2YearAbilityFinance").ionRangeSlider({
+                type: "double",
+                grid: true,
+                grid_num:2,
+                min: 0,
+                max: @Model.MaxTurnover2YearAbilityFinance,
+                postfix: " vnd",
+                onFinish: function (data) {
+                    saveResult(data);
+                    writeResult("#Turnover2YearAbilityFinance");
+                },
+            });
+
+            $('#FromDate').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: false,
+                autoclose: true,
+                format: "dd/mm/yyyy"
+            });
+
+            //Init bidding news search page result
+            biddingNewsSearch.initBiddingNewsSearchResult(event);
+
+            // Autocomple job position text box
+            biddingNewsSearch.getJobPositionKeyWord(event);
+
+        });
+    </script>
+
+}

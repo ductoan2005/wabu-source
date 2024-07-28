@@ -1,0 +1,121 @@
+﻿@model FW.ViewModels.ConstructionVM
+@using FW.Common.Enum
+@using FW.Common.Helpers
+
+@{ var buildingPermitDateVal = Model.BuildingPermitDate.HasValue ? Model.BuildingPermitDate.Value.ToString("dd/MM/yyyy") : "";
+    var basementVal = Model.Basement.HasValue ? Model.Basement.Value : 0;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content animated fadeIn">
+        <div id="frmAddConstruction">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Chi Tiết Công Trình</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label text-bold">Tên công trình</label>
+
+                        <div class="col-lg-8">
+                            <label class="control-label" id="ConstructionName">@Model.ConstructionName</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label text-bold">Chủ đầu tư</label>
+
+                        <div class="col-lg-8">
+                            <label class="control-label" id="InvestorName">@Model.InvestorName</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label text-bold">Địa điểm XD</label>
+
+                        <div class="col-lg-8">
+                            <label class="control-label" id="AddressBuild">@Model.AddressBuild</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label text-bold">Khu vực</label>
+
+                        <div class="col-lg-8">
+                            <label class="control-label" id="AreaId">@Model.Area.AreaName</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label text-bold">Số tầng cao</label>
+
+                        <div class="col-lg-8">
+                            <label class="control-label" id="Scale">@Model.Scale tầng</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label text-bold">Số tầng hầm</label>
+
+                        <div class="col-lg-8">
+                            <label class="control-label" id="Scale">@basementVal tầng</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label text-bold">Tổng m² sàn XD</label>
+
+                        <div class="col-lg-8">
+                            <label class="control-label" id="AcreageBuild">@Model.AcreageBuild</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label text-bold">Hình thức XD</label>
+                        <div class="col-lg-8">
+                            @{
+                                var contructionForm = Model.ConstructionForm;
+                                var contructionFormTextDisplay = EnumHelper<EConstructionForm>.GetDisplayValue((EConstructionForm)contructionForm);
+                            }
+                            <label class="control-label" id="ConstructionForm">@contructionFormTextDisplay</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label text-bold">Giấy phép xây dựng số</label>
+                        <div class="col-lg-8">
+                            <label class="control-label" id="BuildingPermit">@Model.BuildingPermit</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label text-bold">Ngày cấp</label>
+                        <div class="col-lg-8">
+                            <div class="input-group date">
+                                <label class="control-label" id="BuildingPermitDate">@buildingPermitDateVal</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label text-bold">Mô tả hiện trạng công trình</label>
+
+                        <div class="col-lg-8">
+                            <label class="control-label" style="text-align:left !important;" id="ContructionDescription">@Model.ConstructionDescription</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label text-bold">Người liên hệ</label>
+                        <div class="col-lg-8">
+                            <label class="control-label" id="ContactName">@Model.ContactName</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label text-bold">Số điện thoại</label>
+                        <div class="col-lg-8">
+                            <label class="control-label" id="ContactPhoneNumber">@Model.ContactPhoneNumber</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label text-bold">Email</label>
+                        <div class="col-lg-8">
+                            <label class="control-label" id="ContactEmail">@Model.ContactEmail</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

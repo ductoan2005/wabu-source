@@ -1,0 +1,970 @@
+﻿@using FW.ViewModels
+@model BidShowContractDetailVM
+@{
+    ViewBag.Title = "BidDetail";
+    Layout = "~/Views/Shared/_Layout_Home.cshtml";
+
+    var company = ViewBag.company;
+    var authority = ViewBag.Authority;
+    var companyProfileId = ViewBag.CompanyProfileId;
+    var biddingNewsId = ViewBag.BiddingNewsId;
+    var companyProfileModel = ViewBag.companyProfileModel as CompanyProfileVM;
+    var biddingNews = ViewBag.BiddingNews;
+}
+<link href="/Content/Common/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/dropzone/basic.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/slick/slick.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/slick/slick-theme.css" rel="stylesheet">
+<div id="biddingNewsRegistration-screen">
+    <section class="Createbuilder">
+        @*<div class="content-success hide">
+            Hệ thống sẽ tự động gửi đến nhà thầu Thông báo trúng thầu và thông tin liên hệ của bạn. Nhà thầu sẽ liên hệ trực tiếp với bạn trong thời gian sớm nhất để tiến hành thương thảo hợp đồng.
+            Quý khách vui lòng xác nhận lại đơn vị trúng thầu trên hệ thống của chúng tôi, sau khi hợp đồng được ký kết nhằm đảm bảo quyền lợi của quý khách.
+        </div>*@
+        <div class="row">
+            <div class="background-top-new"></div>
+            <div class="container">
+                <div id="title-box-DT">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @if (string.IsNullOrEmpty(company.Logo))
+                                    {
+                                        <img src="~/Content/Common/img/no-thumnail.jpg" alt="" width="100%" class="img-thumbnail" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/@company.Logo" alt="" width="100%" class="img-thumbnail" />
+                                    }
+                                </div>
+                                <div class="col-md-8 text-left">
+
+                                    <h1 class="word-break">@company.CompanyName</h1>
+                                    <hr />
+                                    <div class="col-md-8  reset-pd-right">
+                                        <h3 class="addresscontruction">@company.CompanyAddress</h3>
+                                        <br />
+                                        <a href="@companyProfileModel.Company.Link"><h3 class="addresscontruction">@companyProfileModel.Company.Link</h3></a>
+                                    </div>
+                                    <div class="col-md-4 no-padding">
+                                        @if (biddingNews != null && authority != 3 && biddingNews.BiddingNews.StatusBiddingNews < 4)
+                                        {
+                                            if (biddingNews.CheckBiddingNewsCompleted == true && biddingNews.BiddingNews.StatusBiddingNews == 3)
+                                            {
+                                                <div class="action-bid-detail2">
+                                                    <a href="#" class="btn btn-completed-contract" id="completed_contract" data-toggle="modal" data-target="#pop-up-complete-construction">Nghiệm thu</a>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                if (biddingNews.CheckBiddingNewsSelected == false && biddingNews.BiddingNews.StatusBiddingNews == 1)
+                                                {
+
+                                                    if (DateTime.Now > biddingNews.BiddingNews.BidCloseDate)
+                                                    {
+                                                        <div class="action-bid-detail select_contruct">
+                                                            <button type="button" class="btn btn-w-m btn-bid-top full100" id="btn_ctr_ALL_save" data-toggle="modal" data-target="#pop-up-choose-contractor">CHỌN NHÀ THẦU</button>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="action-bid-detail select_contruct">
+                                                            <button type="button" class="btn btn-w-m btn-bid-top full100" id="btn_ctr_ALL_save" onclick="WarningInvestor();">CHỌN NHÀ THẦU</button>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (DateTime.Now > biddingNews.BiddingNews.BidCloseDate && biddingNews.BiddingNews.StatusBiddingNews == 2)
+                                                    {
+                                                        if (DateTime.Now > biddingNews.BiddingNews.DateInvestorSelected)
+                                                        {
+                                                            <div class="action-bid-detail2 select_confirm">
+                                                                <button type="button" class="btn btn-w-m btn-confirm-contract" id="btn_ctr_confirm" data-toggle="modal" data-target="#pop-up-confirm-contractor">XÁC NHẬN</button>
+                                                                <button type="button" class="btn btn-w-m btn-cancel-contract" id="btn_ctr_cancel" data-toggle="modal" data-target="#pop-up-cancel-contractor">HỦY CHỌN</button>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="action-bid-detail2 select_confirm">
+                                                                <button type="button" class="btn btn-w-m btn-confirm-contract" id="btn_ctr_confirm" onclick="WarningWaitingConfirm();">XÁC NHẬN</button>
+                                                                <button type="button" class="btn btn-w-m btn-cancel-contract" id="btn_ctr_cancel" onclick="WarningWaitingConfirm();">HỦY CHỌN</button>
+                                                            </div>
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-2">
+                                    @if (biddingNews != null)
+                                    {
+                                        if (authority != 3 && biddingNews.BiddingNews.StatusBiddingNews < 3)
+                                        {
+                                            if (biddingNews.BiddingNews.StatusBiddingNews == 1)
+                                            {
+                                                <div class="time_bid center">
+                                                    <input type="hidden" id="bidCloseDateVal" value="@(biddingNews.BiddingNews.BidCloseDate)" />
+                                                    <span id="countdownBidCloseDate" class="time"></span>
+                                                    <br />
+                                                    <span>Thời gian đóng thầu @biddingNews.BiddingNews.BidCloseDate.ToString("HH:mm:ss") @biddingNews.BiddingNews.BidCloseDate.ToString("dd/MM/yyyy")</span>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="time_bid center">
+                                                    <input type="hidden" id="dateInvestorSelectedVal" value="@(biddingNews.BiddingNews.DateInvestorSelected)" />
+                                                    <span id="countdownDateInvestorSelected" class="time"></span>
+                                                    <br />
+                                                    <span>Thời gian chờ xác nhận hoặc hủy hợp đồng @biddingNews.BiddingNews.DateInvestorSelected.ToString("HH:mm:ss") @biddingNews.BiddingNews.DateInvestorSelected.ToString("dd/MM/yyyy")</span>
+                                                </div>
+                                            }
+                                        }
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="container">
+                <div class="background-body-bid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="tabs-container">
+                                <ul class="nav nav-tabs" id="tab_bidshow">
+                                    <li class="active"><a data-toggle="tab" href="#tab-0" aria-expanded="true">Thông tin nhà thầu</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-1" aria-expanded="true">Năng lực kinh nghiệm</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">Năng lực tài chính</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">Năng lực nhân sự</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false">Năng lực thiết bị</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="tab-0" class="tab-pane active">
+                                        <div class="panel-body">
+                                            <div class="col-md-4 border-right">
+                                                <div class="ibox-title">
+                                                    <h5><i class="fa fa-info"></i> Thông tin nhà thầu</h5>
+                                                </div>
+                                                <form class="form-horizontal pd-top10">
+                                                    <input id="companyInfoUrl" url="@Url.Action("GetCompanyInformation", "BidShowContractDetail")" type="hidden">
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Tên công ty</label>
+                                                        <label class="col-lg-7 pd_top7  word-break" id="CompanyName">@companyProfileModel.Company.CompanyName</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Đại diện hợp pháp</label>
+                                                        <label class="col-lg-7 pd_top7  word-break" id="RepresentativeName">@companyProfileModel.Company.RepresentativeName</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Chức vụ</label>
+                                                        <label class="col-lg-7 pd_top7  word-break" id="Position">@companyProfileModel.Company.Position</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Địa chỉ công ty</label>
+                                                        <label class="col-lg-7 pd_top7  word-break" id="CompanyAddress">@companyProfileModel.Company.CompanyAddress</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">SĐT công ty</label>
+                                                        <label class="col-lg-7 pd_top7  word-break" id="CompanyPhoneNumber">@companyProfileModel.Company.CompanyPhoneNumber</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Năm thành lập</label>
+                                                        <label class="col-lg-7 pd_top7  word-break" id="FoundedYear">@companyProfileModel.Company.FoundedYear</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Vốn điều lệ</label>
+                                                        <label class="col-lg-7 pd_top7  word-break" id="Capital">@companyProfileModel.Company.Capital</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Mã số thuế</label>
+                                                        <label class="col-lg-7 pd_top7  word-break" id="TaxCode">@companyProfileModel.Company.TaxCode</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">GPĐK kinh doanh</label>
+                                                        <label class="col-lg-7 pd_top7  word-break" id="NoBusinessLicense">@companyProfileModel.Company.NoBusinessLicense</label>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="col-md-8 reset-pd-right">
+                                                <ul class="nav nav-tabs" id="tab_bidshow_pdf">
+                                                    <li class="active"><a data-toggle="tab" href="#tab-info-2" aria-expanded="false">Giấy phép kinh doanh</a></li>
+                                                    <li class=""><a data-toggle="tab" href="#tab-info-1" aria-expanded="false">Sơ đồ tổ chức công ty</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div id="tab-info-1" class="tab-pane">
+                                                        @if (string.IsNullOrEmpty(companyProfileModel.Company.OrganizationalChartPath))
+                                                        {
+                                                            <div class='panel-body'><p>Đang cập nhật tài liệu</p></div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class='panel-body'><object width='100%' height='100%' data='/@companyProfileModel.Company.OrganizationalChartPath' type='application/pdf' class='pdfobject-container'></object></div>
+                                                        }
+                                                    </div>
+                                                    <div id="tab-info-2" class="tab-pane">
+                                                        @if (string.IsNullOrEmpty(companyProfileModel.Company.NoBusinessLicensePath))
+                                                        {
+                                                            <div class='panel-body'><p>Đang cập nhật tài liệu</p></div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class='panel-body'><object width='100%' height='100%' data='/@companyProfileModel.Company.NoBusinessLicensePath' type='application/pdf' class='pdfobject-container'></object></div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="tab-1" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="col-md-4 border-right">
+                                                <div class="ibox-title">
+                                                    <h5><i class="fa fa-info"></i> Thông tin kinh nghiệm</h5>
+                                                </div>
+                                                <form class="form-horizontal pd-top10">
+                                                    <div class="form-group">
+                                                        <label class="col-xs-4 col-lg-5 control-label font-bold pd-top15">Tên dự án</label>
+                                                        <label class="col-xs-8 col-lg-7 pd_top7 ">
+                                                            <select class="form-control" id="select-Project" name="select-Project" onchange="bidShowContractDetail.dropcompanyAbilityExp()">
+                                                                @Html.Raw(ViewBag.listcompanyAbilityExp)
+                                                            </select>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Tên chủ đầu tư</label>
+                                                        <label class="col-lg-7 pd_top7 " id="InvestorName"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Địa chỉ</label>
+                                                        <label class="col-lg-7 pd_top7 " id="InvestorAddress"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Điện thoại</label>
+                                                        <label class="col-lg-7 pd_top7 " id="InvestorPhoneNumber"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Cấp công trình</label>
+                                                        <label class="col-lg-7 pd_top7 " id="ContructionType"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Quy mô thực hiện</label>
+                                                        <label class="col-lg-7 pd_top7 " id="ProjectScale"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Số hợp đồng</label>
+                                                        <label class="col-lg-7 pd_top7 " id="ContractName"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Ngày ký hợp đồng</label>
+                                                        <label class="col-lg-7 pd_top7 " id="ContractSignDate"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Ngày hoàn thành</label>
+                                                        <label class="col-lg-7 pd_top7 " id="ContractCompleteDate"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Giá hợp đồng</label>
+                                                        <label class="col-lg-7 pd_top7 " id="ContractPrices"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Mô tả hiện trạng công trình</label>
+                                                        <label class="col-lg-7 pd_top7 " id="ProjectDescription"></label>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="col-md-8 reset-pd-right">
+                                                <ul class="nav nav-tabs" id="tab_bidshow_pdf">
+                                                    <li class="active"><a data-toggle="tab" href="#tab-sub-1" aria-expanded="true">Hợp đồng thực hiện</a></li>
+                                                    <li class=""><a data-toggle="tab" href="#tab-sub-2" aria-expanded="false">Bản thanh lý hợp đồng</a></li>
+                                                    <li class=""><a data-toggle="tab" href="#tab-sub-3" aria-expanded="false">Giấy phép xây dựng</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div id="tab-sub-1" class="tab-pane active">
+                                                        <div class="panel-body">
+                                                        </div>
+                                                    </div>
+                                                    <div id="tab-sub-2" class="tab-pane">
+                                                        <div class="panel-body">
+                                                        </div>
+                                                    </div>
+                                                    <div id="tab-sub-3" class="tab-pane">
+                                                        <div class="panel-body">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="tab-2" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="col-md-4 border-right">
+                                                <div class="ibox-title">
+                                                    <h5><i class="fa fa-info"></i> Thông tin tài chính</h5>
+                                                </div>
+                                                <form class="form-horizontal pd-top10">
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold pd-top15">Năm kê khai</label>
+                                                        <label class="col-lg-7 pd_top7 ">
+                                                            <select class="form-control" id="select-Finance" name="select-Finance" onchange="bidShowContractDetail.dropcompanyAbilityFinance()">
+                                                                @Html.Raw(ViewBag.listcompanyAbilityFinance)
+                                                            </select>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Tổng tài sản</label>
+                                                        <label class="col-lg-7 pd_top7 " id="TotalAssets"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Tổng nợ phải trả</label>
+                                                        <label class="col-lg-7 pd_top7 " id="TotalLiabilities"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Tài sản ngắn hạn</label>
+                                                        <label class="col-lg-7 pd_top7 " id="ShortTermAssets"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Tổng nợ ngắn hạn</label>
+                                                        <label class="col-lg-7 pd_top7 " id="TotalCurrentLiabilities"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Doanh thu</label>
+                                                        <label class="col-lg-7 pd_top7 " id="Revenue"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Lợi nhuận trước thuế</label>
+                                                        <label class="col-lg-7 pd_top7 " id="ProfitBeforeTax"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Lợi nhuận sau thuế</label>
+                                                        <label class="col-lg-7 pd_top7 " id="ProfitAfterTax"></label>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="col-md-8 reset-pd-right">
+                                                <ul class="nav nav-tabs" id="tab_bidshow_pdf">
+                                                    <li class="active"><a data-toggle="tab" href="#tab-sub-tc-1" aria-expanded="true">Tờ khai quyết toán</a></li>
+                                                    <li class=""><a data-toggle="tab" href="#tab-sub-tc-2" aria-expanded="false">Biên bản kiểm toán</a></li>
+                                                    <li class=""><a data-toggle="tab" href="#tab-sub-tc-3" aria-expanded="false">Văn bản xác nhận quản lý thuế</a></li>
+                                                    <li class=""><a data-toggle="tab" href="#tab-sub-tc-4" aria-expanded="false">Báo cáo kiểm toán</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div id="tab-sub-tc-1" class="tab-pane active">
+                                                        <div class="panel-body">
+                                                        </div>
+                                                    </div>
+                                                    <div id="tab-sub-tc-2" class="tab-pane">
+                                                        <div class="panel-body">
+                                                        </div>
+                                                    </div>
+                                                    <div id="tab-sub-tc-3" class="tab-pane">
+                                                        <div class="panel-body">
+                                                        </div>
+                                                    </div>
+                                                    <div id="tab-sub-tc-4" class="tab-pane">
+                                                        <div class="panel-body">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="tab-3" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="col-md-4 border-right">
+                                                <div class="ibox-title">
+                                                    <h5><i class="fa fa-info"></i> Thông tin ứng viên</h5>
+                                                </div>
+                                                <form class="form-horizontal pd-top10">
+                                                    <div class="form-group">
+                                                        <label class="col-xs-4 col-lg-5 control-label font-bold pd-top15">Họ tên</label>
+                                                        <label class="col-xs-8 col-lg-7 pd_top7 ">
+                                                            <select class="form-control" id="select-Hr" name="select-Hr" onchange="bidShowContractDetail.dropcompanyAbilityHr()">
+                                                                @Html.Raw(ViewBag.listcompanyAbilityHr)
+                                                            </select>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Vị trí</label>
+                                                        <label class="col-lg-7 pd_top7 " id="Title"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Bằng cấp</label>
+                                                        <label class="col-lg-7 pd_top7 " id="Certificate"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Trường</label>
+                                                        <label class="col-lg-7 pd_top7 " id="School"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Ngành</label>
+                                                        <label class="col-lg-7 pd_top7 " id="Branch"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Địa chỉ liên hệ</label>
+                                                        <label class="col-lg-7 pd_top7 " id="Address"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Số điện thoại</label>
+                                                        <label class="col-lg-7 pd_top7 " id="PhoneNumber"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Dự án đã tham gia</label>
+                                                        <label class="col-lg-7 pd_top7 "></label>
+                                                    </div>
+                                                </form>
+                                                <hr />
+                                                <div class="scroll_content">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8 reset-pd-right">
+                                                <ul class="nav nav-tabs" id="tab_bidshow_pdf">
+                                                    <li class="active"><a data-toggle="tab" href="#tab-sub-ns-1" aria-expanded="true">Hợp đồng lao động</a></li>
+                                                    <li class=""><a data-toggle="tab" href="#tab-sub-ns-2" aria-expanded="false">Văn bằng</a></li>
+                                                    <li class=""><a data-toggle="tab" href="#tab-sub-ns-3" aria-expanded="false">Quyết định bổ nhiệm</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div id="tab-sub-ns-1" class="tab-pane active">
+                                                        <div class="panel-body"></div>
+                                                    </div>
+                                                    <div id="tab-sub-ns-2" class="tab-pane">
+                                                        <div class="panel-body">
+                                                        </div>
+                                                    </div>
+                                                    <div id="tab-sub-ns-3" class="tab-pane">
+                                                        <div class="panel-body">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="tab-4" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="col-md-4 border-right">
+                                                <div class="ibox-title">
+                                                    <h5><i class="fa fa-info"></i> Thông tin thiết bị</h5>
+                                                </div>
+                                                <form class="form-horizontal pd-top10">
+                                                    <div class="form-group">
+                                                        <label class="col-xs-4 col-lg-5 control-label font-bold pd-top15">Tên thiết bị</label>
+                                                        <label class="col-xs-8 col-lg-7 pd_top7 ">
+                                                            <select class="form-control" id="select-Equipment" name="select-Equipment" onchange="bidShowContractDetail.dropcompanyAbilityEquipment()">
+                                                                @Html.Raw(ViewBag.listcompanyAbilityEquipment)
+                                                            </select>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Số lượng</label>
+                                                        <label class="col-lg-7 pd_top7 " id="Quantity"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Công suất</label>
+                                                        <label class="col-lg-7 pd_top7 " id="Capacity"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Tính năng</label>
+                                                        <label class="col-lg-7 pd_top7 " id="Functiondata"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Nước sản xuất</label>
+                                                        <label class="col-lg-7 pd_top7 " id="NationalProduction"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Năm sản xuất</label>
+                                                        <label class="col-lg-7 pd_top7 " id="YearManufacture"></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-5 control-label font-bold">Nguồn gốc</label>
+                                                        <label class="col-lg-7 pd_top7 " id="Source"></label>
+                                                    </div>
+                                                    @*<div class="form-group">
+                                                            <label class="col-lg-5 control-label font-bold">Kiểm định</label>
+                                                            <label class="col-lg-7 pd_top7 " id=""></label>
+                                                        </div>*@
+                                                </form>
+                                            </div>
+                                            <div class="col-md-8 reset-pd-right">
+                                                <ul class="nav nav-tabs" id="tab_bidshow_pdf">
+                                                    <li class="active"><a data-toggle="tab" href="#tab-sub-tb-1" aria-expanded="true">Hợp đồng mua bán</a></li>
+                                                    <li class=""><a data-toggle="tab" href="#tab-sub-tb-2" aria-expanded="false">Giấy kiểm định</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div id="tab-sub-tb-1" class="tab-pane active">
+                                                        <div class="panel-body"></div>
+                                                    </div>
+                                                    <div id="tab-sub-tb-2" class="tab-pane">
+                                                        <div class="panel-body"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @{
+            if (biddingNews != null && biddingNews.CheckConstructionByCompanyProfile == true)
+            {
+                <div class="row">
+                    <div class="container">
+                        <div class="row white-bg mr_top20">
+                            <div class="ibox-title">
+                                <h5><i class="fa fa-file"></i> Tài liệu yêu cầu</h5>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="box-slider">
+                                    @{ var listFileWithProfile = biddingNews.ListFileWithProfile;}
+                                    @if (listFileWithProfile != null && listFileWithProfile.BiddingDetailFiles.Count > 0)
+                                    {
+                                        <div class="slick_product">
+                                            @foreach (var file in listFileWithProfile.BiddingDetailFiles)
+                                            {
+
+                                                <div>
+
+                                                    <div class="ibox-content">
+                                                        <h3>@file.BiddingNewsFileTypeName</h3>
+                                                        <a href="#" class="downloadRequiredDocument" data-path="~/@file.FilePath"><i class="fa fa-file-pdf-o fa-5x"></i></a>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form id="downloadRequiredDocumentForm" action="@Url.Action("Download", "BidShowContractDetail")" method="post">
+                        @Html.AntiForgeryToken()
+                        <input name="path" type="hidden">
+                    </form>
+                </div>
+            }
+        }
+        <input type="hidden" name="companyProfileId" value="@companyProfileId">
+        <input type="hidden" name="biddingNewsId" value="@biddingNewsId">
+    </section>
+</div>
+<div class="modal inmodal" id="pop-up-choose-contractor" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div class="">Bạn có thực sự muốn chọn nhà thầu này?</div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Không chọn</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary" onclick="ChooseContractor()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal" id="pop-up-cancel-contractor" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div class="">Bạn có thực sự muốn hủy lựa chọn nhà thầu này?</div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Không hủy</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary" onclick="CancelContractor()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal" id="pop-up-confirm-contractor" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div class="">Bạn có thực sự muốn chọn nhà thầu này?</div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Hủy</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary" onclick="ConfirmContractor()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal" id="pop-up-complete-construction" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div class="">Bạn có muốn xác nhận nghiệm thu công trình?</div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Hủy bỏ</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary" onclick="CompletedConstruction();">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal" id="pop-up-evaluate" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>*@
+                @*<h4 class="modal-title">ĐÁNH GIÁ NHÀ THẦU</h4>*@
+                <p class="title-review">ĐÁNH GIÁ NHÀ THẦU</p>
+            </div>
+            <div class="modal-body">
+                <div class="box-contractor text-center review-contractor">
+                    <div class="row">
+                        <p class="title-review">@company.CompanyName</p>
+                    </div>
+                    <img src="~/Content/Common/img/profile.jpg" alt="logo contractor" width="30%" class="img-thumbnail" />
+                    <div class="row">
+
+                        <div class='rating-widget'>
+                            <!-- Rating Stars Box -->
+                            <div class='rating-stars text-center'>
+                                <ul id='stars'>
+                                    <li class='star' title='Quá tệ' data-value='1'>
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                    <li class='star' title='Không tốt' data-value='2'>
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                    <li class='star' title='Bình thường' data-value='3'>
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                    <li class='star' title='Tốt' data-value='4'>
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                    <li class='star' title='Rất tốt' data-value='5'>
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='success-box'>
+                        <div class='clearfix'></div>
+                        @*<img alt='tick image' width='32' src='data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA0MjYuNjY3IDQyNi42NjciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyNi42NjcgNDI2LjY2NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxwYXRoIHN0eWxlPSJmaWxsOiM2QUMyNTk7IiBkPSJNMjEzLjMzMywwQzk1LjUxOCwwLDAsOTUuNTE0LDAsMjEzLjMzM3M5NS41MTgsMjEzLjMzMywyMTMuMzMzLDIxMy4zMzMgIGMxMTcuODI4LDAsMjEzLjMzMy05NS41MTQsMjEzLjMzMy0yMTMuMzMzUzMzMS4xNTcsMCwyMTMuMzMzLDB6IE0xNzQuMTk5LDMyMi45MThsLTkzLjkzNS05My45MzFsMzEuMzA5LTMxLjMwOWw2Mi42MjYsNjIuNjIyICBsMTQwLjg5NC0xNDAuODk4bDMxLjMwOSwzMS4zMDlMMTc0LjE5OSwzMjIuOTE4eiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K' />*@
+                        <div class='text-message'></div>
+                        <div class='clearfix'></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default" onclick="RatingStarForCompany();">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/carousel-bid.js"></script>
+    <script src="/Scripts/Common/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script async src="/Scripts/Common/pdfobject.js"></script>
+    <script src="/Scripts/app/BidShowContractDetail/BidShowContractDetail.js"></script>
+    <script src="~/Scripts/jquery.countdown.min.js"></script>
+
+    <!-- slick carousel-->
+    <script src="/Scripts/Common/plugins/slick/slick.min.js"></script>
+    <style>
+        .pdfobject-container {
+            height: 660px;
+        }
+
+        .pdfobject {
+            border: 1px solid #666;
+        }
+
+        .box-slider {
+            padding: 20px 40px;
+        }
+    </style>
+    <script>
+        $('.scroll_content').slimscroll({ height: '180px' });
+        jQuery(window).on("load",
+            function () {
+                bidShowContractDetail.dropcompanyAbilityExp();
+                bidShowContractDetail.dropcompanyAbilityFinance();
+                bidShowContractDetail.dropcompanyAbilityHr();
+                bidShowContractDetail.dropcompanyAbilityEquipment();
+            });
+
+        $('.slick_product').slick({
+            infinite: true,
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            centerMode: true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 4,
+                        slidesToScroll: 4,
+                        infinite: true,
+                        dots: true
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+            ]
+        });
+
+        $(document).ready(function () {
+            //var company = company;
+            //$("#pop-up-evaluate").modal('show');
+            /* 1. Visualizing things on Hover - See next part for action on click */
+            $('#stars li').on('mouseover', function () {
+                var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+
+                // Now highlight all the stars that's not after the current hovered star
+                $(this).parent().children('li.star').each(function (e) {
+                    if (e < onStar) {
+                        $(this).addClass('hover');
+                    }
+                    else {
+                        $(this).removeClass('hover');
+                    }
+                });
+
+            }).on('mouseout', function () {
+                $(this).parent().children('li.star').each(function (e) {
+                    $(this).removeClass('hover');
+                });
+            });
+
+            var bidCloseDateVal = $("#bidCloseDateVal").val();
+            $('#countdownBidCloseDate').countdown(bidCloseDateVal,
+                function (event) {
+                    $(this).html(event.strftime('%D ngày %H:%M:%S'));
+                });
+
+            var dateInvestorSelected = $("#dateInvestorSelectedVal").val();
+            $('#countdownDateInvestorSelected').countdown(dateInvestorSelected,
+                function (event) {
+                    $(this).html(event.strftime('%H:%M:%S'));
+                });
+
+            /* 2. Action to perform on click */
+            $('#stars li').on('click', function () {
+                var onStar = parseInt($(this).data('value'), 10); // The star currently selected
+                var stars = $(this).parent().children('li.star');
+
+                for (i = 0; i < stars.length; i++) {
+                    $(stars[i]).removeClass('selected');
+                }
+
+                for (i = 0; i < onStar; i++) {
+                    $(stars[i]).addClass('selected');
+                }
+
+                var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10);
+                var msg = "";
+                if (ratingValue > 4) {
+                    msg = "Cảm ơn bạn! Bạn đã đánh giá " + ratingValue + " sao cho chúng tôi.";
+                }
+                else if (ratingValue > 2) {
+                    msg = "Cảm ơn bạn! Bạn đã đánh giá " + ratingValue + " sao, chúng tôi sẽ nổ lực hơn nữa để phục vụ bạn tốt hơn.";
+                }
+                else {
+                    msg = "Chúng tôi sẽ phát triển hơn nữa trong tương lai để phục vụ bạn tốt hơn.";
+                }
+                responseMessageRatingStar(msg);
+            });
+
+            bidShowContractDetail.downloadRequiredDocument();
+
+        });
+
+        function RatingStarForCompany() {
+            var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10);
+
+            $.ajax({
+                type: "POST",
+                url: "/BidShowContractDetail/RatingStarForCompany",
+                data: { companyProfileId: $('input[name=companyProfileId]').val(), star: ratingValue },
+                success: function (responsed) {
+                    if (responsed && responsed.result === "0") {
+
+                    }
+                }
+            });
+        }
+
+        function ChooseContractor() {
+            if ($('input[name=biddingNewsId]').val() != "") {
+
+
+                var data = {
+                    biddingNewsId: $('input[name=biddingNewsId]').val(),
+                    companyProfileId: $('input[name=companyProfileId]').val()
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/BidShowContractDetail/ChooseContractorBidding",
+                    data: data,
+                    success: function (responsed) {
+                        if (responsed && responsed.succeed === "0") {
+                            toastr.success("Chọn nhà thầu thành công, hệ thống đã tự động gửi đến nhà thầu Thông báo trúng thầu và thông tin liên hệ của bạn.");
+                            $(".select_contruct").addClass("hide");
+                            $(".select_confirm").removeClass("hide");
+                            //$(".content-success").removeClass("hide");
+                            //toastr.warning("");
+                        }
+                        else if (responsed && responsed.succeed === "1") {
+                            toastr.warning("Chủ đầu tư đã chọn nhà thầu");
+                        }
+                        else {
+                            toastr.error(responsed);
+                        }
+                    }
+                });
+            }
+            else {
+                toastr.error("Chưa chọn gói thầu");
+            }
+        }
+
+        function CancelContractor() {
+            if ($('input[name=biddingNewsId]').val() != "") {
+                var data = {
+                    biddingNewsId: $('input[name=biddingNewsId]').val(),
+                    companyProfileId: $('input[name=companyProfileId]').val()
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/BidContractionDetail/CancelContractorBidding",
+                    data: data,
+                    success: function (responsed) {
+                        if (responsed && responsed.succeed === "0") {
+                            toastr.success("Hủy chọn nhà thầu thành công");
+                            $(".select_contruct").removeClass("hide");
+                            $(".select_confirm").addClass("hide");
+                        }
+                        else if (responsed && responsed.succeed === "1") {
+                            toastr.warning("Nhà đầu tư đã chọn nhà thầu");
+                        }
+                        else {
+                            toastr.error(responsed);
+                        }
+                    }
+                });
+            }
+            else {
+                toastr.error("Chưa chọn gói thầu");
+            }
+        }
+
+        function ConfirmContractor() {
+            if ($('input[name=biddingNewsId]').val() != "") {
+                var data = {
+                    biddingNewsId: $('input[name=biddingNewsId]').val(),
+                    companyProfileId: $('input[name=companyProfileId]').val()
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/BidContractionDetail/ConfirmContractorBidding",
+                    data: data,
+                    success: function (responsed) {
+                        if (responsed && responsed.succeed === "0") {
+                            toastr.success("Xác nhận hợp đồng thành công");
+                            $(".select_contruct").addClass("hide");
+                            $(".select_confirm").addClass("hide");
+
+                            $('.time_bid.center').hide();
+                            $('#btn_ctr_confirm').hide();
+                            $('#btn_ctr_cancel').hide();
+                            var divtext = $('#btn_ctr_cancel').parent().parent();
+                            divtext.append('<div class="action-bid-detail"><a href="#" class="btn btn-completed-contract" id="completed_contract" data-toggle="modal" data-target="#pop-up-complete-construction">Nghiệm thu</a></div>');
+                        }
+                        else if (responsed && responsed.succeed === "1") {
+                            toastr.warning("Nhà đầu tư đã chọn nhà thầu");
+                        }
+                        else {
+                            toastr.error(responsed);
+                        }
+                    }
+                });
+            }
+            else {
+                toastr.error("Chưa có chọn gói thầu");
+            }
+        }
+
+        function WarningInvestor() {
+            toastr.warning("Bạn không thể chọn Nhà thầu khi chưa kết thúc thời gian đóng thầu");
+            return;
+        }
+
+        function WarningWaitingConfirm() {
+            toastr.warning("Bạn chỉ có thể xác nhận hoặc hủy bỏ Nhà thầu này sau khi kết thúc thời gian chờ ");
+            return;
+        }
+
+        function CompletedConstruction() {
+            if ($('input[name=biddingNewsId]').val() != "") {
+                var data = {
+                    biddingNewsId: $('input[name=biddingNewsId]').val()
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/BidShowContractDetail/CompletedContractorBidding",
+                    data: data,
+                    success: function (responsed) {
+                        if (responsed && responsed.succeed === "0") {
+                            toastr.success("Xác nhận nghiệm thu thành công");
+                            $("#completed_contract").addClass("hide");
+                            $("#pop-up-evaluate").modal('show');
+                        }
+                        else {
+                            toastr.error(responsed);
+                        }
+                    }
+                });
+            }
+            else {
+                toastr.error("Có lỗi xảy ra vui lòng liên hệ admin");
+            }
+        }
+
+        function responseMessageRatingStar(msg) {
+            $('.success-box').fadeIn(200);
+            $('.success-box div.text-message').html("<span>" + msg + "</span>");
+        }
+    </script>
+
+}

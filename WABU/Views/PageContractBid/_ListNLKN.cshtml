@@ -1,0 +1,37 @@
+﻿@{
+    var companyAbilityExpList = ViewBag.companyAbilityExpList;
+}
+<thead>
+    <tr>
+        <th></th>
+        <th>Tên dự án</th>
+        <th>Chủ đầu tư</th>
+        <th>Loại công trình</th>
+    </tr>
+</thead>
+<tbody>
+    @if (companyAbilityExpList != null)
+    {
+        var maxItemQuantity = companyAbilityExpList.Count <= 3 ? companyAbilityExpList.Count : 3;
+        for (int i = 0; i < maxItemQuantity; i++)
+        {
+            <tr class="footable-even" style="">
+                <td>
+                    <input id="CBNLKN_@companyAbilityExpList[i].Id" type="checkbox" class="i-checks XHS_NLKN" name="input[]" value="@companyAbilityExpList[i].Id">
+                </td>
+                <td class="footable-visible footable-first-column">
+                    <span class="footable-toggle"></span>
+                    <a onclick="pageContractBid.getCompanyAbilityExpDetail(@companyAbilityExpList[i].Id)">
+                        @companyAbilityExpList[i].ProjectName
+                    </a>
+                </td>
+                <td class="footable-visible">
+                    @companyAbilityExpList[i].InvestorName
+                </td>
+                <td class="footable-visible">
+                    @companyAbilityExpList[i].ContructionType
+                </td>
+            </tr>
+        }
+    }
+</tbody>

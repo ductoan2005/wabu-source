@@ -1,0 +1,225 @@
+﻿@model FW.ViewModels.CompanyAbilityFinanceVM
+
+<div class="col-lg-12" id="content-NLTC">
+    <div id="ctr_Edit_NLTC" class="bs-transaction">
+        <hr class="border-top-solid" />
+        <div class="ibox-title bg_default_bid color-top-default_bid">
+            <h5><i class="fa fa-dollar" aria-hidden="true"></i> Năng lực tài chính </h5>
+            <a href="#" class="close close-tab btn_ctr_NLTC_out">×</a>
+        </div>
+        <br />
+        <form id="frmEditCompanyAbilityFinance" class="form-horizontal" method="post" enctype="multipart/form-data">
+            @Html.HiddenFor(x => x.Id)
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Năm kê khai*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="2018" class="form-control" name="YearDeclare" data-val="true"
+                           data-rule-number="true"
+                           data-msg-number="Vui lòng chỉ nhập số."
+                           data-val-required="Vui lòng nhập năm kê khai"
+                           aria-describedby="msg-err-YearDeclare"
+                           value="@Model.YearDeclare" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="YearDeclare">
+                        <span id="msg-err-YearDeclare" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Tổng tài sản*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Tổng tài sản" class="form-control" name="TotalAssets" data-val="true"
+                           data-rule-number="true"
+                           data-msg-number="Vui lòng chỉ nhập số."
+                           data-val-required="Vui lòng nhập tổng tài sản"
+                           aria-describedby="msg-err-TotalAssets"
+                           value="@Model.TotalAssets" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="TotalAssets">
+                        <span id="msg-err-TotalAssets" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Tổng nợ phải trả*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Tổng nợ phải trả" class="form-control" name="TotalLiabilities"
+                           data-val="true"
+                           data-rule-number="true"
+                           data-msg-number="Vui lòng chỉ nhập số."
+                           data-val-required="Vui lòng nhập tổng nợ phải trả"
+                           aria-describedby="msg-err-TotalLiabilities"
+                           value="@Model.TotalLiabilities" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="TotalLiabilities">
+                        <span id="msg-err-TotalLiabilities" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Tài sản ngắn hạn*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Tài sản ngắn hạn" class="form-control" name="ShortTermAssets"
+                           data-val="true"
+                           data-rule-number="true"
+                           data-msg-number="Vui lòng chỉ nhập số."
+                           data-val-required="Vui lòng nhập tài sản ngắn hạn"
+                           aria-describedby="msg-err-ShortTermAssets"
+                           value="@Model.ShortTermAssets" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="ShortTermAssets">
+                        <span id="msg-err-ShortTermAssets" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Tổng nợ ngắn hạn*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Tổng nợ ngắn hạn" class="form-control" name="TotalCurrentLiabilities"
+                           data-val="true"
+                           data-rule-number="true"
+                           data-msg-number="Vui lòng chỉ nhập số."
+                           data-val-required="Vui lòng nhập tổng nợ ngắn hạn"
+                           aria-describedby="msg-err-TotalCurrentLiabilities"
+                           value="@Model.TotalCurrentLiabilities" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="TotalCurrentLiabilities">
+                        <span id="msg-err-TotalCurrentLiabilities" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Doanh thu*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Doanh thu" class="form-control" name="Revenue"
+                           data-val="true"
+                           data-rule-number="true"
+                           data-msg-number="Vui lòng chỉ nhập số."
+                           data-val-required="Vui lòng nhập doanh thu"
+                           aria-describedby="msg-err-Revenue"
+                           value="@Model.Revenue" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Revenue">
+                        <span id="msg-err-Revenue" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Lợi nhuận trước thuế*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Lợi nhuận trước thuế" class="form-control" name="ProfitBeforeTax"
+                           data-val="true"
+                           data-rule-number="true"
+                           data-msg-number="Vui lòng chỉ nhập số."
+                           data-val-required="Vui lòng nhập lợi nhuận trước thuế"
+                           aria-describedby="msg-err-ProfitBeforeTax"
+                           value="@Model.ProfitBeforeTax" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="ProfitBeforeTax">
+                        <span id="msg-err-ProfitBeforeTax" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Lợi nhuận sau thuế*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Lợi nhuận sau thuế" class="form-control" name="ProfitAfterTax"
+                           data-val="true"
+                           data-rule-number="true"
+                           data-msg-number="Vui lòng chỉ nhập số."
+                           data-val-required="Vui lòng nhập lợi nhuận sau thuế"
+                           aria-describedby="msg-err-ProfitAfterTax"
+                           value="@Model.ProfitAfterTax" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="ProfitAfterTax">
+                        <span id="msg-err-ProfitAfterTax" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Tờ khai quyết toán<br />(.pdf)</label>
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-file">
+                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <input type="file" name="EvidenceCheckSettlementFile"
+                               data-val-required="Vui lòng chọn tờ khai quyết toán"
+                               aria-describedby="msg-err-EvidenceCheckSettlementFile"
+                               onchange="accountPage.validateSingleInput(this, 'file');" />
+                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="EvidenceCheckSettlementFile">
+                            <span id="msg-err-EvidenceCheckSettlementFile" class=""></span>
+                        </span>
+                    </span>
+                    <span class="fileinput-filename">@Model.EvidenceCheckSettlementFileName</span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Biên bản kiểm toán trong 2 năm<br />(.pdf)</label>
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-file">
+                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <input type="file" name="EvidenceAuditReportFile"
+                               data-val-required="Vui lòng chọn biên bản kiểm toán trong 2 năm"
+                               aria-describedby="msg-err-EvidenceAuditReportFile"
+                               onchange="accountPage.validateSingleInput(this, 'file');" />
+                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="EvidenceAuditReportFile">
+                            <span id="msg-err-EvidenceAuditReportFile" class=""></span>
+                        </span>
+                    </span>
+                    <span class="fileinput-filename">@Model.EvidenceAuditReportFileName</span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Văn bản xác nhận quản lý thuế<br />(.pdf)</label>
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-file">
+                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <input type="file" name="EvidenceCertificationTaxFile"
+                               @*data-val="true"*@
+                               data-val-required="Vui lòng chọn văn bản xác nhận quản lý thuế"
+                               aria-describedby="msg-err-EvidenceCertificationTaxFile"
+                               onchange="accountPage.validateSingleInput(this, 'file');" />
+                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="EvidenceCertificationTaxFile">
+                            <span id="msg-err-EvidenceCertificationTaxFile" class=""></span>
+                        </span>
+                    </span>
+                    <span class="fileinput-filename">@Model.EvidenceCertificationTaxFileName</span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Báo cáo kiểm toán<br />(.pdf)</label>
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-file">
+                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <input type="file" name="EvidenceDeclareTaxFile"
+                               @*data-val="true"*@
+                               data-val-required="Vui lòng chọn báo cáo kiểm toán"
+                               aria-describedby="msg-err-EvidenceCertificationTaxFile"
+                               onchange="accountPage.validateSingleInput(this, 'file');" />
+                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="EvidenceDeclareTaxFile">
+                            <span id="msg-err-EvidenceDeclareTaxFile" class=""></span>
+                        </span>
+                    </span>
+                    <span class="fileinput-filename">@Model.EvidenceDeclareTaxFileName</span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                </div>
+            </div>
+            <input id="CompanyAbilityFinanceId" type="hidden" class="form-control" name="Id" />
+            <div class="form-group">
+                <div class="col-lg-2 col-md-push-4 col-xs-6 text-center">
+                    <button class="btn btn-sm btn-primary" type="button" onclick="pageContractBid.showConfirmUpdateBox(event, 'frmEditCompanyAbilityFinance', 'edit')">Lưu lại</button>
+                </div>
+                <div class="col-lg-2 col-md-push-4 col-xs-6 text-center">
+                    <button type="button" class="btn btn-sm btn-default btn_ctr_NLTC_out">Thoát</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

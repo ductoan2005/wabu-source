@@ -1,0 +1,131 @@
+﻿@model FW.ViewModels.CompanyRatingVM
+
+@{
+    var listCompContructor = ViewBag.CompanyReputation;
+}
+
+<div class="ibox-content">
+    <div class="scroll_content_ads_home">
+        <div class="ss-content">
+            <div class="row">
+                @if (listCompContructor != null)
+                {
+                    foreach (var item in listCompContructor)
+                    {
+                        <div class="col-md-6">
+                            <div class="hot-job">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="img_product">
+                                            @{
+                                                string logo = string.Empty;
+                                                if (item.Logo == null || item.Logo == "")
+                                                {
+                                                    logo = "/Content/Common/img/no-thumbnail.png";
+                                                }
+                                                else
+                                                {
+                                                    logo = item.Logo;
+                                                }
+                                            }
+                                            <img src="@logo" alt="@item.CompanyName" class="img-responsive" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <a href="@item.Link" target="_blank" title="@item.CompanyName" tabindex="0">
+                                            <h3 class="title-news">
+                                                @item.CompanyName
+                                                @if (item.RatingStar >= 5) // vang
+                                                {
+                                                    @*<i class="fa fa-trophy" aria-hidden="true" title="Nhà thầu tin tưởng"></i>*@
+                                                }
+                                            </h3>
+                                            <div class='rating-stars'>
+                                                @{
+                                                    var countRating = item.OneStar + item.TwoStar + item.ThreeStar + item.FourStar + item.FiveStar;
+                                                }
+                                                <ul id='stars' class="">
+                                                    @if (item.RatingStar >= 1) // vang
+                                                    {
+                                                        <li class='star' title='@(item.OneStar > 0 ? item.OneStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw yellow-star'></i>
+                                                        </li>
+                                                    }
+                                                    else //xam
+                                                    {
+                                                        <li class='star' title='@(item.OneStar > 0 ? item.OneStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw grey-star'></i>
+                                                        </li>
+                                                    }
+
+                                                    @if (item.RatingStar >= 2) // vang
+                                                    {
+                                                        <li class='star' title='@(item.TwoStar > 0 ? item.TwoStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw yellow-star'></i>
+                                                        </li>
+                                                    }
+                                                    else //xam
+                                                    {
+                                                        <li class='star' title='@(item.TwoStar > 0 ? item.TwoStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw grey-star'></i>
+                                                        </li>
+                                                    }
+
+                                                    @if (item.RatingStar >= 3) // vang
+                                                    {
+                                                        <li class='star' title='@(item.ThreeStar > 0 ? item.ThreeStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw yellow-star'></i>
+                                                        </li>
+                                                    }
+                                                    else //xam
+                                                    {
+                                                        <li class='star' title='@(item.ThreeStar > 0 ? item.ThreeStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw grey-star'></i>
+                                                        </li>
+                                                    }
+
+                                                    @if (item.RatingStar >= 4) // vang
+                                                    {
+                                                        <li class='star' title='@(item.FourStar > 0 ? item.FourStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw yellow-star'></i>
+                                                        </li>
+                                                    }
+                                                    else //xam
+                                                    {
+                                                        <li class='star' title='@(item.FourStar > 0 ? item.FourStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw grey-star'></i>
+                                                        </li>
+                                                    }
+
+                                                    @if (item.RatingStar >= 5) // vang
+                                                    {
+                                                        <li class='star' title='@(item.FiveStar > 0 ? item.FiveStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw yellow-star'></i>
+                                                        </li>
+                                                    }
+                                                    else //xam
+                                                    {
+                                                        <li class='star' title='@(item.FiveStar > 0 ? item.FiveStar.ToString("#,###") : "0") lượt'>
+                                                            <i class='fa fa-star fa-fw grey-star'></i>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                                <div class='div-content'>
+                                                    Tổng rating: @countRating.ToString("#,###") lượt
+                                                </div>
+                                            </div>
+                                            <div class="div-content">
+                                                <p class="mb5">Tỉ lệ trúng thầu: @item.ProjectImplemented/@item.TotalBiddedNews - Đã hoàn thành: @item.ProjectsComplete</p>
+                                                <p class="mb5">Ngày tham gia: @item.DateInserted.ToString("dd/MM/yyyy")</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

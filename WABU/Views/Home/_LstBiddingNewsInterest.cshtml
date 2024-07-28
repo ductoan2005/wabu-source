@@ -1,0 +1,54 @@
+﻿@model FW.ViewModels.BiddingNewsCommonVM
+
+@{
+    var listBiddingNewsInterest = ViewBag.BiddingNewsInterest;
+}
+<div class="panel-body" style="padding: 10px 0;">
+    <div class="scroll_content">
+        <div class="ss-content">
+            <div class="row">
+                @if (listBiddingNewsInterest != null)
+                {
+                    foreach (var item in listBiddingNewsInterest)
+                    {
+                        <div class="col-md-6">
+                            <div class="hot-job">
+                                <div class="row">
+                                    <div class="col-md-3" style="text-align: center;">
+                                        <div class="img_product">
+                                            @if (!string.IsNullOrWhiteSpace(item.Image))
+                                            {
+                                                <img src="@item.Image" alt="" />
+                                            }
+                                            else
+                                            {
+                                                <img src="/Content/Common/img/no-thumnail.jpg" alt="" />
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <a href="@Url.Action("Index", "BidContractionDetail", new { id = item.BiddingNewsId})">
+                                            <h3 style="height: 20px;">
+                                                <span class="title-news">@item.ConstructionName </span>
+
+                                                @*@if (item.NumberBidder <= 2)
+                {
+                    <span class="score"><span class="label label-danger">HOT</span></span>
+                }*@
+                                            </h3>
+                                            <p class="mb5">Gói thầu: @item.BiddingPackageName </p>
+                                            @*<p class="mb5">Chủ đầu tư: @item.InvestorName</p>*@
+                                            <p class="mb5">Khu vực: @item.AreaName - Lượt đấu thầu: @item.NumberBidded</p>
+                                            <p class="mb5">Ngày mở: @(item.NewsApprovalDate?.ToString("dd/MM/yyyy")) - Ngày đóng: @item.BidCloseDate.ToString("dd/MM/yyyy")</p>
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

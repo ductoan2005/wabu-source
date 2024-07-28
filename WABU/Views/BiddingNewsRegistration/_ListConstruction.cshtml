@@ -1,0 +1,24 @@
+﻿@{ 
+    var listConstruction = ViewBag.ConstructionVMs;
+}
+
+<select class="form-control"
+        id="select-Construction"
+        name="select-Construction"
+        data-val-required="Vui lòng chọn công trình."
+        data-val="true"
+        aria-describedby="msg-err-select-Construction"
+        onchange="enableButtonPopUpDetail();">
+    <option value="">Chọn công trình</option>
+    @if (listConstruction != null && listConstruction.Count != 0)
+    {
+        foreach (var item in listConstruction)
+        {
+            <option value="@item.Value">@item.Text</option>
+        }
+    }
+</select>
+
+<script>
+
+</script>

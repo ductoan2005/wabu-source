@@ -1,0 +1,213 @@
+﻿@using FW.Resources
+@using FW.Common.Enum
+@model FW.ViewModels.BiddingDetailVM
+<div class="modal-dialog modal-md">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">Xuất Thông Tin Đấu Giá</h4>
+        </div>
+        <form id="EditPrintInfoBidding" class="form-horizontal" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <div class="modal-body reset-pd">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="ibox-title">
+                            <h5><i class="fa fa-list"></i> Danh Sách Hồ Sơ</h5>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="scroll_content_table">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center with_text80">Chọn</th>
+                                        <th class="text-center with_text300">Tên hồ sơ</th>
+                                        <th class="text-center with_text150">Ngày tạo hồ sơ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.CompanyProfiles != null && Model.CompanyProfiles.Any())
+                                    {
+                                        foreach (var companyProfile in Model.CompanyProfiles)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="i-checks text-center pdt5">
+                                                        @{
+                                                            var checkedAttr = companyProfile.Id == Model.CompanyProfileId ? "checked" : "";
+                                                        }
+                                                        <input type="checkbox" value="@companyProfile.Id" class="printBiddingInfo" @checkedAttr>
+                                                    </div>
+                                                </td>
+                                                <td>@companyProfile.NameProfile</td>
+                                                <td>@companyProfile.DateInserted.Value.ToString("dd/MM/yyyy")</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <a href="@Url.Action("Index", "PageContractBid")" class="btn btn-primary pull-right mr_left10 mr_top10">Tạo Profile Mới</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="ibox-title">
+                            <h5><i class="fa fa-gavel"></i> Đấu Thầu</h5>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mr_top10">
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label pd_top10">Giá</label>
+                            <div class="col-lg-4">
+                                <input type="text" placeholder="Giá bạn cần nhập" class="form-control" name="Price" value="@($"{Model.Price:0,0} vnđ ")"
+                                       data-val-required="Vui lòng nhập giá"
+                                       data-val-number="Vui lòng chỉ nhập số"
+                                       data-val="true"
+                                       aria-describedby="msg-err-Scale">
+                                <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Price">
+                                    <span id="msg-err-Price" class=""></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label pd_top10">Thời gian thực hiện</label>
+                            <div class="col-lg-4">
+                                <input type="text" placeholder="Nhập tổng số ngày thực hiện" class="form-control" name="NumberOfDaysImplement" value="@($"{Model.NumberOfDaysImplement} ngày")">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label pd_top10">Tài liệu<br />(*.pdf)</label>
+                            <div class="col-lg-8 scroll_content_price">
+                                @if (Model.BiddingDetailFiles != null && Model.BiddingDetailFiles.Any())
+                                {
+                                    foreach (var biddingDetailFile in Model.BiddingDetailFiles)
+                                    {
+                                        if (biddingDetailFile.BiddingNewsFileType == (byte)EBiddingNewsFileType.ProgressSchedule)
+                                        {
+                                            <label>@CommonResource.IsProgressScheduleMKT</label>
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <span class="btn btn-file">
+                                                    <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                    <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                    <input type="file" name="FileAttachProgressScheduleMKT" onchange="bidContractionDetail.validateSingleInput(this);" />
+                                                </span>
+                                                <span class="fileinput-filename">@biddingDetailFile.FileName</span>
+                                                <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                            </div>
+                                            <br />
+                                        }
+                                        if (biddingDetailFile.BiddingNewsFileType == (byte)EBiddingNewsFileType.Quotation)
+                                        {
+                                            <label>@CommonResource.IsQuotationMKT</label>
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <span class="btn btn-file">
+                                                    <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                    <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span><input type="file" name="FileAttachQuotationMKT" onchange="bidContractionDetail.validateSingleInput(this);" />
+                                                </span>
+                                                <span class="fileinput-filename">@biddingDetailFile.FileName</span>
+                                                <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                            </div>
+                                            <br />
+                                        }
+                                        if (biddingDetailFile.BiddingNewsFileType == (byte)EBiddingNewsFileType.MaterialsUse)
+                                        {
+                                            <label>@CommonResource.IsMaterialsUseMKT</label>
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <span class="btn btn-file">
+                                                    <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                    <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span><input type="file" name="FileAttachMaterialsUseMKT" onchange="bidContractionDetail.validateSingleInput(this);" />
+                                                </span>
+                                                <span class="fileinput-filename">@biddingDetailFile.FileName</span>
+                                                <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                            </div>
+                                            <br />
+                                        }
+                                        if (biddingDetailFile.BiddingNewsFileType == (byte)EBiddingNewsFileType.DrawingConstruction)
+                                        {
+                                            <label>@CommonResource.IsDrawingConstructionMKT</label>
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <span class="btn btn-file">
+                                                    <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                    <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span><input type="file" name="FileAttachDrawingConstructionMKT" onchange="bidContractionDetail.validateSingleInput(this);" />
+                                                </span>
+                                                <span class="fileinput-filename">@biddingDetailFile.FileName</span>
+                                                <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                            </div>
+                                            <br />
+                                        }
+                                        if (biddingDetailFile.BiddingNewsFileType == (byte)EBiddingNewsFileType.WorkSafety)
+                                        {
+                                            <label>@CommonResource.IsWorkSafetyMKT</label>
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <span class="btn btn-file">
+                                                    <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                    <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span><input type="file" name="FileAttachWorkSafetyMKT" onchange="bidContractionDetail.validateSingleInput(this);" />
+                                                </span>
+                                                <span class="fileinput-filename">@biddingDetailFile.FileName</span>
+                                                <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                            </div>
+                                            <br />
+                                        }
+                                        if (biddingDetailFile.BiddingNewsFileType == (byte)EBiddingNewsFileType.EnvironmentalSanitation)
+                                        {
+                                            <label>@CommonResource.IsEnvironmentalSanitationMKT</label>
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <span class="btn btn-file">
+                                                    <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                    <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span><input type="file" name="FileAttachEnvironmentalSanitationMKT" onchange="bidContractionDetail.validateSingleInput(this);" />
+                                                </span>
+                                                <span class="fileinput-filename">@biddingDetailFile.FileName</span>
+                                                <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                            </div>
+                                            <br />
+                                        }
+                                        if (biddingDetailFile.BiddingNewsFileType == (byte)EBiddingNewsFileType.FireProtection)
+                                        {
+                                            <label>@CommonResource.IsFireProtectionMKT</label>
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <span class="btn btn-file">
+                                                    <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                    <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span><input type="file" name="FileAttachFireProtectionMKT" onchange="bidContractionDetail.validateSingleInput(this);" />
+                                                </span>
+                                                <span class="fileinput-filename">@biddingDetailFile.FileName</span>
+                                                <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                            </div>
+                                            <br />
+                                        }
+                                        if (biddingDetailFile.BiddingNewsFileType == (byte)EBiddingNewsFileType.Other)
+                                        {
+                                            <label>@biddingDetailFile.BiddingNewsFileTypeName</label>
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <span class="btn btn-file">
+                                                    <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                    <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                    <input type="file" name="OtherFiles" onchange="bidContractionDetail.validateSingleInput(this);"
+                                                           data-fileNameType="@biddingDetailFile.BiddingNewsFileTypeName" data-technicalOtherId="@biddingDetailFile.Id" />
+                                                </span>
+                                                <span class="fileinput-filename">@biddingDetailFile.FileName</span>
+                                                <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                            </div>
+                                            <br />
+                                        }
+                                    }
+                                }
+                                <input type="hidden" value="@Model.CompanyProfile.Company.CompanyName" name="CompanyName" />
+                                <input type="hidden" value="@Model.BiddingNewsId" name="BiddingNewsId" />
+                                <input type="hidden" value="@Model.Id" name="Id" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <a href="#" class="btn btn-primary pull-right mr_left10" data-toggle="modal" data-target="#pop-up-update-biddingInfo">Cập nhật</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

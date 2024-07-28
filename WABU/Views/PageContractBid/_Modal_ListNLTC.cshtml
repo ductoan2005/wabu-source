@@ -1,0 +1,121 @@
+﻿@{
+    var companyAbilityFinanceList = ViewBag.companyAbilityFinanceList;
+    var pagingCompanyAbilityFinanceList = ViewBag.pagingCompanyAbilityFinanceList;
+    var currentPage = pagingCompanyAbilityFinanceList?.CurrentPage;
+    var totalPage = pagingCompanyAbilityFinanceList?.TotalPages;
+    var maxPageShow = 5;
+    if (totalPage > 0 && currentPage > totalPage)
+    {
+        currentPage = totalPage;
+    }
+    var halfPage = maxPageShow / 2;
+    var startPage = currentPage - halfPage;
+    if (startPage < 1)
+    {
+        startPage = 1;
+    }
+    var endPage = currentPage + halfPage;
+    if (endPage > totalPage)
+    {
+        endPage = totalPage;
+    }
+}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content animated fadeIn">
+        <br />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox-title bg_default_bid color-top-default_bid">
+                    <h5><i class="fa fa-dollar" aria-hidden="true"></i> Năng lực tài chính </h5>
+                </div>
+                <div class="overflow-x-sp">
+                    <table class="footable table table-stripped toggle-arrow-tiny default breakpoint footable-loaded text-center scroll-table" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th class="text-center">Năm kê khai</th>
+                                <th class="text-center">Tổng tài sản </th>
+                                <th class="text-center">Doanh thu </th>
+                                <th class="text-center">Lợi nhuận trước thuế </th>
+                                <th class="text-center">Lợi nhuận sau thuế</th>
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (companyAbilityFinanceList != null)
+                            {
+                                foreach (var companyAbilityFinance in companyAbilityFinanceList)
+                                {
+                                    <tr class="footable-even" >
+                                        <td><input type="checkbox" class="i-checks XHS_NLTC Modal_XHS_NLTC" name="input[]" value="@companyAbilityFinance.Id"></td>
+                                        <td class="footable-visible footable-first-column">
+                                            <span class="footable-toggle"></span>
+                                            @companyAbilityFinance.YearDeclare
+                                        </td>
+                                        <td class="footable-visible">
+                                            @companyAbilityFinance.TotalAssets
+                                        </td>
+                                        <td class="footable-visible">
+                                            @companyAbilityFinance.Revenue
+                                        </td>
+                                        <td class="footable-visible">
+                                            @companyAbilityFinance.ProfitBeforeTax
+                                        </td>
+                                        <td class="footable-visible">
+                                            @companyAbilityFinance.ProfitAfterTax
+                                        </td>
+                                        <td class="footable-visible">
+                                            <button type="button" class="btn btn-white btn-Modal-Exit" data-dismiss="modal" onclick="pageContractBid.getCompanyAbilityFinanceDetail(@companyAbilityFinance.Id)">Chỉnh sửa</button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <ul class="pagination pull-left">
+                @{
+                    if (pagingCompanyAbilityFinanceList?.TotalItems > 0)
+                    {
+                        if (startPage > 1)
+                        {
+                            <li class="footable-page-arrow"><a data-page="first" href="#" onclick="accountPage.changePageOnListCompanyAbilityFinance(1, event)">«</a></li>
+                            <li class="footable-page-arrow"><a data-page="prev" href="#" onclick="accountPage.changePageOnListCompanyAbilityFinance(@currentPage - 1, event)">‹</a></li>
+                        }
+                        for (int i = startPage; i < endPage + 1; i++)
+                        {
+                            if (i == currentPage)
+                            {
+                                <li class="active"><a href="javascript:void(0)">@i</a></li>
+                            }
+                            else
+                            {
+                                <li class="footable-page"><a data-page="1" href="#" onclick="accountPage.changePageOnListCompanyAbilityFinance(@i, event)">@i</a></li>
+                            }
+                        }
+                        if (endPage < totalPage)
+                        {
+                            <li class="footable-page-arrow"><a data-page="next" href="#" onclick="accountPage.changePageOnListCompanyAbilityFinance(@currentPage + 1, event)">›</a></li>
+                            <li class="footable-page-arrow"><a data-page="last" href="#" onclick="accountPage.changePageOnListCompanyAbilityFinance(@totalPage, event)">»</a></li>
+                        }
+                    }
+                }
+            </ul>
+            <button type="button" class="btn btn-primary btn-Modal-Choose" onclick="accountPage.chooseButtonEventModal(event, 'XHS_NLTC')" data-dismiss="modal">Chọn</button>
+            <button type="button" class="btn btn-danger btn-Modal-Delete" data-toggle="modal" data-target="#confirmDeleteBox">Xóa</button>
+            <button type="button" class="btn btn-white btn-Modal-Exit" data-dismiss="modal" onclick="pageContractBid.exitButtonEventModal(event)">Thoát</button>
+        </div>
+    </div>
+</div>
+<script>
+    $('.i-checks.XHS_NLTC').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+    });
+    pageContractBid.storeCheckBoxVal("XHS_NLTC");
+    pageContractBid.updateCheckBoxStatus("XHS_NLTC");
+    pageContractBid.updateCheckBoxStatus("Modal_XHS_NLTC");
+</script>

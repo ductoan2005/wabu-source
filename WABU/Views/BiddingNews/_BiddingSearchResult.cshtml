@@ -1,0 +1,99 @@
+﻿@{
+    var biddingNewsVmList = ViewBag.biddingNewsVmList;
+    var pagingBiddingResult = ViewBag.pagingBiddingResult;
+
+    var currentPage = biddingNewsVmList != null ? (int)pagingBiddingResult.CurrentPage : 0;
+
+    var maxPageShow = 5;
+
+    int totalPage = pagingBiddingResult.TotalPages;
+    if (totalPage > 0 && currentPage > totalPage)
+    {
+        currentPage = totalPage;
+    }
+    var halfPage = maxPageShow / 2;
+    var startPage = currentPage - halfPage;
+    if (startPage < 1)
+    {
+        startPage = 1;
+    }
+    var endPage = currentPage + halfPage;
+    if (endPage > totalPage)
+    {
+        endPage = totalPage;
+    }
+}
+
+<div class="ibox">
+    <div class="ibox-content">
+        <div class="scroll_content">
+            <div class="ss-content">
+                <ul>
+                    @if (biddingNewsVmList != null)
+                    {
+                        foreach (var item in biddingNewsVmList)
+                        {
+                            <li class="hot-job">
+                                <div class="ibox-content">
+                                   
+
+                                    <div class="row">
+                                        <div class="col-md-3" style="text-align: center;">
+                                            <div class="image-item">
+                                                @{
+                                                    var imagePath = string.IsNullOrEmpty(item.ConstructionVM.Image1FilePath) ? "/Content/Common/img/no-thumnail.jpg" : item.ConstructionVM.Image1FilePath;
+                                                }
+                                                <img src="~/@imagePath" alt="" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <a href="@Url.Action("Index", "BidContractionDetail", new { id = item.Id})">
+                                                <h3 style="height: 20px;">
+                                                    <span class="title-news">@item.ConstructionVM.ConstructionName </span>
+                                                </h3>
+                                                @*<p class="mb5">Chủ đầu tư: @item.ConstructionVM.InvestorName </p>*@
+                                                <p class="mb5">Gói thầu: @item.BiddingPackageVM.BiddingPackageName </p>
+                                                <p class="mb5">Lượt đấu thầu: @item.NumberBidded</p>
+                                                <p class="mb5">Ngày mở: @(item.NewsApprovalDate?.ToString("dd/MM/yyyy")) - Ngày đóng: @item.BidCloseDate.ToString("dd/MM/yyyy")</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            }
+                        }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-sm-6">
+    <div class="dataTables_paginate paging_simple_numbers text-right" id="paging-list-admin">
+        <ul class="pagination">
+            @{
+                if (pagingBiddingResult.TotalItems > 0)
+                {
+                    if (startPage > 1)
+                    {
+                        <li class="prev"><a href="#" onclick="biddingNewsSearch.changePageOnListBidding(@(currentPage-1), event);">← Previous</a></li>
+                    }
+                    for (int i = startPage; i < endPage + 1; i++)
+                    {
+                        if (i == currentPage)
+                        {
+                            <li class="active"><a href="javascript:void(0)">@i</a></li>
+                        }
+                        else
+                        {
+                            <li class="paginate_button"><a href="#" onclick="biddingNewsSearch.changePageOnListBidding(@i, event)">@i</a></li>
+                        }
+                    }
+                    if (endPage < totalPage)
+                    {
+                        <li class="next"><a href="#" onclick="biddingNewsSearch.changePageOnListBidding(@(currentPage+1), event);"> Next → </a></li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+</div>

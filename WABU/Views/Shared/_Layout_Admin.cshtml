@@ -1,0 +1,298 @@
+﻿@using WABU.Utilities;
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="/Content/Common/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Content/Common/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <!-- Toastr style -->
+    <link href="/Content/Common/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <!-- select2 style -->
+    <link href="/Content/Common/css/plugins/select2/select2.min.css" rel="stylesheet">
+    <!-- datapicker style -->
+    <link href="/Content/Common/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+    <!-- switchery style -->
+    <link href="/Content/Common/css/plugins/switchery/switchery.css" rel="stylesheet">
+    <!-- dataTables style -->
+    <link href="/Content/Common/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
+
+    <link href="/Content/Common/css/animate.css" rel="stylesheet">
+    <link href="/Content/Common/css/style.css" rel="stylesheet">
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/WABU.css" rel="stylesheet" />
+
+    @*@Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")*@
+</head>
+<body>
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>*@
+
+    <div id="wrapper">
+
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            @if (!string.IsNullOrEmpty(SessionObjects.UserProfile.AvatarPath))
+                            {
+                                <div class="box_avatar_admin">
+                                    <img src="/@SessionObjects.UserProfile.AvatarPath" alt="@SessionObjects.UserProfile.AvatarName">
+                                </div>
+                            }
+                            else
+                            {
+                                <i class="fa fa-user-circle-o"></i>
+                            }
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+
+                                <span class="clear">
+                                    <span class="block m-t-xs">
+                                        <strong class="font-bold">
+                                            @if (SessionObjects.UserProfile == null)
+                                            {
+                                                Response.Redirect("~/Login/TimeOutNotify");
+                                            }
+                                            @SessionObjects.UserProfile.UserName
+                                        </strong>
+                                    </span>
+                                    @{
+                                        if (SessionObjects.UserProfile.Authority == 0)
+                                        {
+                                            <span class="text-muted text-xs block"> Root <b class="caret"></b></span>
+                                        }
+                                        else if (SessionObjects.UserProfile.Authority == 1)
+                                        {
+                                            <span class="text-muted text-xs block"> Admin <b class="caret"></b></span>
+                                        }
+                                    }
+                                    @*0.root
+                        1.admin
+                        2.chu dau tu
+                        3.nha thau*@
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a href="@Url.Action("LogOut", "Login")">Thoát</a></li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            WB
+                        </div>
+                    </li>
+                    @{
+                        var activeFilterBidding = ViewBag.activemenu == "FilterBidding" ? "active" : "";
+                        var activeInvalidFilterBidding = ViewBag.activemenu == "InvalidFilterBidding" ? "active" : "";
+                        var activeUserMaster = ViewBag.activemenu == "UserMaster" ? "active" : "";
+                        var activeConstructionManagement = ViewBag.activemenu == "ConstructionManagement" ? "active" : "";
+
+
+                        <li class="@activeFilterBidding">
+                            <a href="@Url.Action("Index", "FilterBiddingNews")"><i class="fa fa-th-large"></i> <span class="nav-label">Duyệt Tin</span></a>
+                        </li>
+                        <li class="@activeInvalidFilterBidding">
+                            <a href="@Url.Action("IndexInvalid", "FilterBiddingNews")"><i class="fa fa-th-large"></i> <span class="nav-label">Quản lý tin thầu</span></a>
+                        </li>
+                        <li class="@activeUserMaster">
+                            <a href="@Url.Action("Index", "UserMaster")"><i class="fa fa-th-large"></i> <span class="nav-label">Quản Lý User</span></a>
+                        </li>
+                        <li class="@activeConstructionManagement">
+                            <a href="@Url.Action("Index", "ConstructionManagement")"><i class="fa fa-th-large"></i> <span class="nav-label">Quản Lý Công Trình</span></a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </nav>
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        @*<li class="dropdown">
+                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-messages">
+                                    <li>
+                                        <div class="dropdown-messages-box">
+                                            <a href="profile.html" class="pull-left">
+                                                <img alt="image" class="img-circle" src="/Content/Common/img/a7.jpg">
+                                            </a>
+                                            <div class="media-body">
+                                                <small class="pull-right">46h ago</small>
+                                                <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
+                                                <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="dropdown-messages-box">
+                                            <a href="profile.html" class="pull-left">
+                                                <img alt="image" class="img-circle" src="/Content/Common/img/a4.jpg">
+                                            </a>
+                                            <div class="media-body ">
+                                                <small class="pull-right text-navy">5h ago</small>
+                                                <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
+                                                <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="dropdown-messages-box">
+                                            <a href="profile.html" class="pull-left">
+                                                <img alt="image" class="img-circle" src="/Content/Common/img/profile.jpg">
+                                            </a>
+                                            <div class="media-body ">
+                                                <small class="pull-right">23h ago</small>
+                                                <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
+                                                <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="text-center link-block">
+                                            <a href="mailbox.html">
+                                                <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-alerts">
+                                    <li>
+                                        <a href="mailbox.html">
+                                            <div>
+                                                <i class="fa fa-envelope fa-fw"></i> You have 16 messages
+                                                <span class="pull-right text-muted small">4 minutes ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="profile.html">
+                                            <div>
+                                                <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                                <span class="pull-right text-muted small">12 minutes ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="grid_options.html">
+                                            <div>
+                                                <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                                <span class="pull-right text-muted small">4 minutes ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="text-center link-block">
+                                            <a href="notifications.html">
+                                                <strong>See All Alerts</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>*@
+
+
+                        <li>
+                            <a href="/Login/Logout">
+                                <i class="fa fa-sign-out"></i> Thoát
+                            </a>
+                        </li>
+                    </ul>
+
+                </nav>
+            </div>
+
+            @if (SessionObjects.UserProfile == null)
+            {
+                Response.Redirect("~/Login/TimeOutNotify");
+            }
+            else
+            {
+                @RenderBody()
+            }
+            <div class="footer">
+                <div class="pull-right">
+                    10GB of <strong>250GB</strong> Free.
+                </div>
+                <div>
+                    <strong>Copyright</strong> Example Company &copy; 2014-2017
+                </div>
+            </div>
+        </div>
+    </div>
+    @*--------ajax load--------*@
+    <div id="divOverLoad"></div>
+    @*--------ajax load--------*@
+
+    <!-- Mainly scripts -->
+    <script src="/Scripts/Common/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="/Scripts/Common/bootstrap.min.js"></script>
+    <script src="/Scripts/Common/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/Scripts/Common/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <!-- Switchery -->
+    <script src="/Scripts/Common/plugins/switchery/switchery.js"></script>
+    <!-- Data picker -->
+    <script src="/Scripts/Common/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <!-- Select2 -->
+    <script src="/Scripts/Common/plugins/select2/select2.full.min.js"></script>
+    <!-- dataTables -->
+    <script src="/Scripts/Common/plugins/dataTables/datatables.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="/Scripts/Common/inspinia.js"></script>
+    <script src="/Scripts/Common/plugins/pace/pace.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/WABU.js"></script>
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")*@
+    @RenderSection("scripts", required: false)
+</body>
+</html>

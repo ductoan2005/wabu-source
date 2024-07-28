@@ -1,0 +1,22 @@
+﻿@using WABU.Utilities;
+
+<ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+        <a href="@Url.Action("Search", "BiddingNews")" class="dropdown-toggle">THÔNG TIN ĐẤU THẦU</a>
+    </li>
+    <li class="dropdown">
+        <a href="@Url.Action("Search", "BiddingNews")" class="dropdown-toggle">TIN TỨC</a>
+    </li>
+    <li class="dropdown">
+        <a href="@Url.Action("Advisory", "Home")" class="dropdown-toggle">ĐIỀU KHOẢN SỬ DỤNG</a>
+    </li>
+    <li class="dropdown">
+        <a href="@Url.Action("Security", "Home")" class="dropdown-toggle">BẢO MẬT</a>
+    </li>
+    @if (SessionObjects.UserProfile == null || SessionObjects.UserProfile.Authority != 3)
+    {
+        <li class="dropdown">
+            <a href="@Url.Action("Index", "BiddingNewsRegistration")" class="btn-success btn-register" style="margin-top: 2px;">ĐĂNG TIN MỜI THẦU</a>
+        </li>
+    }
+</ul>

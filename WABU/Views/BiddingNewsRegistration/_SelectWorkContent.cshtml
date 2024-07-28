@@ -1,0 +1,28 @@
+﻿@{
+    var listWorkContent = ViewBag.WorkContent;
+}
+
+<select class="form-control"
+        id="select-WorkContent"
+        name="select-WorkContent"
+        disabled="disabled"
+        data-val-required="Vui lòng chọn nọi dung công việc."
+        data-val="true"
+        aria-describedby="msg-err-select-WorkContent"
+        onchange="onChangeWorkContent()">
+    <option value="">Chọn nội dung công việc</option>
+    @if (listWorkContent != null && listWorkContent.Count != 0)
+    {
+        foreach (var item in listWorkContent)
+        {
+            <option value="@item.Id">@item.WorkContentName</option>
+        }
+
+        <option value="99">Khác...</option>
+    }
+</select>
+
+<input type="text" id="txt-WorkContentOther" class="form-control display-none" placeholder="Nhập gói thầu khác" onblur="onBlurWorkContentOther()" disabled="disabled">
+<span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="select-WorkContent">
+    <span id="msg-err-select-WorkContent" class=""></span>
+</span>

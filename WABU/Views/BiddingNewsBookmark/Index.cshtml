@@ -1,0 +1,115 @@
+﻿@model FW.ViewModels.BiddingNewsBookmarkVM
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_Home.cshtml";
+
+    var lstContructionName = ViewBag.lstContructionName;
+    var lstBiddingPackageName = ViewBag.lstBiddingPackageName;
+}
+
+<link href="/Content/Common/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+<br />
+<div class="row">
+    <div class="container">
+        @*<a class="screen-1200" href="#" target="_blank" title="Thuengay.vn - Thuê thiết kế &amp; marketing từ A đến Z" style="margin: 20px auto 0;">
+            <img src="http://www.vlance.vn/media/banner/thuengay/1200x150.jpg" width="100%">
+        </a>*@
+        <img src="~/Content/Common/img/step.jpg" width="100%">
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="container">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content mailbox-content">
+                    @Html.Partial("../Partial_view/_PV_Menuaccount")
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 animated fadeInRight no-padding">
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="product_name">Từ Ngày</label>
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span><input id="SearchFromDate" name="FromDate" type="text" class="form-control" placeholder="dd/MM/yyyy">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="price">Đến Ngày</label>
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span><input id="SearchToDate" name="ToDate" type="text" class="form-control" placeholder="dd/MM/yyyy">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="status">Trạng thái</label>
+                            @Html.EnumDropDownListFor(m => m.StatusBiddingNewsBookmark, null, new { @class = "form-control", @Name = "Status" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="name">Tên công trình</label>
+                            @Html.DropDownList("ContructionName", new SelectList(lstContructionName as System.Collections.IEnumerable, "Value", "Text"),
+                                               new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label class="control-label" for="name">Tên gói thầu</label>
+                            @Html.DropDownList("BiddingPackageName", new SelectList(lstBiddingPackageName as System.Collections.IEnumerable, "Value", "Text"),
+                                                    new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-2 pull-right">
+                        <button onclick="biddingNewsBookmark.searchBiddingNewsBookmark(event)" class="btn btn-sm btn-primary full100" type="submit">Tìm kiếm</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="overflow-x-sp">
+                    <table id="tblPackageDetail" class="footable table table-stripped toggle-arrow-tiny default breakpoint footable-loaded" data-page-size="15">
+                        @Html.Partial("_LstBiddingBookmarkDetail")
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="/Scripts/Common/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script src="/Scripts/Common/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/app/BiddingNewsBookmark/BiddingNewsBookmark.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#SearchFromDate').datepicker({
+                todayBtn: "linked",
+                format: 'dd/mm/yyyy',
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: false,
+                autoclose: true
+            });
+            $('#SearchToDate').datepicker({
+                todayBtn: "linked",
+                format: 'dd/mm/yyyy',
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: false,
+                autoclose: true
+            });
+        })
+    </script>
+}
+
+

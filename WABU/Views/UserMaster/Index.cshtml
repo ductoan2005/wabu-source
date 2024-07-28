@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+<link href="/Content/Common/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Quản Lý Tài Khoản</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">Home</a>
+            </li>
+            <li class="active">
+                <strong>Tài khoản</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content  animated fadeInRight" id="admin">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h2>Tài khoản</h2>
+                    @*<p>
+                            bạn có thể tìm kiếm email theo khách hàng
+                        </p>
+                        <div class="input-group">
+                            <input type="text" placeholder="tìm kiếm theo user code, họ tên, username, email, số điện thoại,..." id="txtCondition-Search" class="input form-control">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn btn-primary" onclick="SearchUser(1,event);"> <i class="fa fa-search"></i> Tìm kiếm</button>
+                            </span>
+                        </div>
+                        <div class="top_margin_15">
+                            <a data-toggle="modal" class="btn btn-primary" data-target="#pop-up-detail"><i class="fa fa-plus font20"></i> Thêm tài khoản</a>
+                        </div>*@
+                    <div class="clients-list">
+                        <ul class="nav nav-tabs">
+                            @*    <span class="pull-right small text-muted">1406 Elements</span>*@
+                            <li class="active" onclick="userMaster.selectTab('1');"><a data-toggle="tab" href="#tab-admin"><i class="fa fa fa-users"></i> Admin</a></li>
+                            <li class="" onclick="userMaster.selectTab('2');"><a data-toggle="tab" href="#tab-investor"><i class="fa fa-child"></i> Chủ Đầu Tư</a></li>
+                            <li class="" onclick="userMaster.selectTab('3');"><a data-toggle="tab" href="#tab-contractors"><i class="fa fa fa-building"></i> Nhà Thầu</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab-admin" class="tab-pane active">
+                                @Html.Partial("_LstTabAdmin")
+                            </div>
+
+                            <div id="tab-investor" class="tab-pane">
+                                @Html.Partial("_LstTabInvestor")
+                            </div>
+
+                            <div id="tab-contractors" class="tab-pane">
+                                @Html.Partial("_LstTabContractors")
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div id="tab-detailUser" class="ibox">
+                @Html.Partial("_DetailUser")
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="popup-detail-user" tabindex="-1" role="dialog" aria-hidden="true">
+    @Html.Partial("_PopUpDetailUser")
+</div>
+<div class="modal inmodal" id="popup-edit-user" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+</div>
+<div>
+    <button id="openConfirmUpdateBox" type="button" data-toggle="modal" data-target="#confirmUpdateBox" style="display: none;"></button>
+</div>
+<div class="modal inmodal" id="confirmUpdateBox" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div id="warningMessage"><span>Bạn có muốn cập nhật ?</span></div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Hủy bỏ</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="/Scripts/Common/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/app/Master/UserMaster.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).on('change', '.AdvertisingIsOn', function () {
+                if ($('#AdvertisingIsOn').prop('checked')) {
+                    $('.AdvertisingBackgroundImage').removeClass('hidden');
+                }
+                else {
+                    $('.AdvertisingBackgroundImage').addClass('hidden');
+                    $("input[name='AdvertisingBackgroundImageFile']").val('');
+                    $('#previewAvatarAdvertisingBackgroundImage').attr('src', '../Content/Common/img/no-thumbnail.png');
+                }
+            });
+
+            userMaster.init();
+        })
+    </script>
+}

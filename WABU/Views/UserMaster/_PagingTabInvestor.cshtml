@@ -1,0 +1,86 @@
+﻿@{
+    var pagingUserInvestor = ViewBag.pagingUserInvestor;
+
+    var currentPageInvestor = int.Parse(ViewData["CurrentPageInvestor"].ToString());
+    var itemsPerPageInvestor = int.Parse(ViewData["ItemsPerPageInvestor"].ToString());
+    var totalItemsInvestor = int.Parse(ViewData["TotalItemsInvestor"].ToString());
+    var maxPageShowInvestor = 5;// int.Parse(ViewData["MaxPageShow"].ToString());
+
+    int totalPageInvestor = pagingUserInvestor.TotalPages;
+    if (totalPageInvestor > 0 && currentPageInvestor > totalPageInvestor)
+    {
+        currentPageInvestor = totalPageInvestor;
+    }
+    var halfPageInvestor = maxPageShowInvestor / 2;
+    var startPageInvestor = currentPageInvestor - halfPageInvestor;
+    if (startPageInvestor < 1)
+    {
+        startPageInvestor = 1;
+    }
+    var endPageInvestor = currentPageInvestor + halfPageInvestor;
+    if (endPageInvestor > totalPageInvestor)
+    {
+        endPageInvestor = totalPageInvestor;
+    }
+}
+<div class="row">
+    <div class="col-sm-6">
+        <div class="dataTables_info" id="paging-info" role="status" aria-live="polite">
+            @{
+                if (pagingUserInvestor.TotalItems > 0)
+                {
+                    if (totalPageInvestor == startPageInvestor)
+                    {
+                        <span>Tổng item(s) là @totalItemsInvestor</span>
+                    }
+                    else if (currentPageInvestor == 1)
+                    {
+                        <span>Hiển thị @currentPageInvestor đến @(itemsPerPageInvestor * currentPageInvestor) của tổng @totalItemsInvestor items</span>
+                    }
+                    else if (currentPageInvestor < endPageInvestor)
+                    {
+                        <span>Hiển thị @(((currentPageInvestor - 1) * itemsPerPageInvestor) + 1) đến @(itemsPerPageInvestor * currentPageInvestor) của tổng @totalItemsInvestor items</span>
+                    }
+                    else if (currentPageInvestor == endPageInvestor)
+                    {
+                        <span>Hiển thị @(((currentPageInvestor - 1) * itemsPerPageInvestor) + 1) đến @totalItemsInvestor của tổng @totalItemsInvestor items</span>
+                    }
+                }
+                else
+                {
+                    <span>Tổng item(s) là 0</span>
+                }
+            }
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="dataTables_paginate paging_simple_numbers text-right" id="paging-list-investor">
+            <ul class="pagination">
+                @{
+                    if (pagingUserInvestor.TotalItems > 0)
+                    {
+                        if (startPageInvestor > 1)
+                        {
+                            <li class="prev"><a href="#" onclick="userMaster.changePageOnListInvestor(@(currentPageInvestor - 1), event);">← Previous</a></li>
+                        }
+                        for (var i = startPageInvestor; i < endPageInvestor + 1; i++)
+                        {
+                            if (i == currentPageInvestor)
+                            {
+                                <li class="active"><a href="javascript:void(0)">@i</a></li>
+                            }
+                            else
+                            {
+                                <li class="paginate_button"><a href="#" onclick="userMaster.changePageOnListInvestor(@i, event)">@i</a></li>
+                            }
+                        }
+                        if (endPageInvestor < totalPageInvestor)
+                        {
+                            <li class="next"><a href="#" onclick="userMaster.changePageOnListInvestor(@(currentPageInvestor + 1), event);"> Next → </a></li>
+                        }
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>

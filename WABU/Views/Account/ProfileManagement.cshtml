@@ -1,0 +1,384 @@
+﻿@model FW.ViewModels.UserMasterVM
+@using WABU.Utilities;
+@using FW.ViewModels;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_Home.cshtml";
+
+    var companyInfo = (CompanyVM)ViewBag.CompanyInfo;
+    var hasCompanyStaffs = companyInfo.CompanyStaffs != null;
+    if (hasCompanyStaffs)
+    {
+        companyInfo.CompanyStaffs = companyInfo.CompanyStaffs.Where(x => x.IsDeleted != true).ToList();
+    }
+}
+<link href="/Content/Common/css/plugins/dropzone/basic.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+
+<div class="row">
+    <div class="container">
+        @*<a class="screen-1200" href="#" target="_blank" title="" style="margin: 20px auto 0;">
+                <img src="~/Content/Common/img/step.jpg" width="100%">
+            </a>*@
+        <img src="~/Content/Common/img/step.jpg" width="100%">
+    </div>
+</div>
+<br />
+<div class="row" id="infomation_account">
+    <div class="container">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content mailbox-content">
+                    @Html.Partial("../Partial_view/_PV_Menuaccount")
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 animated fadeInRight">
+            <div class="ibox-content">
+                <form class="form-horizontal" id="frmEditUser" name="frmUser" method="post">
+                    @Html.HiddenFor(x => x.Id)
+                    @Html.HiddenFor(x => x.Authority)
+                    <h3 class="m-t-none m-b">Thông tin tài khoản</h3>
+                    <br />
+                    @{
+                        if (ViewBag.Authority != 3)
+                        {
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="col-md-12 text-center">
+                                            <span class="btn btn-file reset-pd">
+                                                <input type="file" id="AvatarFile" name="AvatarFile" onchange="commonJS.validateSingleInput(this, 'image')" />
+                                                @{
+                                                    string src = string.IsNullOrEmpty(Model.AvatarPath) ? "/Content/Common/img/no-thumnail.jpg" : "/" + Model.AvatarPath;
+                                                }
+                                                <img id="previewAvatar" src="@src" alt="AvatarFile" width="140" class="img-thumbnail" />
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Họ và tên hoặc tên DN *</label>
+
+                                        <div class="col-md-8">
+                                            <input type="text" placeholder="nhập họ tên" class="form-control" id="FullName" name="FullName" value="@Model.FullName">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Địa chỉ</label>
+
+                                        <div class="col-md-8">
+                                            <input type="text"
+                                                   placeholder="Địa chỉ user"
+                                                   class="form-control"
+                                                   id="Address"
+                                                   name="Address"
+                                                   data-val-length-max="250"
+                                                   data-val-length="Địa chỉ bạn không quá 250 ký tự"
+                                                   data-val="true"
+                                                   aria-describedby="msg-err-Address"
+                                                   value="@Model.Address" />
+                                            <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="Address">
+                                                <span id="msg-err-Address" class=""></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Điện thoại*</label>
+                                        <div class="col-md-8">
+                                            <input type="text"
+                                                   placeholder="Số điện thoại liên hệ"
+                                                   class="form-control"
+                                                   id="PhoneNumber"
+                                                   name="PhoneNumber"
+                                                   data-val-length-max="11"
+                                                   data-val-length="Điện thoại bạn không quá 11 ký tự"
+                                                   data-val="true"
+                                                   aria-describedby="msg-err-PhoneNumber"
+                                                   value="@Model.PhoneNumber" />
+                                            <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="PhoneNumber">
+                                                <span id="msg-err-PhoneNumber" class=""></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                        }
+                    }
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 text-right">Username</label>
+                                <div class="col-md-8 text-left">
+                                    @SessionObjects.UserProfile.UserName
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Thay đổi mật khẩu</label>
+
+                                <div class="col-md-9">
+                                    <input type="password"
+                                           placeholder="Mật khẩu"
+                                           class="form-control"
+                                           id="Password"
+                                           name="Password"
+                                           data-val-length-max="50"
+                                           data-val-length="Mật khẩu bạn không quá 50 ký tự"
+                                           data-val-required="Mật khẩu của bạn là gì?"
+                                           data-val="true"
+                                           aria-describedby="msg-err-Password"
+                                           value="" />
+                                    <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="Password">
+                                        <span id="msg-err-Password" class=""></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Xác nhận mật khẩu</label>
+
+                                <div class="col-md-9">
+                                    <input type="password"
+                                           placeholder="Nhập lại mật khẩu"
+                                           class="form-control"
+                                           id="Password-Confirm"
+                                           name="Password-Confirm"
+                                           data-val-length-max="50"
+                                           data-val-length="Mật khẩu bạn không quá 50 ký tự"
+                                           data-val-required="Mật khẩu của bạn là gì?"
+                                           data-val="true"
+                                           aria-describedby="msg-err-Password-Confirm" />
+                                    <span id="Password-Confirm-Mess" class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="Password-Confirm">
+                                        <span id="msg-err-Password-Confirm" class=""></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Email *</label>
+
+                                <div class="col-md-9">
+                                    <input type="email"
+                                           placeholder="Địa chỉ user"
+                                           class="form-control"
+                                           id="Email"
+                                           name="Email"
+                                           data-val-length-max="50"
+                                           data-val-length="Địa chỉ bạn không quá 50 ký tự"
+                                           data-val="true"
+                                           aria-describedby="msg-err-Email"
+                                           value="@Model.Email"
+                                           readonly />
+                                    <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="Email">
+                                        <span id="msg-err-Address" class=""></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-offset-3 col-lg-9">
+                                    <button class="btn btn-sm btn-primary" type="button" onclick="accountPage.updateUser(event);">Cập nhật</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <hr />
+            @if (SessionObjects.UserProfile.Authority == 3)
+            {
+                <div id="ContractorInformation">
+                    @Html.Partial("_ContractorInformation")
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/app/Account/accountPage.js"></script>
+    <script src="~/Scripts/app/WabuCommonJS/commonJS.js"></script>
+    <!-- Script for show file name after choose file  -->
+    <script src="/Scripts/Common/plugins/jasny/jasny-bootstrap.min.js"></script>
+
+    <script>
+    $(document).ready(function () {
+
+        // variable common
+        var rowIdStaff = 0;
+        var dataStaff = { listStaff: [] };
+        var trDefault = "<tr id='row-default-Staff' class='text-center'>"
+            + "<td> <input type='text' id='txt-stt' name='StaffNum' class='form-control' placeholder='STT' disabled></td>"
+            + "<td><input type='text' id='txt-name' name='StaffName' class='form-control' placeholder='Nhập họ tên'></td>"
+            + "<td><input type='text' id='txt-position' name='StaffPosition' class='form-control' placeholder='Nhập chức vụ'></td>"
+            + "<td><input type='number' id='txt-phone' name='StaffPhone' class='form-control text-center' placeholder='số điện thoại'></td>"
+            + "<td class='text-center'><a href='#' class='btn-add-row-NLMM display-normal'><i class='fa fa-plus-square font_25 greenblue'></i></a></td>"
+            + "</tr>";
+            var staff = {};
+            @if(companyInfo != null && hasCompanyStaffs && companyInfo.CompanyStaffs.Any())
+            {
+                foreach (var staff in companyInfo.CompanyStaffs)
+                {
+                    @:staff = { staffId: '@staff.Id', staffName: '@staff.FullName', staffPosition: '@staff.Position', staffPhone: '@staff.PhoneNumber'};
+                    @:InitialCompanyStaff(staff);
+                }
+            }
+
+            //======================================================
+        $("#frmEditCompany").on("submit", function (e) {
+
+            if (e != null) {
+                e.preventDefault();
+            }
+
+            if (validForm('frmEditCompany')) {
+                var form = document.getElementById('frmEditCompany');
+                var dataForm = new FormData(form);
+
+                var website = dataForm.get("Link");
+                @*var companyName = '@companyInfo.CompanyName';*@
+                var id = '@Model.Id';
+                //var defaultWebsite = 'wabu.vn/nhathau/' + companyName + '_' + id;
+                var defaultWebsite = 'wabu.vn/nhathau/' + id;
+                if (website == null || website == '')
+                    dataForm.set('Link', defaultWebsite);
+
+                var staff = "";
+                if (dataStaff.listStaff.length > 0) {
+                    staffs = JSON.stringify(dataStaff.listStaff);
+                    for (var i = 0; i < dataStaff.listStaff.length; i++) {
+                        dataForm.append('CompanyStaffs[' + i + '].CompanyId', @(companyInfo.Id == null ? 0 : @companyInfo.Id));
+                        dataForm.append('CompanyStaffs[' + i + '].Id', dataStaff.listStaff[i].staffId);
+                        dataForm.append('CompanyStaffs[' + i + '].FullName', dataStaff.listStaff[i].staffName);
+                        dataForm.append('CompanyStaffs[' + i + '].Position', dataStaff.listStaff[i].staffposition);
+                        dataForm.append('CompanyStaffs[' + i + '].PhoneNumber', dataStaff.listStaff[i].staffPhone);
+                    }
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Contractor/UpdateContractorInformation",
+                    data: dataForm,
+                    cache: false,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function (resultData) {
+                        if (resultData && resultData.succeed == "0") {
+                            toastr.success("Cập nhật thành công");
+                            if (website == null || website == '') {
+                                $('#Link').val(defaultWebsite);
+                            }
+                        }
+
+                    }
+                });
+            }
+        });
+
+        function drawStaffRow(trAccept) {
+            if ($('#tbl-Staff tbody #row-default-Staff').length) {
+                $('#tbl-Staff #row-default-Staff').remove(); //remove tr
+
+                $('#tbl-Staff tbody').append(trAccept);
+                $('#tbl-Staff tbody').append(trDefault);
+            }
+        }
+
+        function InitialCompanyStaff(staff) {
+            rowIdStaff++;
+            var idRow = "row_NLMM_" + rowIdStaff;
+
+            var trAccept = "<tr id='" + idRow + "' class='text-center'>"
+            + "<td><p>" + rowIdStaff + "</p></td>"
+            + "<td><p>" + staff.staffName + "</p></td>"
+            + "<td><p>" + staff.staffPosition + "</p></td>"
+            + "<td><p>" + staff.staffPhone + "</p></td>"
+                + '<td><a href="#" class="display-normal btn-delete-row-NLMM"><i class="fa fa-minus-square font_25 color-red"></i></a></td></tr> ';
+
+            dataStaff.listStaff.push(
+                {
+                    id: idRow,
+                    staffId: staff.staffId,
+                    staffName: staff.staffName,
+                    staffposition: staff.staffPosition,
+                    staffPhone: staff.staffPhone
+                });
+            drawStaffRow(trAccept);
+        };
+
+        //function AddRowCompanyStaff(e) {
+        //    e.preventDefault();
+        //    if ($('#txt-name').val() === "") {
+        //        toastr.error("Vui lòng nhập tên nhân viên muốn thêm!");
+        //        return;
+        //    }
+
+        //    var jsUrl = '/Scripts/Common/plugins/iCheck/icheck.min.js';
+        //    $.getScript(jsUrl, function () {
+        //        rowIdStaff++;
+        //        var idRow = "row_NLMM_" + rowIdStaff;
+
+        //        var trAccept = "<tr id='" + idRow + "' class='text-center'>"
+        //                    + "<td><p>" + rowIdStaff + "</p></td>"
+        //                    + "<td><p>" + $('#txt-name').val() + "</p></td>"
+        //                    + "<td><p>" + $('#txt-position').val() + "</p></td>"
+        //                    + "<td><p>" + $('#txt-phone').val() + "</p></td>"
+        //            + '<td><a href="#" class="display-normal btn-delete-row-NLMM"><i class="fa fa-minus-square font_25 color-red"></i></a></td></tr > ';
+
+        //        dataStaff.listStaff.push(
+        //            {
+        //                id: idRow,
+        //                staffId: null,
+        //                staffName: $('#txt-name').val(),
+        //                staffposition: $('#txt-position').val(),
+        //                staffPhone: $('#txt-phone').val()
+        //            });
+
+        //        // draw tr
+        //        drawStaffRow(trAccept);
+        //    });
+        //}
+
+        //function DeleteRowStaff(idRow, e) {
+        //    e.preventDefault();
+        //    $('#tbl-Staff tbody tr#' + idRow).remove(); //remove tr
+        //    var data = $.grep(dataStaff.listStaff, function (e) {
+        //        return e.id != idRow;
+        //    });
+
+        //    dataStaff.listStaff = data;
+        //}
+
+        function updateContractorInformation(e) {
+
+            var file_bussinessLicense = $('#bussinessLicense').prop('files')[0];
+            var file_organization = $('#organization').prop('files')[0];
+
+            var dataForm = new FormData(form);
+
+            $.ajax({
+                type: "POST",
+                url: "/Contractor/UpdateContractorInformation",
+                data: dataForm,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (resultData) {
+                    toastr.success("Cập nhật thành công");
+                }
+            });
+        }
+
+        //$('#tbl-Staff').on('click', '.btn-add-row-NLMM', function (e) {
+        //    AddRowCompanyStaff(e);
+        //});
+
+        //$('#tbl-Staff').on('click', '.btn-delete-row-NLMM', function (e) {
+        //    var id = $(this).parent().parent().attr('id');
+        //    DeleteRowStaff(id, e);
+        //});
+
+    });
+    </script>
+}

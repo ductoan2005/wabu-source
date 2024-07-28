@@ -1,0 +1,66 @@
+﻿@using FW.ViewModels
+
+@{
+    var userDetail = ViewBag.userDetail as UserMasterVM;
+    var companyInfo = ViewBag.CompanyInfo;
+}
+<div class="ibox-content">
+    <div class="tab-content">
+        <div id="contact-1" class="tab-pane active">
+            <div class="row m-b-lg">
+                <div class="col-lg-5 text-center">
+                    <h2>@userDetail.FullName</h2>
+
+                    <div class="m-b-sm custom_avata_user_admin img-circle">
+                        <img alt="image" src="~/@userDetail.AvatarPath"
+                             style="width: 100%">
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="userMaster.displayEditUser(@userDetail.Id)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i> Chỉnh sửa thông tin
+                    </button>
+                </div>
+            </div>
+            <div class="client-detail">
+                <div class="full-height-scroll">
+                    <ul class="list-group clear-list">
+                        <li class="list-group-item fist-item">
+                            <span class="pull-right">@userDetail.FullName</span>
+                            Họ và tên
+                        </li>
+                        <li class="list-group-item">
+                            <span class="pull-right">@userDetail.Address</span>
+                            Địa chỉ
+                        </li>
+                        <li class="list-group-item">
+                            <span class="pull-right">@userDetail.PhoneNumber</span>
+                            SĐT
+                        </li>
+                        <li class="list-group-item">
+                            <span class="pull-right">@userDetail.Email</span>
+                            Email
+                        </li>
+                        @if (userDetail.Authority == 3)
+                        {
+                            <li class="list-group-item">
+                                <span class="pull-right">@companyInfo.CompanyName</span>
+                                Tên công ty
+                            </li>
+                            <li class="list-group-item">
+                                <span class="pull-right">@companyInfo.CompanyAddress</span>
+                                Địa chỉ công ty
+                            </li>
+                            <li class="list-group-item">
+                                <span class="pull-right">@companyInfo.CompanyPhoneNumber</span>
+                                SĐT công ty
+                            </li>
+                            <li class="list-group-item">
+                                <span class="pull-right">@companyInfo.Link</span>
+                                Website công ty
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

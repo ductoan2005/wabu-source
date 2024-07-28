@@ -1,0 +1,371 @@
+﻿@model FW.ViewModels.UserMasterVM
+
+@functions{
+    public string GetOptionByNumber(int authority)
+    {
+        var result = Model.Authority == authority ? "selected='selected'" : string.Empty;
+        return result;
+    }
+
+    public static string GetCheckByBoolean(bool isChecked)
+    {
+        return isChecked ? "checked='checked'" : "";
+    }
+}
+@{
+    var birthDayVal = Model.DateOfBirth.HasValue ? Model.DateOfBirth.Value.ToString("dd/MM/yyyy") : "";
+    var companyInfo = ViewBag.CompanyInfo;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content animated fadeIn">
+        <form id="frmEditUser" name="frmUser" method="post">
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Chỉnh sửa thông tin tài khoản</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    @*FullName*@
+                    <div id="div-FullName" class="form-group">
+                        <label class="col-lg-4 control-label">Họ tên *</label>
+                        <div class="col-lg-8">
+                            <input type="text"
+                                   placeholder="Họ và tên user"
+                                   class="form-control"
+                                   id="FullName"
+                                   name="FullName"
+                                   data-val-length-max="50"
+                                   data-val-length="Họ tên bạn không quá 50 ký tự"
+                                   data-val-required="Họ tên bạn là gì?"
+                                   data-val="true"
+                                   aria-describedby="msg-err-FullName"
+                                   value="@Model.FullName" />
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="FullName">
+                                <span id="msg-err-FullName" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*Authority*@
+                    <div id="div-Authority" class="form-group">
+                        <label class="col-lg-4 control-label">Quyền User *</label>
+                        <div class="col-lg-8">
+                            <select class="form-control m-b"
+                                    id="Authority"
+                                    name="Authority"
+                                    data-val-required="Bạn sẽ có quyền gì?"
+                                    data-val="true"
+                                    aria-describedby="msg-err-Authority">
+                                <option value="">Chọn quyền User</option>
+                                <option value="0" @GetOptionByNumber(0)>Root</option>
+                                <option value="1" @GetOptionByNumber(1)>Administrator</option>
+                                <option value="2" @GetOptionByNumber(2)>Chủ đầu tư</option>
+                                <option value="3" @GetOptionByNumber(3)>Nhà thầu</option>
+                            </select>
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Authority">
+                                <span id="msg-err-Authority" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*UserName*@
+                    <div id="div-UserName" class="form-group">
+                        <label class="col-lg-4 control-label">Tên đăng nhập *</label>
+                        <div class="col-lg-8">
+                            <input type="text"
+                                   placeholder="Username"
+                                   class="form-control"
+                                   id="UserName"
+                                   name="UserName"
+                                   data-val-length-max="50"
+                                   data-val-length="Tên đăng nhập bạn không quá 50 ký tự"
+                                   data-val-required="Tên đăng nhập bạn là gì?"
+                                   data-val="true"
+                                   aria-describedby="msg-err-UserName"
+                                   value="@Model.UserName" />
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="UserName">
+                                <span id="msg-err-UserName" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*Password*@
+                    <div id="div-Password" class="form-group">
+                        <label class="col-lg-4 control-label">Mật khẩu</label>
+                        <div class="col-lg-8">
+                            <input type="password"
+                                    placeholder="Mật khẩu"
+                                    class="form-control new-password"
+                                    id="Password"
+                                    name="Password"
+                                    data-val-length-min="8"
+                                    data-val-length-max="20"
+                                    data-val-length="Mật khẩu của bạn phải từ 8 - 20 ký tự"
+                                    data-val-required="Mật khẩu của bạn là gì?"
+                                    data-val="true"
+                                    aria-describedby="msg-err-Password"
+                                    value="@Model.Password" />
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Password">
+                                <span id="msg-err-Password" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*Password Confirm*@
+                    <div id="div-Password-Confirm" class="form-group">
+                        <label class="col-lg-4 control-label">Xác nhận mật khẩu</label>
+                        <div class="col-lg-8">
+                            <input type="password"
+                                    placeholder="Nhập lại mật khẩu"
+                                    class="form-control"
+                                    id="Password-Confirm"
+                                    name="Password-Confirm"
+                                    data-val-length-min="8"
+                                    data-val-length-max="20"
+                                    data-val-length="Mật khẩu của bạn phải từ 8 - 20 ký tự"
+                                    aria-describedby="msg-err-Password-Confirm" />
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Password-Confirm">
+                                <span id="msg-err-Password-Confirm" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*DateOfBirth*@
+                    <div id="div-DateOfBirth" class="form-group">
+                        <label class="col-lg-4 control-label">Ngày sinh</label>
+                        <div class="col-lg-8">
+                            <input type="text"
+                                   class="form-control"
+                                   id="EditDateOfBirth"
+                                   name="DateOfBirth"
+                                   placeholder="dd/MM/yyyy"
+                                   data-val="true"
+                                   aria-describedby="msg-err-DateOfBirth"
+                                   value="@birthDayVal" />
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="DateOfBirth">
+                                <span id="msg-err-DateOfBirth" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*Gender*@
+                    <div id="div-Gender" class="form-group">
+                        <label class="col-lg-4 control-label">Giới tính</label>
+                        <div class="col-lg-8">
+                            <select class="form-control m-b"
+                                    id="Gender"
+                                    name="Gender"
+                                    data-val="true"
+                                    aria-describedby="msg-err-Gender">
+                                <option value="">Chọn giới tính</option>
+                                <option value="0" @GetOptionByNumber(0)>Nữ</option>
+                                <option value="1" @GetOptionByNumber(1)>Nam</option>
+                            </select>
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="DateOfBirth">
+                                <span id="msg-err-Gender" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*CMND*@
+                    <div class="form-group">
+                        <label class="col-lg-4 control-label">Chứng minh thư</label>
+                        <div class="col-lg-8">
+                            <input type="text" placeholder="Chứng minh nhân dân" class="form-control" id="CMND" name="CMND" value="@Model.CMND">
+                        </div>
+                    </div>
+
+                    @*PhoneNumber*@
+                    <div id="div-PhoneNumber" class="form-group">
+                        <label class="col-lg-4 control-label">Số điện thoại</label>
+                        <div class="col-lg-8">
+                            <input type="text"
+                                   placeholder="Số điện thoại liên hệ"
+                                   class="form-control"
+                                   id="PhoneNumber"
+                                   name="PhoneNumber"
+                                   data-val-length-max="11"
+                                   data-val-length="Số điện thoại không quá 11 ký tự"
+                                   data-val="true"
+                                   aria-describedby="msg-err-PhoneNumber"
+                                   value="@Model.PhoneNumber" />
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="PhoneNumber">
+                                <span id="msg-err-PhoneNumber" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*Address*@
+                    <div id="div-Address" class="form-group">
+                        <label class="col-lg-4 control-label">Địa chỉ</label>
+                        <div class="col-lg-8">
+                            <input type="text"
+                                   placeholder="Địa chỉ user"
+                                   class="form-control"
+                                   id="Address"
+                                   name="Address"
+                                   data-val-length-max="250"
+                                   data-val-length="Địa chỉ bạn không quá 250 ký tự"
+                                   data-val="true"
+                                   aria-describedby="msg-err-Address"
+                                   value="@Model.Address" />
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Address">
+                                <span id="msg-err-Address" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*Email*@
+                    <div id="div-Email" class="form-group">
+                        <label class="col-lg-4 control-label">Email</label>
+                        <div class="col-lg-8">
+                            <input type="text"
+                                   placeholder="Phone"
+                                   class="form-control"
+                                   id="Email"
+                                   name="Email"
+                                   data-val-required="Email của bạn là gì?"
+                                   data-val-length-max="50"
+                                   data-val-length="Địa chỉ Email bạn không quá 50 ký tự"
+                                   data-val="true"
+                                   aria-describedby="msg-err-Email"
+                                   value="@Model.Email" />
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Email">
+                                <span id="msg-err-Email" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*Image*@
+                    @{
+                        string avatarPath = string.IsNullOrEmpty(Model.AvatarPath) ? "../Content/Common/img/no-thumbnail.png" : "/" + Model.AvatarPath;
+                    }
+                    <div id="div-Image" class="form-group">
+                        <label class="col-lg-4 control-label">Hình đại diện</label>
+                        <div class="col-lg-8 fileinput fileinput-new" data-provides="fileinput">
+                            <span class="btn btn-file">
+                                <input type="file" name="AvatarFile" onchange="commonJS.validateSingleInput(this, 'image')" />
+                                <img id="previewAvatar" src="@avatarPath" alt="Avatar" width="100%" class="img-thumbnail" />
+                            </span>
+                        </div>
+                    </div>
+
+                    @*IsActive*@
+                    <div id="div-IsActive" class="form-group">
+                        <label class="col-lg-4 control-label">Cho phép hoạt động</label>
+                        <div class="col-lg-8">
+                            <div class="i-checks">
+                                <label>
+                                    <input type="checkbox"
+                                           value="true"
+                                           @GetCheckByBoolean(Model.IsActive.HasValue ? Model.IsActive.Value : false)
+                                           id="IsActive"
+                                           name="IsActive"
+                                           data-val="true"
+                                           aria-describedby="msg-err-IsActive" />
+                                    <i></i> Kích hoạt
+                                </label>
+                            </div>
+                            <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="IsActive">
+                                <span id="msg-err-IsActive" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    @if (Model.Authority == 3)
+                    {
+                        @*CompanyName*@
+                        <div id="div" class="form-group">
+                            <label class="col-lg-4 control-label">Tên công ty</label>
+                            <div class="col-lg-8">
+                                <input type="text"
+                                       placeholder="Tên công ty"
+                                       class="form-control"
+                                       id="CompanyName"
+                                       name="CompanyName"
+                                       value="@companyInfo.CompanyName" />
+                            </div>
+                        </div>
+
+                        @*CompanyAddress*@
+                        <div id="div" class="form-group">
+                            <label class="col-lg-4 control-label">Địa chỉ công ty</label>
+                            <div class="col-lg-8">
+                                <input type="text"
+                                       placeholder="Địa chỉ công ty"
+                                       class="form-control"
+                                       id="CompanyAddress"
+                                       name="CompanyAddress"
+                                       value="@companyInfo.CompanyAddress" />
+                            </div>
+                        </div>
+
+                        @*CompanyPhoneNumber*@
+                        <div id="div" class="form-group">
+                            <label class="col-lg-4 control-label">SĐT công ty</label>
+                            <div class="col-lg-8">
+                                <input type="text"
+                                       placeholder="SĐT công ty"
+                                       class="form-control"
+                                       id="CompanyPhoneNumber"
+                                       name="CompanyPhoneNumber"
+                                       value="@companyInfo.CompanyPhoneNumber" />
+                            </div>
+                        </div>
+
+                        @*Website*@
+                        <div id="div" class="form-group">
+                            <label class="col-lg-4 control-label">Website</label>
+                            <div class="col-lg-8">
+                                <input type="text"
+                                       placeholder="Website"
+                                       class="form-control"
+                                       id="Link"
+                                       name="Link"
+                                       value="@companyInfo.Link" />
+                            </div>
+                        </div>
+
+                        @* Advertising *@
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">Cho phép quảng cáo</label>
+                            <div class="col-lg-8">
+                                <div class="i-checks">
+                                    <label>
+                                        <input type="checkbox" class="AdvertisingIsOn"
+                                               value="true"
+                                               @GetCheckByBoolean(companyInfo.AdvertisingIsOn)
+                                               id="AdvertisingIsOn"
+                                               name="AdvertisingIsOn" />
+                                        <i></i> Trạng thái quảng cáo
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        string advertisingBackgroundImage = string.IsNullOrEmpty(companyInfo.AdvertisingBackgroundImage) ? "../Content/Common/img/no-thumbnail.png" : "/" + companyInfo.AdvertisingBackgroundImage;
+
+                        <div id="div-Image" class="form-group AdvertisingBackgroundImage">
+                            <label class="col-lg-4 control-label">Hình quảng cáo</label>
+                            <div class="col-lg-8 fileinput fileinput-new" data-provides="fileinput">
+                                <span class="btn btn-file">
+                                    <input type="file" name="AdvertisingBackgroundImageFile" onchange="commonJS.validateSingleInput(this, 'image')" />
+                                    <img id="previewAvatarAdvertisingBackgroundImage" src="@advertisingBackgroundImage" alt="Avatar" width="100%" class="img-thumbnail" />
+                                </span>
+                            </div>
+                        </div>
+                        <input type="hidden" class="form-control" id="CompanyId" name="CompanyId" value="@companyInfo.Id" />
+                    }
+                    @Html.Hidden("Id", Model.Id)
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Thoát</button>
+                <button type="button" class="btn btn-primary" id="btnSaveUser" onclick="userMaster.showConfirmUpdateBox(event, 'frmEditUser', 'edit');">Lưu</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="~/Scripts/app/WabuCommonJS/commonJS.js"></script>

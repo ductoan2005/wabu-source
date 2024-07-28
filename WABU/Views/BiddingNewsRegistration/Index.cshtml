@@ -1,0 +1,1214 @@
+﻿@using WABU.Utilities;
+
+@{
+    ViewBag.Title = "CreateNewBuild";
+    Layout = "~/Views/Shared/_Layout_Home.cshtml";
+
+    var listConstruction = ViewBag.ConstructionVMs;
+    var listBiddingPackage = ViewBag.BiddingPackage;
+    var listContractForm = ViewBag.ContractForm;
+    var lstArea = ViewBag.ListArea;
+}
+
+<link href="/Content/Common/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/dropzone/basic.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+<div id="biddingNewsRegistration-screen">
+    <section class="Createbuilder">
+        <div class="row">
+            <div class="background-top-new"></div>
+            <div class="container">
+                <div id="title-box-DT">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <h1>ĐĂNG TIN MỜI THẦU</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="container">
+                <div class="row fixrow">
+                    <div class="col-lg-12">
+                        <form id="frmBiddingnews">
+                            <div class="ibox">
+                                <div class="ibox-content" id="info_created_bid">
+
+                                    <div class="row">
+                                        <div class="col-lg-4" id="contain-construction-img">
+                                            @Html.Partial("_ImageConstruction")
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">Công trình *</label>
+                                                    <div class="col-lg-8" style="padding-left: 15px;">
+                                                        <div style="padding-left: 0px;padding-right: 0;" id="contain-construction" class="col-lg-6">@Html.Partial("_ListConstruction")</div>
+                                                        <div class="pull-right col-lg-6">
+                                                            <a style="float:left; margin-right:5px; width:90px; height:34px;padding-top: 8px;" class="btn btn-sm btn-primary disabled" id="btnConstructionDetail" data-toggle="modal" data-target="#popup-construction-detail" onclick="showDetailConstruction($('#select-Construction').val())">Chi tiết</a>
+                                                            <a style="float:left; width:90px; height:34px;padding-top: 8px;" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#popup-createConstruction" onclick="createNewConstruction()">Tạo mới</a>
+                                                        </div>
+                                                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="select-Construction">
+                                                            <span id="msg-err-select-Construction" class=""></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">Gói thầu *</label>
+                                                    <div class="col-lg-8">
+                                                        <select class="form-control"
+                                                                id="select-BiddingPackage"
+                                                                name="select-BiddingPackage"
+                                                                data-val-required="Vui lòng chọn gói thầu."
+                                                                data-val="true"
+                                                                aria-describedby="msg-err-select-BiddingPackage"
+                                                                onchange="onChangeBiddingPackage()">
+                                                            @if (listBiddingPackage != null && listBiddingPackage.Count != 0)
+                                                            {
+                                                                <option value="">Chọn gói thầu</option>
+                                                                foreach (var item in listBiddingPackage)
+                                                                {
+                                                                    <option value="@item.Value">@item.Text</option>
+                                                                }
+                                                            }
+                                                        </select>
+
+                                                        <input type="text" id="txt-BiddingPackageOther" class="form-control display-none" placeholder="Nhập gói thầu khác" onblur="onBlurBiddingPackageOther()">
+
+                                                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="select-BiddingPackage">
+                                                            <span id="msg-err-select-BiddingPackage" class=""></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">Hình thức hợp đồng *</label>
+                                                    <div class="col-lg-8">
+                                                        <select class="form-control"
+                                                                data-val-required="Vui lòng chọn hình thức hợp đồng."
+                                                                data-val="true"
+                                                                aria-describedby="msg-err-select-ContractForm"
+                                                                id="select-ContractForm"
+                                                                name="select-ContractForm"
+                                                                disabled
+                                                                onchange="onChangeContractForm()">
+                                                            @if (listContractForm != null && listContractForm.Count != 0)
+                                                            {
+                                                                <option value="">Chọn hình thức hợp đồng</option>
+                                                                foreach (var item in listContractForm)
+                                                                {
+                                                                    <option value="@item.Value">@item.Text</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="select-ContractForm">
+                                                            <span id="msg-err-select-ContractForm" class=""></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">Ngân sách</label>
+                                                    <div class="col-lg-8">
+                                                        <input class="form-control"
+                                                               placeholder="Nhập ngân sách dự kiến"
+                                                               data-val="true"
+                                                               aria-describedby="msg-err-BudgetImplementation"
+                                                               id="BudgetImplementation"
+                                                               name="BudgetImplementation" />
+                                                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="BudgetImplementation">
+                                                            <span id="msg-err-BudgetImplementation" class=""></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">Mô tả gói thầu *</label>
+                                                    <div class="col-lg-8">
+                                                        <textarea rows="4" class="form-control"
+                                                                  placeholder="- Nội dung công việc nhà thầu cần phải làm.&#10;- Các yêu cầu về mỹ thuật, kỹ thuật.&#10;- V/v..."
+                                                                  data-val-length-max="200"
+                                                                  data-val-length="Nhập mô tả gói thầu không quá 200 ký tự"
+                                                                  data-val-required="Vui lòng nhập mô tả gói thầu."
+                                                                  data-val="true"
+                                                                  aria-describedby="msg-err-BiddingPackageDescription"
+                                                                  id="BiddingPackageDescription"
+                                                                  name="BiddingPackageDescription"></textarea>
+                                                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="BiddingPackageDescription">
+                                                            <span id="msg-err-BiddingPackageDescription" class=""></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">Thời gian thực hiện</label>
+                                                    <div class="col-lg-8">
+                                                        <input class="form-control"
+                                                               placeholder="Nhập tổng số ngày thực hiện gói thầu"
+                                                               data-val="true"
+                                                               aria-describedby="msg-err-NumberOfDaysImplement"
+                                                               id="NumberOfDaysImplement"
+                                                               name="NumberOfDaysImplement" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">Thời điểm bắt đầu</label>
+                                                    <div class="col-lg-8">
+                                                        <div class="input-group date">
+                                                            <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span>
+                                                            <input id="DurationContract" name="DurationContract" type="text" class="form-control" value=""
+                                                                   placeholder="Nhập ngày bắt đầu thực hiện gói thầu"
+                                                                   data-val="true"
+                                                                   aria-describedby="msg-err-DurationContract">
+                                                        </div>
+                                                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="DurationContract">
+                                                            <span id="msg-err-DurationContract" class=""></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                @*<div class="form-group">
+                                                        <label class="col-lg-4 control-label">Thời gian bắt đầu tin thầu</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group date">
+                                                                <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span>
+                                                                <input id="BidStartDate" name="BidStartDate" type="text" class="form-control" value="" placeholder="Nhập ngày bắt đầu tin thầu"
+                                                                       data-val="true"
+                                                                       aria-describedby="msg-err-BidStartDate">
+                                                            </div>
+                                                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="BidStartDate">
+                                                                <span id="msg-err-BidStartDate" class=""></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>*@
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">Thời gian kết thúc tin thầu *</label>
+                                                    <div class="col-lg-8">
+                                                        <div class="input-group date">
+                                                            <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span>
+                                                            <input id="BidCloseDate" name="BidCloseDate" type="text" class="form-control" value="" placeholder="Nhập ngày kết thúc tin thầu"
+                                                                   data-val-required="Vui lòng nhập ngày kết thúc tin thầu."
+                                                                   data-val="true"
+                                                                   aria-describedby="msg-err-BidCloseDate">
+                                                        </div>
+                                                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="BidCloseDate">
+                                                            <span id="msg-err-BidCloseDate" class=""></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="ibox-title">
+                                <h5><i class="fa fa-file"></i> Các tài liệu đính kèm</h5>
+                            </div>
+                            <div class="ibox">
+                                <div class="ibox-content">
+                                    <div class="row">
+                                        <div class="col-lg-12" id="content-TLDK">
+                                            <label id="empty-upload-file">Xác định gói thầu và hình thức hợp đồng để đính kèm tài liệu tương ứng</label>
+                                            <div id="bidding-upload-file" class="display-none">
+                                                <label>Tải file đính kèm theo tài liệu bạn đưa ra cho nhà thầu xem (Hỗ trợ định dạng file .pdf, .rar, .zip)</label>
+                                                <div id="ctr_TLDK">
+                                                    <div class="form-horizontal">
+                                                        <div class="optioncheck">
+                                                            <div id="contain-drawing">
+                                                                <label>- Hồ sơ thiết kế * </label>
+                                                                <div class="fileinput fileinput-new " data-provides="fileinput">
+                                                                    <span class="btn btn-file">
+                                                                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                                        <input type="file" name="DrawingFile" id="DrawingFile"
+                                                                               data-val-required="Vui lòng upload hồ sơ thiết kế."
+                                                                               data-val="true"
+                                                                               aria-describedby="msg-err-DrawingFile" onchange="commonJS.validateSingleInput(this, 'register');" />
+                                                                    </span>
+                                                                    <span class="fileinput-filename"></span>
+                                                                    <a href="#" id="cancelFileUploadDrawingFile" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                                                </div>
+                                                                <span style="margin-top: -10px;" class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="DrawingFile">
+                                                                    <span id="msg-err-DrawingFile" class=""></span>
+                                                                </span>
+                                                                <br />
+                                                            </div>
+
+                                                            <div id="contain-estimates">
+                                                                <label>- Bảng dự toán khối lượng * </label>
+                                                                <div class="fileinput fileinput-new " data-provides="fileinput">
+                                                                    <span class="btn btn-file" id="btnFileUploadEstimates">
+                                                                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                                        <input type="file"
+                                                                               name="EstimatesFile"
+                                                                               id="EstimatesFile"
+                                                                               data-val-required="Vui lòng upload bảng dự toán khối lượng."
+                                                                               data-val="true"
+                                                                               aria-describedby="msg-err-EstimatesFile" onchange="commonJS.validateSingleInput(this, 'register');" />
+                                                                    </span>
+                                                                    <span class="fileinput-filename"></span>
+                                                                    <a href="#" id="cancelFileUploadEstimates" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                                                </div>
+                                                                <div class="i-checks" id="div-chk-self-made-estimates">
+                                                                    <label onclick="CheckEnableMadeEstimatesLabel();">
+                                                                        <input type="checkbox" value="" id="chk-self-made-estimates">
+                                                                        <i></i> Nhà thầu tự lập bảng khối lượng thực hiện <span class="color-red">(Mục này có thể làm cho bạn khó khăn trong việc so sánh lựa chọn nhà thầu)</span>
+                                                                    </label>
+                                                                </div>
+                                                                <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="EstimatesFile">
+                                                                    <span id="msg-err-EstimatesFile" class=""></span>
+                                                                </span>
+                                                                <br />
+                                                            </div>
+
+                                                            <div id="contain-supplies">
+                                                                <label>- Bảng vật tư yêu cầu * </label>
+                                                                <div class="fileinput fileinput-new " data-provides="fileinput">
+                                                                    <span class="btn btn-file" id="btnFileUploadMaterial">
+                                                                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                                                                        <input type="file"
+                                                                               name="MaterialFile"
+                                                                               id="MaterialFile"
+                                                                               data-val-required="Vui lòng upload bảng vật tư yêu cầu."
+                                                                               data-val="true"
+                                                                               aria-describedby="msg-err-MaterialFile" onchange="commonJS.validateSingleInput(this, 'register');" />
+                                                                    </span>
+                                                                    <span class="fileinput-filename"></span>
+                                                                    <a href="#" id="cancelFileUploadMaterial" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                                                </div>
+                                                                <div class="i-checks" id="div-chk-self-made-supplies">
+                                                                    <label onclick="CheckEnableMadeMaterialLabel();">
+                                                                        <input type="checkbox" value="" id="chk-self-made-supplies">
+                                                                        <i></i> Nhà thầu tự đề xuất bảng chủng loại vật tư sử dụng <span class="color-red">(Mục này có thể làm cho bạn khó khăn trong việc so sánh lựa chọn nhà thầu)</span>
+                                                                    </label>
+                                                                </div>
+                                                                <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="MaterialFile">
+                                                                    <span id="msg-err-MaterialFile" class=""></span>
+                                                                </span>
+                                                                <br />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="ibox-title">
+                            <h5><i class="fa fa-database"></i> Các tài liệu yêu cầu</h5>
+                        </div>
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-lg-12" id="content-TLDK">
+                                        <label id="empty-document-required">Thêm tài liệu mà nhà thầu cần cung cấp cho gói thầu</label>
+                                        <div id="bidding-document-required" class="display-none">
+                                            <label></label>
+                                            <div id="ctr_TLDK">
+                                                <div class="form-horizontal">
+                                                    <div class="optioncheck">
+                                                        <div id="contain-quotation">
+                                                            <label>- Bảng báo giá</label>
+                                                            <br />
+                                                        </div>
+
+                                                        <div id="contain-materialsUse">
+                                                            <label>- Bảng đề xuất vật tư sử dụng</label>
+                                                            <br />
+                                                        </div>
+
+                                                        <div id="ctr_MKT">
+                                                            <div class="i-checks" id="div-chk-IsTechnicalOther">
+                                                                <label> <input type="checkbox" value="" id="chk-IsTechnicalOther"> <i></i> </label> <input type="text" name="name" value="" placeholder="Khác" class="form-control" id="txt-TechnicalOther" disabled />
+                                                                <a href="#" id="btn-accept-row-MKT" onclick="documentRequired.AddTechnicalOther(event);" class="display-none"><i class="fa fa-check-square font_30 greenblue fix-button-other"></i></a>
+                                                            </div>
+                                                            <div id="div-show-TechnicalOther" style="padding-left:25px;"></div>
+                                                            <br />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ibox-title">
+                            <h5><i class="fa fa-vcard" aria-hidden="true"></i> Năng lực kinh nghiệm</h5>
+                        </div>
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-lg-12" id="content-NLKN">
+                                        <label id="placeholder-NLKN" class="">Thêm thông tin năng lực kinh nghiệm của nhà thầu bạn mong muốn biết</label>
+                                        <div id="content-NLKN-saved" class="display-none"></div>
+                                        <div class="bs-transaction" id="ctr_NLKN">
+                                            <div class="form-horizontal">
+                                                <div class="optioncheck">
+                                                    <div class="i-checks" id="div-chk-NumberYearActivity">
+                                                        <label onclick="abilityExp.CheckEnableNumberYearActivityLabel();">
+                                                            <input type="checkbox" value="" id="chk-NumberYearActivity"> <i></i> Số năm hoạt động trong lĩnh vực mời thầu:
+                                                        </label>
+                                                        <input type="number" min="0" name="txt-NumberYearActivity" value="" id="txt-NumberYearActivity" class="with_text40" disabled style="padding-left: 2px;" />
+                                                        <label>năm</label>
+                                                    </div>
+                                                    <div class="i-checks" id="div-chk-NumberSimilarContract">
+                                                        <label onclick="abilityExp.CheckEnableNumberSimilarContractLabel();">
+                                                            <input type="checkbox" value="" id="chk-NumberSimilarContract"> <i></i> Số lượng các hợp đồng tương tự đã thực hiện trong những năm qua:
+                                                        </label>
+                                                        <input type="number" min="0" name="txt-NumberSimilarContract" id="txt-NumberSimilarContract" value="" class="with_text40" disabled style="padding-left: 2px;" />
+                                                        <label>hợp đồng</label>
+                                                    </div>
+                                                    <div class="fb700 mr_bottom10 ml-15 mt15">Tài liệu chứng minh</div>
+                                                    <div class="i-checks" id="div-chk-IsContract"><label> <input type="checkbox" value="" id="chk-IsContract"> <i></i> Hợp đồng.</label></div>
+                                                    <div class="i-checks" id="div-chk-IsLiquidation"><label> <input type="checkbox" value="" id="chk-IsLiquidation"> <i></i> Bản thanh lý hợp đồng hoặc biên bản nghiệm thu bàn giao công trình. </label></div>
+                                                    <div class="i-checks" id="div-chk-IsBuildingPermit"><label> <input type="checkbox" value="" id="chk-IsBuildingPermit"> <i></i> Giấy phép xây dựng hoặc văn bản phê duyệt dự án. </label></div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <button type="button" class="btn btn-w-m btn-cancel" id="btn_ctr_NLKN_cancel">Hủy</button>
+                                            <button type="button" class="btn btn-w-m btn-primary pull-right" id="btn_ctr_NLKN_save">Lưu</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-default btn-block  no-border add-one-more-section" id="btn_ctr_NLKN">
+                                <strong>Bổ sung</strong>
+                            </button>
+                        </div>
+                        <div class="ibox-title">
+                            <h5><i class="fa fa-user-circle-o" aria-hidden="true"></i> Năng lực nhân sự</h5>
+                        </div>
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-lg-12" id="content-NLNS">
+                                        <label id="placeholder-NLNS" class="">Thêm thông tin năng lực nhân sự của nhà thầu bạn mong muốn biết</label>
+                                        <div id="content-NLNS-saved" class="display-none" style="width:100%"></div>
+                                        <div class="bs-transaction" id="ctr_NLNS">
+                                            <div class="form-horizontal">
+                                                <div class="overflow-x-sp">
+                                                    <table class="table table-bordered" id="tbl-NLNS">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center with_text250">Vị trí công việc</th>
+                                                                <th class="text-center with_text100">Bằng cấp yêu cầu</th>
+                                                                <th class="text-center with_text40" title="Số năm kinh nghiệm">Số năm K/N</th>
+                                                                <th class="text-center with_text100">Số lượng</th>
+                                                                <th class="text-center with_text200">Công trình tương tự đã tham gia</th>
+                                                                <th class="text-center with_text40"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr id="row-default-NLNS">
+                                                                <td><input type="text" id="txt-JobPosition" class="form-control" placeholder="Nhập vị trí công việc"></td>
+                                                                <td><input type="text" id="txt-QualificationRequired" class="form-control" placeholder="Bằng cấp"></td>
+                                                                <td><input type="number" id="txt-YearExp" class="form-control" placeholder="Số năm"></td>
+                                                                <td><input type="number" id="txt-NumberRequest" class="form-control" placeholder="Số lượng người"></td>
+                                                                <td>
+                                                                    <input type="number" id="txt-SimilarProgram" class="form-control" placeholder="Số lượng công trình">
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <a href="#" id="btn-add-row" onclick="abilityHR.AddRowNLNS(event);" class="display-normal"><i class="fa fa-plus-square font_25 greenblue"></i></a>
+                                                                    <a href="#" id="btn-cancel-row" onclick="CancelRowNLNS(event);" class="display-none"><i class="fa fa-minus-square font_25 color-red"></i></a>
+                                                                    <a href="#" id="btn-accept-row" onclick="AcceptRowNLNS(event);" class="display-none"><i class="fa fa-check-square font_25 greenblue"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="row-default"></tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="optioncheck">
+                                                    <div class="fb700 mr_bottom10 ml-15 mt15">Tài liệu chứng minh</div>
+                                                    <div class="i-checks" id="div-chk-IsLaborContract"><label> <input type="checkbox" value="" id="chk-IsLaborContract"> <i></i> Hợp đồng lao động.</label></div>
+                                                    <div class="i-checks" id="div-chk-IsDocumentRequest"><label> <input type="checkbox" value="" id="chk-IsDocumentRequest"> <i></i> Văn bằng yêu cầu. </label></div>
+                                                    <div class="i-checks" id="div-chk-IsDecision"><label> <input type="checkbox" value="" id="chk-IsDecision"> <i></i> Quyết định bổ nhiệm nhân sự (đối với những vị trí yêu cầu về số lượng công trình tương tự đã tham gia thực hiện). </label></div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <button type="button" class="btn btn-w-m btn-cancel" id="btn_ctr_NLNS_cancel">Hủy</button>
+                                            <button type="button" class="btn btn-w-m btn-primary pull-right" id="btn_ctr_NLNS_save">Lưu</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-default btn-block  no-border add-one-more-section" id="btn_ctr_NLNS">
+                                <strong>Bổ sung</strong>
+                            </button>
+                        </div>
+                        <div class="ibox-title">
+                            <h5><i class="fa fa-dollar" aria-hidden="true"></i> Năng lực tài chính</h5>
+                        </div>
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-lg-12" id="content-NLTC">
+                                        <label id="placeholder-NLTC" class="">Thêm thông tin năng lực tài chính của nhà thầu bạn mong muốn biết</label>
+                                        <div id="content-NLTC-saved" class="display-none"></div>
+                                        <div class="bs-transaction" id="ctr_NLTC">
+                                            <div class="form-horizontal">
+                                                <div class="optioncheck">
+                                                    <div class="i-checks" id="div-chk-IsTurnover2Year">
+                                                        <label onclick="abilityFinance.CheckEnableTurnover2YearLabel();">
+                                                            <input type="checkbox" value="" id="chk-IsTurnover2Year"> <i></i>
+                                                            Doanh thu trung bình trong
+                                                        </label>
+                                                        <input type="number" min="1" max="5" name="txt-NumYearOfTurnover" value="" id="txt-NumYearOfTurnover" class="with_text40" disabled />
+                                                        <span class="inline-block-sp">năm gần nhất >=</span>
+                                                        <input type="number" name="txt-Turnover2Year" min="0" value="" id="txt-Turnover2Year" class="with_text100" disabled />
+                                                        <span>vnđ</span>
+                                                    </div>
+                                                    <div class="i-checks" id="div-chk-IsFinanceSituation">
+                                                        <label onclick="abilityFinance.CheckEnableFinanceSituationLabel();">
+                                                            <input type="checkbox" value="" id="chk-IsFinanceSituation"> <i></i>
+                                                            Tình hình tài chính trong
+                                                        </label>
+                                                        <input type="number" min="1" max="5" name="txt-NumYearFinanceSituation" value="" id="txt-NumYearFinanceSituation" class="with_text40" disabled />
+                                                        năm gần nhất không bị lỗ, có xác nhận hợp lệ của cơ quan tài chính cấp trên hoặc kiểm toán độc lập.
+                                                    </div>
+                                                    <div class="fb700 mr_bottom10 ml-15 mt15">Tài liệu chứng minh</div>
+                                                    <div class="i-checks" id="div-chk-IsProtocol"><label> <input type="checkbox" value="" id="chk-IsProtocol"> <i></i> Biên bản kiểm tra quyết toán của nhà thầu trong các năm tài chính nêu trên.</label></div>
+                                                    <div class="i-checks" id="div-chk-IsDeclaration"><label> <input type="checkbox" value="" id="chk-IsDeclaration"> <i></i> Tờ khai tự quyết toán thuế (thuế GTGT và thuế thu nhập doanh nghiệp), có xác nhận của cơ quan thuế về thời điểm đã nộp tờ khai trong các năm tài chính nêu trên. </label></div>
+                                                    <div class="i-checks" id="div-chk-IsDocument"><label> <input type="checkbox" value="" id="chk-IsDocument"> <i></i> Văn bản xác nhận của cơ quan quản lý thuế (xác nhận nộp cả năm) về việc thực hiện nghĩa vụ nộp thuế trong các năm tài chính nêu trên. </label></div>
+                                                    <div class="i-checks" id="div-chk-IsReport"><label> <input type="checkbox" value="" id="chk-IsReport"> <i></i> Báo cáo kiểm toán. </label></div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <button type="button" class="btn btn-w-m btn-cancel" id="btn_ctr_NLTC_cancel">Hủy</button>
+                                            <button type="button" class="btn btn-w-m btn-primary pull-right" id="btn_ctr_NLTC_save">Lưu</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-default btn-block  no-border add-one-more-section" id="btn_ctr_NLTC">
+                                <strong>Bổ sung</strong>
+                            </button>
+                        </div>
+                        <div class="ibox-title">
+                            <h5><i class="fa fa-cog"></i> Năng lực thiết bị, máy móc</h5>
+                        </div>
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-lg-12" id="content-NLMM">
+                                        <label id="placeholder-NLMM" class="">Thêm thông tin năng lực thiết bị, máy móc của nhà thầu bạn mong muốn biết</label>
+                                        <div id="content-NLMM-saved" class="display-none" style="width:100%"></div>
+                                        <div class="bs-transaction" id="ctr_NLMM">
+                                            <div class="form-horizontal">
+                                                <div class="overflow-x-sp">
+                                                    <table class="table table-bordered" id="tbl-NLMM">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center with_text300">Tên thiết bị máy móc</th>
+                                                                <th class="text-center with_text150">Công suất thiết bị</th>
+                                                                <th class="text-center with_text80">Số lượng</th>
+                                                                <th class="text-center with_text135">Kiểm định</th>
+                                                                <th class="text-center with_text40"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr id="row-default-NLMM">
+                                                                <td><input type="text" id="txt-EquipmentName" class="form-control" placeholder="Nhập tên thiết bị"></td>
+                                                                <td><input type="text" id="txt-PowerEquipment" class="form-control" placeholder="Nhập C/S thiết bị"></td>
+                                                                <td><input type="number" id="txt-QuantityEquipment" class="form-control text-center" placeholder="..."></td>
+                                                                <td>
+                                                                    <div class="i-checks text-center pdt5" id="div-chk-IsAccreditation">
+                                                                        <input type="checkbox" value="" id="chk-IsAccreditation">
+                                                                    </div>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <a href="#" id="btn-add-row-NLMM" onclick="abilityEquipment.AddRowNLMM(event);" class="display-normal"><i class="fa fa-plus-square font_25 greenblue"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="optioncheck">
+                                                    <div class="fb700 mr_bottom10 ml-15 mt15">Tài liệu chứng minh</div>
+                                                    <div class="i-checks" id="div-chk-IsContract-NLMM"><label> <input type="checkbox" value="" id="chk-IsContract-NLMM"> <i></i> Hợp đồng mua bán hoặc hợp đồng thuê mượn hoặc hóa đơn mua thiết bị.</label></div>
+                                                    <div class="i-checks" id="div-chk-IsProfile"><label> <input type="checkbox" value="" id="chk-IsProfile"> <i></i> Hồ sơ kiểm định của các máy móc (đối với các máy móc phải có yêu cầu kiểm định). </label></div>
+                                                </div>
+                                                <br />
+                                                <button type="button" class="btn btn-w-m btn-cancel" id="btn_ctr_NLMM_cancel">Hủy</button>
+                                                <button type="button" class="btn btn-w-m btn-primary pull-right" id="btn_ctr_NLMM_save">Lưu</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-default btn-block  no-border add-one-more-section" id="btn_ctr_NLMM">
+                                <strong>Bổ sung</strong>
+                            </button>
+                        </div>
+                        @*<div class="ibox-title">
+                                <h5><i class="fa fa-database"></i> Các tài liệu yêu cầu</h5>
+                            </div>
+                            <div class="ibox">
+                                <div class="ibox-content">
+                                    <div class="row">
+                                        <div class="col-lg-12" id="content-MKT">
+                                            <label id="placeholder-MKT" class="">Thêm tài liệu yêu cầu nhà thầu cần cung cấp</label>
+                                            <div id="content-MKT-saved" class="display-none"></div>
+                                            <div class="bs-transaction" id="ctr_MKT">
+                                                <div class="form-horizontal">
+                                                    <div class="optioncheck">
+                                                        <div class="i-checks" id="div-chk-IsProgressSchedule"><label> <input type="checkbox" value="" id="chk-IsProgressSchedule" class="demo"> <i></i> Bảng tiến độ thực hiện </label></div>
+                                                        <div class="i-checks" id="div-chk-IsQuotation"><label> <input type="checkbox" value="" id="chk-IsQuotation" class="demo"> <i></i> Bảng báo giá </label></div>
+                                                        <div class="i-checks" id="div-chk-IsMaterialsUse"><label> <input type="checkbox" value="" id="chk-IsMaterialsUse"> <i></i> Bảng đề xuất vật tư sử dụng </label></div>
+                                                        <div class="i-checks" id="div-chk-IsDrawingConstruction"><label> <input type="checkbox" value="" id="chk-IsDrawingConstruction"> <i></i> Bản vẽ và thuyết minh biện pháp thi công </label></div>
+                                                        <div class="i-checks" id="div-chk-IsWorkSafety"><label> <input type="checkbox" value="" id="chk-IsWorkSafety"> <i></i> Thuyết minh phương án đảm bảo an toàn lao động </label></div>
+                                                        <div class="i-checks" id="div-chk-IsEnvironmentalSanitation"><label> <input type="checkbox" value="" id="chk-IsEnvironmentalSanitation"> <i></i> Thuyết minh biện pháp đảm bảo vệ sinh môi trường </label></div>
+                                                        <div class="i-checks" id="div-chk-IsFireProtection"><label> <input type="checkbox" value="" id="chk-IsFireProtection"> <i></i> Thuyết minh phòng chống cháy nổ trên công trường </label></div>
+                                                        <div class="i-checks" id="div-chk-IsTechnicalOther">
+                                                            <label> <input type="checkbox" value="" id="chk-IsTechnicalOther"> <i></i> </label> <input type="text" name="name" value="" placeholder="Khác" class="form-control" id="txt-TechnicalOther" disabled />
+                                                            <a href="#" id="btn-accept-row-MKT" onclick="documentRequired.AddTechnicalOther(event);" class="display-none"><i class="fa fa-check-square font_30 greenblue fix-button-other"></i></a>
+                                                        </div>
+                                                        <div id="div-show-TechnicalOther" style="padding-left:25px;"></div>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <button type="button" class="btn btn-w-m btn-cancel" id="btn_ctr_MKT_cancel">Hủy</button>
+                                                <button type="button" class="btn btn-w-m btn-primary pull-right" id="btn_ctr_MKT_save">Lưu</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-default btn-block  no-border add-one-more-section" id="btn_ctr_MKT">
+                                    <strong>Bổ sung</strong>
+                                </button>
+                            </div>*@
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-lg-2 col-md-push-4 col-xs-6 text-center">
+                                        <button type="button" class="btn btn-w-m btn-cancel" id="btn_ctr_ALL_cancel" onclick="CancelALL();">Hủy</button>
+                                    </div>
+                                    <div class="col-lg-2 col-md-push-4 col-xs-6 text-center">
+                                        <button type="button" class="btn btn-w-m btn-primary" id="btn_ctr_ALL_save" onclick="SaveAll(event);">Đăng tin</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- popup chi tiết công trình -->
+<div class="modal inmodal" id="popup-construction-detail" tabindex="-1" role="dialog" aria-hidden="true">
+    @*@Html.Partial("_PopUpConstructionDetail")*@
+</div>
+
+<div class="modal inmodal" id="popup-createConstruction" tabindex="-1" role="dialog" aria-hidden="true">
+    @Html.Partial("_PopUpAddConstruction")
+</div>
+
+@section scripts{
+    <!-- slick carousel-->
+    <script src="/Scripts/Common/plugins/slick/slick.min.js"></script>
+    <!-- iCheck -->
+    <script src="/Scripts/Common/plugins/iCheck/icheck.min.js"></script>
+    <script src="/Scripts/Common/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <!-- Data picker -->
+    <script src="/Scripts/Common/plugins/datapicker/bootstrap-datepicker.js"></script>
+
+    <!-- validContractor -->
+    <script src="~/Scripts/app/BiddingNewsRegistration/BiddingNewsValidContractor.js"></script>
+    <!-- abilityExp -->
+    <script src="~/Scripts/app/BiddingNewsRegistration/BiddingNewsAbilityExp.js"></script>
+    <!-- abilityHR -->
+    <script src="~/Scripts/app/BiddingNewsRegistration/BiddingNewsAbilityHR.js"></script>
+    <!-- abilityFinance -->
+    <script src="~/Scripts/app/BiddingNewsRegistration/BiddingNewsAbilityFinance.js"></script>
+    <!-- abilityEquipment -->
+    <script src="~/Scripts/app/BiddingNewsRegistration/BiddingNewsAbilityEquipment.js"></script>
+    <!-- documentRequired -->
+    <script src="~/Scripts/app/BiddingNewsRegistration/BiddingNewsDocumentRequired.js"></script>
+
+    <script src="~/Scripts/app/AreaManage/areaManageJS.js"></script>
+
+    <script src="~/Scripts/app/WabuCommonJS/commonJS.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            //var placehoderMota = '- Nội dung công việc nhà thầu cần phải làm.&#10;- Các yêu cầu về mỹ thuật, kỹ thuật.&#10;- V/v...';
+
+            //$('#BiddingPackageDescription').attr()
+
+            $('.slick_images').slick({
+                dots: true,
+                autoplay: true,
+                autoplaySpeed: 5000,
+                arrows: false
+            });
+
+            $('#DurationContract').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: false,
+                autoclose: true,
+                format: "dd/mm/yyyy"
+            });
+        
+            var date = new Date();
+            date.setDate(date.getDate() + 5);
+
+            $('#BidCloseDate').datepicker({
+                //todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "dd/mm/yyyy",
+                startDate: date
+            });
+
+            $('#BuildingPermitDateTime').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: false,
+                autoclose: true,
+                format: "dd/mm/yyyy"
+            });
+
+            // remove all Storage after load page
+            ClearAllStorage();
+
+            // TCHL
+            validContractor.initContrator();
+
+            //NLKN
+            abilityExp.initAbilityExp();
+
+            //NLNS
+            abilityHR.initAbilityHR();
+
+            //NLTC
+            abilityFinance.initAbilityFinance();
+
+            //NLMM
+            abilityEquipment.initAbilityEquipment();
+
+            //MKT
+            documentRequired.initDocumentRequired();
+
+            $("#btn_ctr_K").click(function () {
+                $("#ctr_K").removeClass("bs-transaction");
+                $("#ctr_K").addClass("bs-transaction-edit");
+                $("#ctr_K").addClass("bs-transaction-edit");
+                $("#btn_ctr_K").addClass("hide");
+            })
+            $("#btn_ctr_K_cancel").click(function () {
+                $("#ctr_K").addClass("bs-transaction");
+                $("#ctr_K").removeClass("bs-transaction-edit");
+                $("#btn_ctr_K").removeClass("hide");
+            })
+
+            $("#btn_ctr_K_save").click(function () {
+                alert("save");
+                $("#ctr_K").addClass("bs-transaction");
+                $("#ctr_K").removeClass("bs-transaction-edit");
+                $("#btn_ctr_K").removeClass("hide");
+            })
+
+            areaManageJS.getArea();
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+
+        function onBlurBiddingPackageOther() {
+            if ($('#txt-BiddingPackageOther').val() === "") {
+                $('#select-BiddingPackage').removeClass("display-none");
+                $('#txt-BiddingPackageOther').addClass("display-none");
+                $('#select-BiddingPackage').val("");
+
+                $("#select-ContractForm").prop("disabled", true);
+                $("#select-ContractForm").val("");
+                $("#select-ContractForm option:nth-child(4)").removeClass("display-none"); //hợp đồng theo đơn giá
+            }
+
+            displayFileUpload();
+            displayDocumentRequired();
+        }
+
+        function onChangeBiddingPackage() {
+            var valueBiddingPackage = $('#select-BiddingPackage').val();
+            if (valueBiddingPackage == 1 || valueBiddingPackage == 2) {
+                $("#select-ContractForm option:nth-child(4)").addClass("display-none"); //hợp đồng theo đơn giá
+                $("#select-ContractForm").prop("disabled", false);
+                if ($("#select-ContractForm").val() == 3) {
+                    $('#select-ContractForm').val("");
+                }
+            }
+            else
+                if (valueBiddingPackage == 3 || valueBiddingPackage == 4) {
+                    if ($('#select-BiddingPackage').val() == 4) {
+                        $("#frmBiddingnews > div > div.col-lg-9 > div > div:nth-child(2) > div > span > span").remove(); // remove mess err
+                        $('#select-BiddingPackage').addClass("display-none");
+                        $('#txt-BiddingPackageOther').removeClass("display-none");
+                        $('#txt-BiddingPackageOther').focus();
+                    }
+
+                    $("#select-ContractForm option:nth-child(4)").removeClass("display-none"); //hợp đồng theo đơn giá
+                    $("#select-ContractForm").prop("disabled", false);
+                }
+                else {
+                    $("#select-ContractForm").prop("disabled", true);
+                    $("#select-ContractForm option:nth-child(4)").removeClass("display-none"); //hợp đồng theo đơn giá
+                }
+
+            //không thực hiện displayFileUpload() khi gói thầu khác,
+            //riêng gói thầu khác muốn thực hiện displayFileUpload() thì txt phải có value (kiểm tra ở onBlurBiddingPackageOther())
+            if (valueBiddingPackage == 4) {
+                return false;
+            }
+
+            displayFileUpload();
+            displayDocumentRequired();
+        }
+
+        function displayDocumentRequired() {
+            var valueBiddingPackage = $('#select-BiddingPackage').val();
+            $("#bidding-document-required").addClass("display-none");
+
+            $('#contain-quotation').addClass("display-none"); //Bản vẽ thi công
+            $('#contain-materialsUse').addClass("display-none"); //Bảng dự toán khối lượng
+
+            // gói thầu 1 2 4 -> chỉ có bảng báo giá và tick chọn nhập khác
+            if (valueBiddingPackage != 3 && valueBiddingPackage != "") {
+                $('#contain-quotation').removeClass("display-none");
+                $("#bidding-document-required").removeClass("display-none");
+            }
+
+            // gói thầu 3 thì có bảng báo giá và bảng đề xuất vật tư sử dụng và tick chọn nhập khác
+            else if (valueBiddingPackage == 3 && valueBiddingPackage != "") {
+                $('#contain-quotation').removeClass("display-none");
+                $('#contain-materialsUse').removeClass("display-none");
+                $("#bidding-document-required").removeClass("display-none");
+            }
+
+            $('#div-chk-IsTechnicalOther .iCheck-helper').attr('onclick', 'documentRequired.CheckEnableIsTechnicalOther();');
+        }
+
+        function displayFileUpload() {
+            var valueBiddingPackage = $('#select-BiddingPackage').val();
+            var valueContractForm = $('#select-ContractForm').val();
+
+            $("#bidding-upload-file").addClass("display-none");
+            $("#empty-upload-file").removeClass("display-none");
+
+            $('#contain-drawing').addClass("display-none"); //Bản vẽ thi công
+            $('#contain-estimates').addClass("display-none"); //Bảng dự toán khối lượng
+            $('#contain-supplies').addClass("display-none"); //Bảng vật tư yêu cầu
+
+            $('#DrawingFile').rules('remove', 'required');
+            $('#EstimatesFile').rules('remove', 'required');
+            $('#MaterialFile').rules('remove', 'required');
+
+            //$("#cancelFileUploadDrawingFile").click();
+            //$('#cancelFileUploadEstimates').click();
+            //$('#cancelFileUploadMaterial').click();
+
+            //-> bản vẽ xuất hiện khi chọn: gói thầu 2 3 4 (khác 1 không hiển thị)
+            if (valueBiddingPackage != 1 && valueBiddingPackage != "") {
+                $('#contain-drawing').removeClass("display-none");
+                $("#bidding-upload-file").removeClass("display-none");
+                $("#empty-upload-file").addClass("display-none");
+
+                $('#DrawingFile').rules('add', {
+                    required: true   // set a new rule
+                });
+            }
+
+            //-> bảng dự toán khối lượng và bảng vật tư -> hình thức hợp đồng 3
+            if (valueContractForm == 3) {
+                $('#contain-estimates').removeClass("display-none");
+                $('#contain-supplies').removeClass("display-none");
+                $("#bidding-upload-file").removeClass("display-none");
+                $("#empty-upload-file").addClass("display-none");
+
+                $('#EstimatesFile').rules('add', {
+                    required: true   // set a new rule
+                });
+
+                $('#MaterialFile').rules('add', {
+                    required: true   // set a new rule
+                });
+            }
+
+            //-> bảng vật tư -> gói thầu 3 4 và hình thức hợp đồng 2
+            if ((valueBiddingPackage == 3 || valueBiddingPackage == 4) && valueContractForm == 2) {
+                $('#contain-supplies').removeClass("display-none");
+                $("#bidding-upload-file").removeClass("display-none");
+                $("#empty-upload-file").addClass("display-none");
+
+                $('#MaterialFile').rules('add', {
+                    required: true   // set a new rule
+                });
+            }
+
+            $('#div-chk-self-made-estimates .iCheck-helper').attr('onclick', 'CheckEnableMadeEstimates();');
+            $('#div-chk-self-made-supplies .iCheck-helper').attr('onclick', 'CheckEnableMadeMaterial();');
+        }
+
+        function onChangeContractForm() {
+            displayFileUpload();
+        }
+
+        function ClearAllStorage() {
+            // remove all Storage after load page
+            window.sessionStorage.removeItem("dataTCHL");
+            window.sessionStorage.removeItem("dataNLKN");
+            window.sessionStorage.removeItem("dataNLNS");
+            window.sessionStorage.removeItem("dataNLTC");
+            window.sessionStorage.removeItem("dataNLMM");
+            window.sessionStorage.removeItem("dataMKT");
+        }
+
+        //[STR]=====Save or cancel=====
+        function SaveAll(e) {
+            if (validForm("frmBiddingnews")) {
+                var dataTCHLtemp = JSON.parse(window.sessionStorage.getItem("dataTCHL"));
+                var dataNLKNtemp = JSON.parse(window.sessionStorage.getItem("dataNLKN"));
+                var dataNLNStemp = JSON.parse(window.sessionStorage.getItem("dataNLNS"));
+                var dataNLTCtemp = JSON.parse(window.sessionStorage.getItem("dataNLTC"));
+                var dataNLMMtemp = JSON.parse(window.sessionStorage.getItem("dataNLMM"));
+                var dataMKTtemp = JSON.parse(window.sessionStorage.getItem("dataMKT"));
+
+                var formData = new FormData();
+                formData.append("ConstructionId", $("#select-Construction").val());
+                formData.append("BiddingPackageType", $("#select-BiddingPackage").val());
+                formData.append("BiddingPackageName", $("#txt-BiddingPackageOther").val());
+                formData.append("ContractFormType", $("#select-ContractForm").val());
+                formData.append("BudgetImplementation", parseInt(commonJS.reFormatPriceValue($("#BudgetImplementation").val())));
+                formData.append("BiddingPackageDescription", $("#BiddingPackageDescription").val());
+                formData.append("DurationContractDateTime", $("#DurationContract").val());
+                formData.append("NumberOfDaysImplement", parseInt(commonJS.reAppendDayText($("#NumberOfDaysImplement").val())));
+                //formData.append("BidStartDateTime", $("#BidStartDate").val());
+                formData.append("BidCloseDateTime", $("#BidCloseDate").val());
+
+                // Các tài liệu đính kèm
+                formData.append("DrawingFile", $("#DrawingFile")[0].files[0]);
+
+                var isSelfMakeEstimateVolume = $("#IsSelfMakeEstimateVolume").val();
+                formData.append("IsSelfMakeEstimateVolume", $("#IsSelfMakeEstimateVolume").val());
+                if (!isSelfMakeEstimateVolume) {
+                    formData.append("EstimatesFile", $("#EstimatesFile")[0].files[0]);
+                }
+
+                var isSelfMakeRequireMaterial = $("#IsSelfMakeRequireMaterial").val();
+                formData.append("IsSelfMakeRequireMaterial", $("#IsSelfMakeRequireMaterial").val());
+                if (!isSelfMakeRequireMaterial) {
+                    formData.append("MaterialFile", $("#MaterialFile")[0].files[0]);
+                }
+                // --end Các tài liệu đính kèm
+
+                // Tư cách hợp lệ nhà thầu
+                formData.append("IsRegisEstablishment", dataTCHLtemp != null ? dataTCHLtemp.IsRegisEstablishment : null);
+                formData.append("IsFinancial", dataTCHLtemp != null ? dataTCHLtemp.IsFinancial : null);
+                formData.append("IsDissolutionProcess", dataTCHLtemp != null ? dataTCHLtemp.IsDissolutionProcess : null);
+                formData.append("IsBankrupt", dataTCHLtemp != null ? dataTCHLtemp.IsBankrupt : null);
+                // --end Tư cách hợp lệ nhà thầu
+
+                // Năng lực kinh nghiệm
+                formData.append("NumberYearActivity", dataNLKNtemp != null ? (dataNLKNtemp.IsNumberYearActivity == true ? dataNLKNtemp.NumberYearActivity : null) : null);
+                formData.append("NumberSimilarContract", dataNLKNtemp != null ? (dataNLKNtemp.IsNumberSimilarContract == true ? dataNLKNtemp.NumberSimilarContract : null) : null);
+                formData.append("IsContractNLKN", dataNLKNtemp != null ? dataNLKNtemp.IsContractNLKN : null);
+                formData.append("IsLiquidation", dataNLKNtemp != null ? dataNLKNtemp.IsLiquidation : null);
+                formData.append("IsBuildingPermit", dataNLKNtemp != null ? dataNLKNtemp.IsBuildingPermit : null);
+                // --end Năng lực kinh nghiệm
+
+                // Năng lực nhân sự
+                var listNLNSJson = dataNLNStemp != null ? dataNLNStemp.listNLNS : "";
+                formData.append("ListNLNSJson", JSON.stringify(listNLNSJson));
+                formData.append("IsLaborContract", dataNLNStemp != null ? dataNLNStemp.IsLaborContract : null);
+                formData.append("IsDocumentRequest", dataNLNStemp != null ? dataNLNStemp.IsDocumentRequest : null);
+                formData.append("IsDecision", dataNLNStemp != null ? dataNLNStemp.IsDecision : null);
+                // --end Năng lực nhân sự
+
+                // Năng lực tài chính
+                formData.append("NumYearOfTurnover", dataNLTCtemp != null ? (dataNLTCtemp.IsTurnover2Year == true ? dataNLTCtemp.NumYearOfTurnover : null) : null);
+                formData.append("Turnover2Year", dataNLTCtemp != null ? (dataNLTCtemp.IsTurnover2Year == true ? dataNLTCtemp.Turnover2Year : null) : null);
+                formData.append("IsFinanceSituation", dataNLTCtemp != null ? dataNLTCtemp.IsFinanceSituation : null);
+                formData.append("NumYearFinanceSituation", dataNLTCtemp != null ? (dataNLTCtemp.IsFinanceSituation == true ? dataNLTCtemp.NumYearFinanceSituation : null) : null);
+                formData.append("IsProtocol", dataNLTCtemp != null ? dataNLTCtemp.IsProtocol : null);
+                formData.append("IsDeclaration", dataNLTCtemp != null ? dataNLTCtemp.IsDeclaration : null);
+                formData.append("IsDocument", dataNLTCtemp != null ? dataNLTCtemp.IsDocument : null);
+                formData.append("IsReport", dataNLTCtemp != null ? dataNLTCtemp.IsReport : null);
+                // --end Năng lực tài chính
+
+                // Năng lực thiết bị, máy móc
+                var listNLMMJson = dataNLMMtemp != null ? dataNLMMtemp.listNLMM : "";
+                formData.append("ListNLMMJson", JSON.stringify(listNLMMJson));
+                formData.append("IsContractNLMM", dataNLMMtemp != null ? dataNLMMtemp.IsContract : null);
+                formData.append("IsProfile", dataNLMMtemp != null ? dataNLMMtemp.IsProfile : null);
+                // --end Năng lực thiết bị, máy móc
+
+                // Năng lực thiết bị, máy móc
+                //formData.append("IsProgressSchedule", dataMKTtemp != null ? dataMKTtemp.IsProgressSchedule : null);
+                //formData.append("IsQuotation", dataMKTtemp != null ? dataMKTtemp.IsQuotation : null);
+                //formData.append("IsMaterialsUse", dataMKTtemp != null ? dataMKTtemp.IsMaterialsUse : null);
+                //formData.append("IsDrawingConstruction", dataMKTtemp != null ? dataMKTtemp.IsDrawingConstruction : null);
+                //formData.append("IsWorkSafety", dataMKTtemp != null ? dataMKTtemp.IsWorkSafety : null);
+                //formData.append("IsEnvironmentalSanitation", dataMKTtemp != null ? dataMKTtemp.IsEnvironmentalSanitation : null);
+                //formData.append("IsFireProtection", dataMKTtemp != null ? dataMKTtemp.IsFireProtection : null);
+                //var listMKTJson = dataMKTtemp != null ? dataMKTtemp.listMKT : "";
+                //formData.append("ListMKTJson", JSON.stringify(listMKTJson));
+
+                if ($("#select-BiddingPackage").val() != 3 && $("#select-BiddingPackage").val() != "") {
+                    formData.append("IsQuotation", true);
+                }
+
+                // gói thầu 3 thì có bảng báo giá và bảng đề xuất vật tư sử dụng và tick chọn nhập khác
+                else if ($("#select-BiddingPackage").val() == 3 && $("#select-BiddingPackage").val() != "") {
+                    formData.append("IsQuotation", true);
+                    formData.append("IsMaterialsUse", true);
+                    $("#bidding-document-required").removeClass("display-none");
+                }
+
+                var listMKTJson = dataMKTtemp != null ? dataMKTtemp.listMKT : "";
+                formData.append("ListMKTJson", JSON.stringify(listMKTJson));
+                // --end Năng lực thiết bị, máy móc
+
+                $.ajax({
+                    type: 'POST',
+                    url: "/BiddingNewsRegistration/Create",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function (resultData) {
+                        if (resultData && resultData.Data.code == "0") {
+                            ClearAllStorage();
+                            toastr.success(resultData.Data.message);
+                            url = '/tinthau/chitiet/' + resultData.Data.biddingNewsId;
+                            window.location = url;
+                        }
+                        else if (resultData.Data.code == "2") {
+                            toastr.warning("Bạn cần phải cập nhật đầy đủ thông tin tài khoản");
+                            setInterval(function () {
+                                url = '/taikhoan/capnhat';
+                                window.location = url;
+                            }, 3000);
+                        }
+                        else {
+                            toastr.error(resultData.Data.message);
+                        }
+                    }
+                });
+            }
+        }
+
+        function CancelAll() {
+            // remove all Storage after load page
+            ClearAllStorage();
+        }
+        //[END]=====Save or cancel=====
+
+
+        //[STR]=====POP-UP CÔNG TRÌNH=====
+        function enableButtonPopUpDetail() {
+            event.preventDefault();
+            var valConstruction = $('#select-Construction').val();
+
+            if (valConstruction === "") {
+                $('#btnConstructionDetail').addClass('disabled');
+            }
+            else {
+                $('#btnConstructionDetail').removeClass('disabled');
+
+                //get image cong trinh
+                var url = '/BiddingNewsRegistration/GetImageContructionById';
+                var data = { idConstruction: valConstruction };
+
+                $.post(url, data, function (responseData) {
+                    if (responseData) {
+                        $("#contain-construction-img").empty();
+                        $("#contain-construction-img").html(responseData.partialView);
+
+                        $('.slick_images').slick({
+                            dots: true,
+                            autoplay: true,
+                            autoplaySpeed: 5000,
+                            arrows: false
+                        });
+                    }
+                });
+            }
+        }
+
+        function showDetailConstruction(idConstruction) {
+            var url = '/BiddingNewsRegistration/GetDataConstructionDetail';
+            var data = { idConstruction: idConstruction };
+            $.post(url, data, function (responseData) {
+                if (responseData) {
+                    $("#popup-construction-detail").empty();
+                    $("#popup-construction-detail").html(responseData.partialView);
+                }
+            });
+        }
+
+        function saveConstruction() {
+            if (validForm("frmAddConstruction")) {
+                var data = new FormData($("#frmAddConstruction")[0]);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Construction/AddNewConstruction",
+                    data: data,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function (resultData) {
+                        if (resultData && resultData.succeed === "0") {
+                            $("#popup-createConstruction .buttonclose").click();
+                            toastr.success("Thêm công trình thành công.");
+                        }
+                        else {
+                            toastr.error(resultData);
+                        }
+                    },
+                    complete: function () {
+                        $.ajax({
+                            type: "POST",
+                            url: "/BiddingNewsRegistration/GetAllConstructionByUserId",
+                            data: {},
+                            success: function (resultData) {
+                                $("#contain-construction").empty();
+                                $("#contain-construction").html(resultData.partialView);
+                            }
+                        })
+                    }
+                });
+            }
+        }
+
+        function createNewConstruction() {
+            $("#frmAddConstruction").validate().resetForm();
+        }
+        //[END]=====POP-UP CÔNG TRÌNH=====
+
+        function CheckEnableMadeEstimates() {
+            if ($('#div-chk-self-made-estimates .icheckbox_square-green').hasClass("checked") === true) {
+                //checked
+                $('#btnFileUploadEstimates').addClass('display-none');
+                $('#EstimatesFile').prop('disabled', true);
+                $('#cancelFileUploadEstimates').click();
+
+                $('#btnFileUploadEstimates input').remove();
+                $('#btnFileUploadEstimates')
+                    .append("<input type='file' name='EstimatesFile' id='EstimatesFile' data-val-required='Vui lòng upload bảng dự toán khối lượng.' data-val='true' aria-describedby='msg-err-EstimatesFile' />");
+
+                $('#EstimatesFile').rules('remove', 'required');
+                $('#EstimatesFile').valid();
+            } else {
+                //unchecked
+                $('#btnFileUploadEstimates').removeClass('display-none');
+                $('#EstimatesFile').prop('disabled', false);
+
+                $('#EstimatesFile').rules('add', {
+                    required: true   // set a new rule
+                });
+            }
+        }
+
+        function CheckEnableMadeEstimatesLabel() {
+            if ($('#div-chk-self-made-estimates .icheckbox_square-green').hasClass("checked") === true) {
+                //unchecked
+                $('#btnFileUploadEstimates').removeClass('display-none');
+                $('#EstimatesFile').prop('disabled', false);
+
+                $('#EstimatesFile').rules('add', {
+                    required: true   // set a new rule
+                });
+            } else {
+                //checked
+                $('#btnFileUploadEstimates').addClass('display-none');
+                $('#EstimatesFile').prop('disabled', true);
+                $('#cancelFileUploadEstimates').click();
+
+                $('#btnFileUploadEstimates input').remove();
+                $('#btnFileUploadEstimates')
+                    .append("<input type='file' name='EstimatesFile' id='EstimatesFile' data-val-required='Vui lòng upload bảng dự toán khối lượng.' data-val='true' aria-describedby='msg-err-EstimatesFile' />");
+
+                $('#EstimatesFile').rules('remove', 'required');
+                $('#EstimatesFile').valid();
+            }
+        }
+
+        function CheckEnableMadeMaterial() {
+            if ($('#div-chk-self-made-supplies .icheckbox_square-green').hasClass("checked") === true) {
+                //checked
+                $('#btnFileUploadMaterial').addClass('display-none');
+                $('#MaterialFile').prop('disabled', true);
+                $('#cancelFileUploadMaterial').click();
+
+                $('#btnFileUploadMaterial input').remove();
+                $('#btnFileUploadMaterial')
+                    .append("<input type='file' name='MaterialFile' id='MaterialFile' data-val-required='Vui lòng upload bảng vật tư yêu cầu.' data-val='true' aria-describedby='msg-err-MaterialFile' />");
+
+                $('#MaterialFile').rules('remove', 'required');
+                $('#MaterialFile').valid();
+            } else {
+                //unchecked
+                $('#btnFileUploadMaterial').removeClass('display-none');
+                $('#MaterialFile').prop('disabled', false);
+
+                $('#MaterialFile').rules('add', {
+                    required: true   // set a new rule
+                });
+            }
+        }
+
+        function CheckEnableMadeMaterialLabel() {
+            if ($('#div-chk-self-made-supplies .icheckbox_square-green').hasClass("checked") === true) {
+                //unchecked
+                $('#btnFileUploadMaterial').removeClass('display-none');
+                $('#MaterialFile').prop('disabled', false);
+
+                $('#MaterialFile').rules('add', {
+                    required: true   // set a new rule
+                });
+            } else {
+                //checked
+                $('#btnFileUploadMaterial').addClass('display-none');
+                $('#MaterialFile').prop('disabled', true);
+                $('#cancelFileUploadMaterial').click();
+
+                $('#btnFileUploadMaterial input').remove();
+                $('#btnFileUploadMaterial')
+                    .append("<input type='file' name='MaterialFile' id='MaterialFile' data-val-required='Vui lòng upload bảng vật tư yêu cầu.' data-val='true' aria-describedby='msg-err-MaterialFile' />");
+
+                $('#MaterialFile').rules('remove', 'required');
+                $('#MaterialFile').valid();
+            }
+        }
+
+        // format BudgetImplementation
+        commonJS.formatPriceValue('BudgetImplementation');
+
+        commonJS.appendDayText('NumberOfDaysImplement');
+    </script>
+}

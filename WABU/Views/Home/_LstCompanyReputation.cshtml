@@ -1,0 +1,21 @@
+﻿@model FW.ViewModels.CompanyRatingVM
+
+@{
+    var listCompContructor = ViewBag.CompanyReputation;
+}
+
+@if (listCompContructor != null)
+{
+    foreach (var item in listCompContructor)
+    {
+        if (item.RatingStar == 5)
+        {
+            <div class="col-md-2 col-sm-6 col-xs-6">
+                <a class="single-bnr" target="_blank" href="#">
+                    <img class="salesLogoImage" src="~/@item.Logo" alt="@item.CompanyName">
+                    <span class="ad-slogan">@item.CompanyName</span>
+                </a> 
+            </div>
+        }
+    }
+}

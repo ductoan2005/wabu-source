@@ -1,0 +1,213 @@
+﻿@model FW.ViewModels.CompanyAbilityExpVM
+
+<div class="col-lg-12" id="content-NLKN">
+    <div id="ctr_Edit_NLKN" class="bs-transaction">
+        <hr class="border-top-solid" />
+        <div class="ibox-title bg_default_bid color-top-default_bid">
+            <h5><i class="fa fa-vcard" aria-hidden="true"></i> Năng lực kinh nghiệm </h5>
+            <a href="#" class="close close-tab btn_ctr_NLKN_out">×</a>
+        </div>
+        <br />
+        <form id="frmEditCompanyAbilityExp" class="form-horizontal" method="post" enctype="multipart/form-data">
+            @Html.HiddenFor(x => x.Id)
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Tên dự án*</label>
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Tên dự án" class="form-control" name="ProjectName"
+                           data-val="true"
+                           data-val-required="Vui lòng nhập tên đầy đủ của dự án có hợp đồng đang kê khai"
+                           aria-describedby="msg-err-ProjectName"
+                           value="@Model.ProjectName" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="ProjectName">
+                        <span id="msg-err-ProjectName" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Tên chủ đầu tư*</label>
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Tên chủ đầu tư" class="form-control" name="InvestorName"
+                           data-val="true"
+                           data-val-required="Vui lòng nhập tên đầy đủ của chủ đầu tư trong hợp đồng"
+                           aria-describedby="msg-err-InvestorName"
+                           value="@Model.InvestorName" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="InvestorName">
+                        <span id="msg-err-InvestorName" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Địa chỉ*</label>
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Địa chỉ" class="form-control" name="InvestorAddress" data-val="true"
+                           data-val-required="Vui lòng nhập đầy đủ địa chỉ hiện tại của chủ đầu tư"
+                           aria-describedby="msg-err-InvestorAddress"
+                           value="@Model.InvestorAddress" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="InvestorAddress">
+                        <span id="msg-err-InvestorAddress" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Điện thoại</label>
+                <div class="col-lg-9">
+                    <input type="number" placeholder="Điện thoại" class="form-control" name="InvestorPhoneNumber"
+                           data-rule-number="true"
+                           data-msg-number="Vui lòng chỉ nhập số."
+                           aria-describedby="msg-err-InvestorPhoneNumber"
+                           value="@Model.InvestorPhoneNumber" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="InvestorPhoneNumber">
+                        <span id="msg-err-InvestorPhoneNumber" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Loại, cấp công trình</label>
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Loại, cấp công trình" class="form-control" name="ContructionType" value="@Model.ContructionType">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Quy mô thực hiện*</label>
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Quy mô thực hiện" class="form-control" name="ProjectScale"
+                           data-val="true"
+                           data-val-required="Vui lòng nhập quy mô theo hợp đồng"
+                           aria-describedby="msg-err-ProjectScale"
+                           value="@Model.ProjectScale" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="ProjectScale">
+                        <span id="msg-err-ProjectScale" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Số Hợp đồng*</label>
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Số Hợp đồng" class="form-control" name="ContractName"
+                           data-val="true"
+                           data-val-required="Vui lòng nhập tên đầy đủ của hợp đồng, số ký hiệu"
+                           aria-describedby="msg-err-ContractName"
+                           value="@Model.ContractName" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="ContractName">
+                        <span id="msg-err-ContractName" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Ngày ký hợp đồng*</label>
+                <div class="col-lg-9">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span>
+                        <input type="text" class="form-control ContractStartDate" placeholder="dd/MM/yyyy" value="@Model.ContractSignDate" name="ContractSignDate"
+                               data-val-required="Vui lòng chọn ngày, tháng, năm ký hợp đồng"
+                               data-val="true"
+                               aria-describedby="msg-err-ContractSignDate">
+                    </div>
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="ContractSignDate">
+                        <span id="msg-err-ContractSignDate" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Ngày hoàn thành</label>
+                <div class="col-lg-9">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span>
+                        <input type="text" class="form-control ContractEndDate" placeholder="dd/MM/yyyy" value="@Model.ContractCompleteDate" name="ContractCompleteDate">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Giá hợp đồng*</label>
+                <div class="col-lg-9">
+                    <input type="number" placeholder="0" class="form-control" name="ContractPrices"
+                           data-val="true"
+                           data-val-required="Vui lòng nhập tổng giá hợp đồng bằng số tiền và đồng tiền đã ký"
+                           aria-describedby="msg-err-ContractPrices"
+                           value="@Model.ContractPrices" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="ContractPrices">
+                        <span id="msg-err-ContractPrices" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Mô tả hiện trạng công trình</label>
+                <div class="col-lg-9">
+                    <textarea rows="4" class="form-control" id="ProjectDescription" name="ProjectDescription"
+                              data-rule-minlength="5"
+                              data-rule-maxlength="1000"
+                              data-msg-maxlength="Bạn đã nhập quá 1000 ký tự."
+                              data-msg-minlength="Bạn phải nhập tối thiểu 10 ký tự."
+                              aria-describedby="msg-err-ProjectDescription"
+                              value="@Model.ProjectDescription"></textarea>
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="ProjectDescription">
+                        <span id="msg-err-ProjectDescription" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Hợp đồng<br />(.pdf)</label>
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-file">
+                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <input type="file" name="EvidenceContractFile"
+                               data-val-required="Vui lòng chọn hồ sơ hợp đồng"
+                               aria-describedby="msg-err-EvidenceContractFile"
+                               onchange="accountPage.validateSingleInput(this, 'file');" />
+                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="EvidenceContractFile">
+                            <span id="msg-err-EvidenceContractFile" class=""></span>
+                        </span>
+                    </span>
+                    <span class="fileinput-filename">@Model.EvidenceContractFileName</span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Bản thanh lý<br />(.pdf)</label>
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-file">
+                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <input type="file" name="EvidenceContractLiquidationFile"
+                               data-val-required="Vui lòng chọn hồ sơ thanh lý hợp đồng"
+                               aria-describedby="msg-err-EvidenceContractLiquidationFile"
+                               onchange="accountPage.validateSingleInput(this, 'file');" />
+                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="EvidenceContractLiquidationFile">
+                            <span id="msg-err-EvidenceContractLiquidationFile" class=""></span>
+                        </span>
+                    </span>
+                    <span class="fileinput-filename">@Model.EvidenceContractLiquidationFileName</span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Giấy phép<br />(.pdf)</label>
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-file">
+                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <input type="file" name="EvidenceBuildingPermitFile"
+                               data-val-required="Vui lòng chọn hồ sơ giấy phép xây dựng"
+                               aria-describedby="msg-err-EvidenceBuildingPermitFile"
+                               onchange="accountPage.validateSingleInput(this, 'file');" />
+                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="EvidenceBuildingPermitFile">
+                            <span id="msg-err-EvidenceBuildingPermitFile" class=""></span>
+                        </span>
+                    </span>
+                    <span class="fileinput-filename">@Model.EvidenceBuildingPermitFileName</span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-2 col-md-push-4 col-xs-6 text-center">
+                    <button class="btn btn-sm btn-primary" type="button" onclick="pageContractBid.showConfirmHSNLBox(event, 'frmEditCompanyAbilityExp', 'edit')">Lưu lại</button>
+                </div>
+                <div class="col-lg-2 col-md-push-4 col-xs-6 text-center">
+                    <button type="button" class="btn btn-sm btn-default btn_ctr_NLKN_out">Thoát</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

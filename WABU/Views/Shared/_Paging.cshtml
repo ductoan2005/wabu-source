@@ -1,0 +1,79 @@
+﻿@{
+    var pagingList = ViewBag.pagingList;
+
+    int currentPage = int.Parse(pagingList.CurrentPage.ToString());
+    int itemsPerPage = int.Parse(pagingList.ItemsPerPage.ToString());
+    int totalItems = int.Parse(pagingList.TotalItems.ToString());
+    int maxPageShow = 5;// int.Parse(ViewData["MaxPageShow"].ToString());
+
+    int totalPage = pagingList.TotalPages;
+    if (totalPage > 0 && currentPage > totalPage)
+    {
+        currentPage = totalPage;
+    }
+    int halfPage = maxPageShow / 2;
+    int startPage = currentPage - halfPage;
+    if (startPage < 1)
+    {
+        startPage = 1;
+    }
+    int endPage = currentPage + halfPage;
+    if (endPage > totalPage) { endPage = totalPage; };
+}
+<div class="row">
+    <div class="col-sm-6">
+        <div class="dataTables_info" id="example-1_info" role="status" aria-live="polite">
+            @{
+                if (currentPage == 1)
+                {
+                    <span>Hiển thị @currentPage đến @itemsPerPage của @totalItems items</span>
+                }
+            }
+
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="dataTables_paginate paging_simple_numbers" id="paging-table">
+
+            <ul class="pagination">
+                @{
+                    if (pagingList.TotalItems > 1)
+                    {
+                        if (startPage > 1)
+                        {
+                            <li class="prev"><a href="#" onclick="ChangePageOnList(1);">← Previous</a></li>
+                        }
+                        for (int i = startPage; i < endPage + 1; i++)
+                        {
+                            if (i == currentPage)
+                            {
+                                <li class="active"><a href="javascript:void(0)">@i</a></li>
+                            }
+                            else
+                            {
+                                <li><a href="#" onclick="ChangePageOnList(@i)">@i</a></li>
+                            }
+                        }
+                        if (endPage < totalPage)
+                        {
+                            <li class="next"><a href="#" onclick="ChangePageOnList(@totalPage);"> Next → </a></li>
+                        }
+                    }
+                }
+            </ul>
+
+
+            @*<ul class="pagination">
+                    <li class="prev disabled">
+                        <a href="#">← Previous</a>
+                    </li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li class="next"><a href="#">Next → </a></li>
+                </ul>*@
+        </div>
+    </div>
+</div>

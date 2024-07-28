@@ -1,0 +1,49 @@
+﻿@{
+    var lstContract = ViewBag.lstContract;
+    var pagingContractList = ViewBag.pagingContract;
+    if (pagingContractList != null)
+    {
+        ViewData["CurrentPageContract"] = pagingContractList.CurrentPage;
+        ViewData["ItemsPerPageContract"] = pagingContractList.ItemsPerPage;
+        ViewData["TotalItemsContract"] = pagingContractList.TotalItems;
+    }
+    else
+    {
+        ViewData["CurrentPageContract"] = 0;
+        ViewData["ItemsPerPageContract"] = 1;
+        ViewData["TotalItemsContract"] = 0;
+    }
+}
+
+<thead>
+    <tr>
+        <th class="text-center">Tên hồ sơ</th>
+        <th class="text-center">Ngày tạo hồ sơ</th>
+        <th class="text-right">Hành động</th>
+
+    </tr>
+</thead>
+<tbody>
+    @foreach (var con in lstContract)
+    {
+        <tr class="footable-even" style="">
+            <td class="footable-visible footable-first-column">
+                @con.NameProfile
+                <span class="footable-toggle"></span>
+            </td>
+            <td class="footable-visible footable-second-column">
+                @con.DateInserted.ToString("dd/MM/yyyy")
+                <span class="footable-toggle"></span>
+            </td>
+            <td class="text-right footable-visible footable-last-column">
+                <div class="btn-group btn-actionListContract">
+                    <a href="@Url.Action("CapacityProfileDetail", "PageContractBid", new { id= con.Id })" class="btn-white btn btn-xs">Chỉnh sửa</a>
+                </div>
+                <div class="btn-group btn-actionListContract">
+                    <a href="@Url.Action("Index", "BidShowContractDetail", new { id= con.Id })" class="btn-white btn btn-xs">Xem lại</a>
+                </div>
+            </td>
+        </tr>
+    }
+</tbody>
+@Html.Partial("_PagingContract")

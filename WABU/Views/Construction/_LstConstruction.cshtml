@@ -1,0 +1,58 @@
+﻿@{
+    var pagingContructorList = ViewBag.pagingConstructionList;
+    var constructionVMList = ViewBag.constructionVMList;
+
+    if (pagingContructorList != null)
+    {
+        ViewData["CurrentPageConstruction"] = pagingContructorList.CurrentPage;
+        ViewData["ItemsPerPageConstruction"] = pagingContructorList.ItemsPerPage;
+        ViewData["TotalItemsConstruction"] = pagingContructorList.TotalItems;
+    }
+    else
+    {
+        ViewData["CurrentPageConstruction"] = 0;
+        ViewData["ItemsPerPageConstruction"] = 1;
+        ViewData["TotalItemsConstruction"] = 0;
+    }
+}
+
+<thead>
+<tr>
+    <th class="text-center">Tên công trình</th>
+    <th class="text-center">Địa chỉ</th>
+    @*<th class="text-center">Quy mô tầng</th>
+    <th class="text-center">Tổng diện tích</th>*@
+    <th class="text-center">Hành động</th>
+
+</tr>
+</thead>
+<tbody id="contructionList">
+    @if (constructionVMList != null)
+    {
+        foreach (var constructionVm in constructionVMList)
+        {
+            <tr class="footable-even" style="">
+                <td class="footable-visible footable-first-column">
+                    <span class="footable-toggle"></span>
+                    @constructionVm.ConstructionName
+                </td>
+                @*<td class="footable-visible">
+                    @constructionVm.Scale
+                </td>
+                <td class="footable-visible">
+                    @(constructionVm.AcreageBuild !=0 ? constructionVm.AcreageBuild.ToString() : "Chưa xác định")
+                </td>*@
+                <td class="footable-visible">
+                    @constructionVm.AddressBuild
+                </td>
+                <td class="text-center footable-visible footable-last-column">
+                    <div class="btn-group">
+                        <a data-toggle="modal" data-target="#EditConstruction" onclick="constructionJS.getConstructionDetail(@constructionVm.Id)"><i class="fa fa-edit font_20 color-top-default"></i></a>
+                        <a onclick="constructionJS.deleteConstruction(@constructionVm.Id)"><i class="fa fa-minus-square font_20 color-red"></i></a>
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+</tbody>
+@Html.Partial("_PagingConstruction")

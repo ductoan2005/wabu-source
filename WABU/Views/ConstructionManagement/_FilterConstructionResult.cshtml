@@ -1,0 +1,67 @@
+﻿@{
+    var constructionVmList = ViewBag.constructionVmList;
+    var pagingFilterBiddingResult = ViewBag.pagingFilterConstructionResult;
+
+    var currentPage = constructionVmList != null ? (int)pagingFilterBiddingResult.CurrentPage : 0;
+
+    var maxPageShow = 5;
+
+    int totalPage = pagingFilterBiddingResult.TotalPages;
+    if (totalPage > 0 && currentPage > totalPage)
+    {
+        currentPage = totalPage;
+    }
+    var halfPage = maxPageShow / 2;
+    var startPage = currentPage - halfPage;
+    if (startPage < 1)
+    {
+        startPage = 1;
+    }
+    var endPage = currentPage + halfPage;
+    if (endPage > totalPage)
+    {
+        endPage = totalPage;
+    }
+}
+<table id="filterConstructionTable" class="table table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Tên công trình</th>
+            <th>Chủ đầu tư</th>
+            <th>Địa điểm XD</th>
+            <th>Khu vực</th>
+            <th>Số tầng</th>
+            <th>Số tầng hầm</th>
+            <th>Tổng DT sàn XD</th>
+            <th>Hình thức XD</th>
+            <th>GPXD số</th>
+            <th>Ngày cấp GPXD</th>
+            <th>Người liên hệ</th>
+            <th>Số điện thoại</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (constructionVmList != null)
+        {
+            foreach (var item in constructionVmList)
+            {
+                <tr>
+                    <td class="center">@item.ConstructionName</td>
+                    <td class="center">@item.InvestorName</td>
+                    <td class="center">@item.AddressBuild</td>
+                    <td class="center">@item.Area.AreaName</td>
+                    <td class="center">@item.Scale</td>
+                    <td class="center">@item.Basement</td>
+                    <td class="center">@item.AcreageBuild</td>
+                    <td class="center">@item.ConstructionForm</td>
+                    <td class="center">@item.BuildingPermit</td>
+                    <td class="center">@item.BuildingPermitDateTime</td>
+                    <td class="center">@item.ContactName</td>
+                    <td class="center">@item.ContactPhoneNumber</td>
+                    <td class="center">@item.ContactEmail</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

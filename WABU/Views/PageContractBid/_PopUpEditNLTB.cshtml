@@ -1,0 +1,175 @@
+﻿@model FW.ViewModels.CompanyAbilityEquipmentVM
+@{
+    var lstSourceItem = ViewBag.ListSourceItem;
+    var itemSelected = ViewBag.itemSelected;
+}
+
+<div class="col-lg-12" id="content-NLTB">
+    <div id="ctr_Edit_NLTB" class="bs-transaction">
+        <hr class="border-top-solid" />
+        <div class="ibox-title bg_default_bid color-top-default_bid">
+            <h5><i class="fa fa-cog" aria-hidden="true"></i> Năng lực thiết bị </h5>
+            <a href="#" class="close close-tab btn_ctr_NLTB_out">×</a>
+        </div>
+        <br />
+        <form id="frmEditCompanyAbilityEquipment" class="form-horizontal" method="post" enctype="multipart/form-data">
+            @Html.HiddenFor(x => x.Id)
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Tên thiết bị*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Tên thiết bị" class="form-control" name="EquipmentType"
+                           data-val="true"
+                           data-val-required="Vui lòng nhập tên thiết bị"
+                           aria-describedby="msg-err-EquipmentType"
+                           value="@Model.EquipmentType" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="EquipmentType">
+                        <span id="msg-err-EquipmentType" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Số lượng*</label>
+
+                <div class="col-lg-9">
+                    <input type="number" placeholder="0" class="form-control" name="Quantity"
+                           data-val="true"
+                           data-rule-number="true"
+                           data-msg-number="Vui lòng chỉ nhập số."
+                           data-val-required="Vui lòng nhập số lượng"
+                           aria-describedby="msg-err-Quantity"
+                           value="@Model.Quantity" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Quantity">
+                        <span id="msg-err-Quantity" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Công suất*</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Công suất" class="form-control" name="Capacity"
+                           data-val="true"
+                           data-val-required="Vui lòng nhập công suất"
+                           aria-describedby="msg-err-Capacity"
+                           value="@Model.Capacity" />
+                    <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Capacity">
+                        <span id="msg-err-Capacity" class=""></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Tính năng</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Tính năng" class="form-control" name="Function"
+                           value="@Model.Function">
+                    <!--span class="help-block m-b-none">Example block-level help text here.</span-->
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Nước sản xuất</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Nước sản xuất" class="form-control" name="NationalProduction"
+                           value="@Model.NationalProduction">
+                    <!--span class="help-block m-b-none">Example block-level help text here.</span-->
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Năm sản xuất</label>
+
+                <div class="col-lg-9">
+                    <input type="text" placeholder="Năm sản xuất" class="form-control" name="YearManufacture"
+                           value="@Model.YearManufacture">
+                    <!--span class="help-block m-b-none">Example block-level help text here.</span-->
+                </div>
+            </div>
+            @*<div class="form-group">
+                <label class="col-lg-3 control-label">Nguồn gốc</label>
+
+                <div class="col-lg-9">*@
+            @*    <input type="text" placeholder="Nguồn gốc" class="form-control" name="Source">*@
+            <!--span class="help-block m-b-none">Example block-level help text here.</span-->
+            @*</div>
+                </div>*@
+            @*<div class="form-group">
+                    <label class="col-lg-3 control-label"></label>
+
+                    <div class="col-lg-9">
+                        <div class="i-checks"><label> <input type="checkbox" value="" name="IsBiddingOwner"> <i></i> Sở hữu của nhà thầu</label></div>
+                        <div class="i-checks"><label> <input type="checkbox" value="" name="IsBiddingHire"> <i></i> Thuê mượn</label></div>
+                        <div class="i-checks"><label> <input type="checkbox" value="" name="IsBiddingSpecialManufacture"> <i></i> Chế tạo đặc biệt</label></div>
+                    </div>
+                </div>*@
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Nguồn gốc</label>
+                <div class="col-lg-9">
+                    @Html.DropDownListFor(x => x.Source, new SelectList(lstSourceItem as System.Collections.IEnumerable, "Value", "Text", "Selected"),
+                             new
+                             {
+                                 @class = "form-control",
+                             })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                    <label class="col-lg-3 control-label">Kiểm định</label>
+
+                    <div class="col-lg-9">
+                        <input type="text" placeholder="nhập ngày kiểm" class="form-control" name="">
+                    </div>
+                </div>*@
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Hợp đồng mua<br />(.pdf)</label>
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-file">
+                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <input type="file" name="EvidenceSaleContractFile"
+                               data-val-required="Vui lòng chọn hợp đồng mua"
+                               aria-describedby="msg-err-EvidenceContractFile"
+                               onchange="accountPage.validateSingleInput(this, 'file');" />
+                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="EvidenceSaleContractFile">
+                            <span id="msg-err-EvidenceSaleContractFile" class=""></span>
+                        </span>
+                    </span>
+                    <span class="fileinput-filename">@Model.EvidenceSaleContractFileName</span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Hợp đồng kiểm định<br />(.pdf)</label>
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-file">
+                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <input type="file" name="EvidenceInspectionRecordsFile"
+                               data-val-required="Vui lòng chọn hợp đồng kiểm định"
+                               aria-describedby="msg-err-EvidenceContractFile"
+                               onchange="accountPage.validateSingleInput(this, 'file');" />
+                        <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="EvidenceInspectionRecordsFile">
+                            <span id="msg-err-EvidenceInspectionRecordsFile" class=""></span>
+                        </span>
+                    </span>
+                    <span class="fileinput-filename">@Model.EvidenceInspectionRecordsFileName</span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-2 col-md-push-4 col-xs-6 text-center">
+                    <button class="btn btn-sm btn-primary" type="button" onclick="pageContractBid.showConfirmHSNLBox(event, 'frmEditCompanyAbilityEquipment', 'edit')">Lưu lại</button>
+                </div>
+                <div class="col-lg-2 col-md-push-4 col-xs-6 text-center">
+                    <button type="button" class="btn btn-sm btn-default btn_ctr_NLTB_out">Thoát</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#Source option[value='@itemSelected']").attr("selected", "selected");
+    });
+</script>

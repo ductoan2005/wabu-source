@@ -1,0 +1,28 @@
+﻿@{
+    /**/
+    ViewBag.Title = "Xác nhận tài khoản";
+    Layout = "~/Views/Shared/_Layout_Login.cshtml";
+}
+<link href="/Content/Common/css/plugins/iCheck/custom.css" rel="stylesheet">
+<div class="row">
+    <div class="col-md-4 fix-content-center">
+        <div class="m-t-register animated fadeInDown text-center">
+            <h2 class="font_20 text-white bold">Xác Nhận Đăng Ký</h2>
+            <br />
+            <p class="font_15 text-white">Đăng ký thành công!</p>
+            <p class="font_15 text-white">Cảm ơn bạn đã đăng ký.</p>
+            <div class="clear"></div>
+            <a class="btn btn-primary block full-width m-b mt15" href="@Url.Action("Index", "Home")">Quay lại trang chủ</a>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Common/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/app/Register/register.js"></script>
+    <script>
+        $(document).ready(function () {
+            registerJS.init();
+        });</script>
+}
+

@@ -1,0 +1,125 @@
+﻿@using FW.Common.Enum;
+@{
+    var companyAbilityEquipmentList = ViewBag.companyAbilityEquipmentList;
+    var pagingCompanyAbilityEquipmentList = ViewBag.pagingCompanyAbilityEquipmentList;
+    var currentPage = pagingCompanyAbilityEquipmentList?.CurrentPage;
+    var totalPage = pagingCompanyAbilityEquipmentList?.TotalPages;
+    var maxPageShow = 5;
+    if (totalPage > 0 && currentPage > totalPage)
+    {
+        currentPage = totalPage;
+    }
+    var halfPage = maxPageShow / 2;
+    var startPage = currentPage - halfPage;
+    if (startPage < 1)
+    {
+        startPage = 1;
+    }
+    var endPage = currentPage + halfPage;
+    if (endPage > totalPage)
+    {
+        endPage = totalPage;
+    }
+}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content animated fadeIn">
+        <br />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox-title bg_default_bid color-top-default_bid">
+                    <h5><i class="fa fa-cog" aria-hidden="true"></i> Năng lực thiết bị </h5>
+                </div>
+                <div class="overflow-x-sp">
+                    <table class="footable table table-stripped toggle-arrow-tiny default breakpoint footable-loaded text-center scroll-table" data-page-size="15">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th class="text-center">Loại máy móc</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-center">Công suất</th>
+                                <th class="text-center">Nước sản xuất</th>
+                                <th class="text-center">Nguồn gốc</th>
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (companyAbilityEquipmentList != null)
+                            {
+                                foreach (var companyAbilityEquipment in companyAbilityEquipmentList)
+                                {
+                                    <tr class="footable-even">
+                                        <td><input type="checkbox" class="i-checks XHS_NLTB Modal_XHS_NLTB" name="input[]" value="@companyAbilityEquipment.Id"></td>
+                                        <td class="footable-visible footable-first-column">
+                                            <span class="footable-toggle"></span>
+                                            @companyAbilityEquipment.EquipmentType
+                                        </td>
+                                        <td class="footable-visible">
+                                            @companyAbilityEquipment.Quantity
+                                        </td>
+                                        <td class="footable-visible">
+                                            @companyAbilityEquipment.Capacity
+                                        </td>
+                                        <td class="footable-visible">
+                                            @companyAbilityEquipment.NationalProduction
+                                        </td>
+                                        <td class="footable-visible">
+                                            @companyAbilityEquipment.Source
+                                        </td>
+                                        <td class="footable-visible">
+                                            <button type="button" class="btn btn-white btn-Modal-Exit" data-dismiss="modal" onclick="pageContractBid.getCompanyAbilityEquipmentDetail(@companyAbilityEquipment.Id)">Chỉnh sửa</button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <ul class="pagination pull-left">
+                @{
+                    if (pagingCompanyAbilityEquipmentList?.TotalItems > 0)
+                    {
+                        if (startPage > 1)
+                        {
+                            <li class="footable-page-arrow"><a data-page="first" href="#" onclick="pageContractBid.changePageOnListCompanyAbilityEquipment(1, event)">«</a></li>
+                            <li class="footable-page-arrow"><a data-page="prev" href="#" onclick="pageContractBid.changePageOnListCompanyAbilityEquipment(@currentPage - 1, event)">‹</a></li>
+                        }
+                        for (int i = startPage; i < endPage + 1; i++)
+                        {
+                            if (i == currentPage)
+                            {
+                                <li class="active"><a href="javascript:void(0)">@i</a></li>
+                            }
+                            else
+                            {
+                                <li class="footable-page"><a data-page="1" href="#" onclick="pageContractBid.changePageOnListCompanyAbilityEquipment(@i, event)">@i</a></li>
+                            }
+                        }
+                        if (endPage < totalPage)
+                        {
+                            <li class="footable-page-arrow"><a data-page="next" href="#" onclick="pageContractBid.changePageOnListCompanyAbilityEquipment(@currentPage + 1, event)">›</a></li>
+                            <li class="footable-page-arrow"><a data-page="last" href="#" onclick="pageContractBid.changePageOnListCompanyAbilityEquipment(@totalPage, event)">»</a></li>
+                        }
+                    }
+                }
+            </ul>
+            <button type="button" class="btn btn-primary btn-Modal-Choose" onclick="pageContractBid.chooseButtonEventModal(event, 'XHS_NLTB')" data-dismiss="modal">Chọn</button>
+            <button type="button" class="btn btn-danger btn-Modal-Delete" data-toggle="modal" data-target="#confirmDeleteBox">Xóa</button>
+            <button type="button" class="btn btn-white btn-Modal-Exit" data-dismiss="modal" onclick="pageContractBid.exitButtonEventModal(event)">Thoát</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.i-checks.XHS_NLTB').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+        pageContractBid.storeCheckBoxVal("XHS_NLTB");
+        pageContractBid.updateCheckBoxStatus("XHS_NLTB");
+        pageContractBid.updateCheckBoxStatus("Modal_XHS_NLTB");
+    });
+</script>
+

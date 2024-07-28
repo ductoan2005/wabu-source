@@ -1,0 +1,279 @@
+﻿@{
+    ViewBag.Title = "PageContractBid";
+    Layout = "~/Views/Shared/_Layout_Home.cshtml";
+}
+@model FW.ViewModels.CompanyProfileVM
+
+<link href="/Content/Common/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/dropzone/basic.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+<script src="/Scripts/Common/jquery-3.1.1.min.js"></script>
+<script src="/Scripts/Common/plugins/iCheck/icheck.min.js"></script>
+<script src="~/Scripts/app/PageContractBid/pageContractBid.js"></script>
+
+<div class="row">
+    <div class="container">
+        <img src="~/Content/Common/img/step.jpg" width="100%">
+    </div>
+</div>
+<br />
+<div class="row" id="contact_bid_edit">
+    <div class="container">
+        <div class="col-lg-5 pdl0">
+            <div class="ibox-content">
+                <div class="ibox-title bg_default_bid color-top-default_bid">
+                    <h5><i class="fa fa-vcard" aria-hidden="true"></i> Năng lực kinh nghiệm </h5><i class="fa fa-plus-square pull-right f20" id="btn_ctr_NLKN"></i>
+                    <a data-toggle="modal" data-target="#NLKN_MODAL"><i id="NLKN_MODAL_Btn" class="fa fa-arrows pull-right f20 text-white"></i></a>
+                </div>
+                <div class="overflow-x-sp">
+                    <table id="tblNLKN" class="footable table table-stripped toggle-arrow-tiny default breakpoint footable-loaded scroll-table" data-page-size="15">
+                        @Html.Partial("_ListNLKN")
+                    </table>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="ibox-title bg_default_bid color-top-default_bid">
+                    <h5><i class="fa fa-dollar" aria-hidden="true"></i> Năng lực tài chính </h5><i class="fa fa-plus-square pull-right f20" id="btn_ctr_NLTC"></i>
+                    <a data-toggle="modal" data-target="#NLTC_MODAL"><i id="NLTC_MODAL_Btn" class="fa fa-arrows pull-right f20 text-white"></i></a>
+                </div>
+                <div class="overflow-x-sp">
+                    <table id="tblNLTC" class="footable table table-stripped toggle-arrow-tiny default breakpoint footable-loaded scroll-table" data-page-size="15">
+                        @Html.Partial("_ListNLTC")
+                    </table>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="ibox-title bg_default_bid color-top-default_bid">
+                    <h5><i class="fa fa-user-circle-o" aria-hidden="true"></i> Năng lực nhân sự </h5><i class="fa fa-plus-square pull-right f20" id="btn_ctr_NLNS"></i>
+                    <a data-toggle="modal" data-target="#NLNS_MODAL"><i id="NLNS_MODAL_Btn" class="fa fa-arrows pull-right f20 text-white"></i></a>
+                </div>
+                <div class="overflow-x-sp">
+                    <table id="tblNLNS" class="footable table table-stripped toggle-arrow-tiny default breakpoint footable-loaded scroll-table" data-page-size="15">
+                        @Html.Partial("_ListNLNS")
+                    </table>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="ibox-title bg_default_bid color-top-default_bid">
+                    <h5><i class="fa fa-cog" aria-hidden="true"></i> Năng lực thiết bị </h5><i class="fa fa-plus-square pull-right f20" id="btn_ctr_NLTB"></i>
+                    <a data-toggle="modal" data-target="#NLTB_MODAL"><i id="NLTB_MODAL_Btn" class="fa fa-arrows pull-right f20 text-white"></i></a>
+                </div>
+                <div class="overflow-x-sp">
+                    <table id="tblNLTB" class="footable table table-stripped toggle-arrow-tiny default breakpoint footable-loaded scroll-table" data-page-size="15">
+                        @Html.Partial("_ListNLTB")
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7 animated fadeInRight background-white fixheight">
+            <div class="float-e-margins">
+                <div class="ibox-content mailbox-content">
+                    <form id="frmExportProfile" method="post">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input id="NameProfile" type="text" placeholder="Tên hồ sơ" class="form-control" name="NameProfile"
+                                       data-val-required="Vui lòng nhập tên hồ sơ"
+                                       data-val="true"
+                                       aria-describedby="msg-err-NameProfile"
+                                       value="@Model.NameProfile" />
+                                <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="NameProfile">
+                                    <span id="msg-err-NameProfile" class=""></span>
+                                </span>
+                            </div>
+                        </div>
+                        @Html.Hidden("ProfileId", Model.Id)
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a id="exportProfileBtn" class="btn btn-block btn-primary compose-mail" onclick="pageContractBid.showConfirmUpdateProfileBox(event)">Xuất hồ sơ</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a class="btn btn-block btn-default compose-mail" href="@Url.Action("PageContract", "Account")">Quay lại danh sách hồ sơ</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            @Html.Partial("_PopUpAddNLKN")
+            <div id="PopUp_Edit_NLKN">
+            </div>
+            @Html.Partial("_PopUpAddNLTC")
+            <div id="PopUp_Edit_NLTC">
+            </div>
+            @Html.Partial("_PopUpAddNLNS")
+            <div id="PopUp_Edit_NLNS">
+            </div>
+            @Html.Partial("_PopUpAddNLTB")
+            <div id="PopUp_Edit_NLTB">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="NLKN_MODAL" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    @Html.Partial("_Modal_ListNLKN")
+</div>
+<div class="modal inmodal" id="NLTC_MODAL" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    @Html.Partial("_Modal_ListNLTC")
+</div>
+<div class="modal inmodal" id="NLNS_MODAL" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    @Html.Partial("_Modal_ListNLNS")
+</div>
+<div class="modal inmodal" id="NLTB_MODAL" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    @Html.Partial("_Modal_ListNLTB")
+</div>
+<div class="modal inmodal" id="confirmUpdateProfileBox" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div class="">Bạn có muốn cập nhật hồ sơ năng lực ?</div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Hủy bỏ</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary" onclick="pageContractBid.exportProfile(event)">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="confirmAddProfileBox" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div class="">Bạn có muốn tạo mới hồ sơ năng lực ?</div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Hủy bỏ</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary" onclick="pageContractBid.exportProfile(event)">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="confirmAddBox" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div class="">Bạn có muốn tạo mới hồ sơ năng lực ?</div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Hủy bỏ</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="confirmUpdateHSNLBox" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div class="">Bạn có muốn cập nhật hồ sơ năng lực ?</div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Hủy bỏ</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="confirmDeleteBox" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div class="">Bạn có thực sự muốn xoá ?</div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Hủy bỏ</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary" onclick="deleteAbilityProfile(event)">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <button id="openConfirmUpdateBox" type="button" data-toggle="modal" data-target="#confirmUpdateBox" style="display: none;"></button>
+</div>
+<div class="modal inmodal" id="confirmUpdateBox" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="button-close close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+                <div id="warningMessage"><span>Hồ sơ năng lực đã tồn tại trong năm. Bạn có muốn cập nhật ?</span></div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="cancel" type="button" data-dismiss="modal" class="btn btn-default">Hủy bỏ</button>
+                <button data-bb-handler="confirm" type="button" data-dismiss="modal" class="btn btn btn-primary">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="/Scripts/Common/plugins/iCheck/icheck.min.js"></script>
+    <!-- Data picker -->
+    <script src="/Scripts/Common/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/app/Account/accountPage.js"></script>
+    <!-- Script for show file name after choose file  -->
+    <script src="/Scripts/Common/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            window.IsEditPage = true;
+            pageContractBid.hideDeleteButtonModal();
+            pageContractBid.bindDatePickerEvent();
+            pageContractBid.bindClickButtonEvent();
+            pageContractBid.initCompanyAbilityExpList();
+            pageContractBid.initCompanyAbilitHrList();
+            pageContractBid.initCompanyAbilityEquipmentList();
+            pageContractBid.initCompanyAbilityFinanceList();
+
+            $("#confirmDeleteBox").on('shown.bs.modal',
+                function () {
+                    // will only come inside after the modal is shown
+                    var allModalShow = $(".modal.inmodal.in");
+                    var abilityModal;
+                    for (var i = 0; i < allModalShow.length; i++) {
+                        if ($(allModalShow[i]).is("div[id^='NL']")) {
+                            abilityModal = allModalShow[i];
+                            $(abilityModal).addClass("modal-backdrop");
+                            break;
+                        }
+                    }
+                });
+
+            $("#confirmDeleteBox").on('hide.bs.modal',
+                function () {
+                    // will only come inside after the modal is shown
+                    var allModalShow = $(".modal.inmodal.in");
+                    var abilityModal;
+                    for (var i = 0; i < allModalShow.length; i++) {
+                        if ($(allModalShow[i]).is("div[id^='NL']")) {
+                            abilityModal = allModalShow[i];
+                            $(abilityModal).removeClass("modal-backdrop");
+                            break;
+                        }
+                    }
+                });
+        });
+
+        var list_XHS_NLKN = pageContractBid.convertArrayItems([@Model.AbilityExpsId]), list_XHS_NLNS = pageContractBid.convertArrayItems([@Model.AbilityHRsId]),
+            list_XHS_NLTB = pageContractBid.convertArrayItems([@Model.AbilityEquipmentsId]), list_XHS_NLTC = pageContractBid.convertArrayItems([@Model.AbilityFinancesId]);
+
+        pageContractBid.checkBoxInit(list_XHS_NLKN, list_XHS_NLNS, list_XHS_NLTB, list_XHS_NLTC);
+        pageContractBid.updateCheckBoxStatus_WhenOpenModal("NLKN");
+        pageContractBid.updateCheckBoxStatus_WhenOpenModal("NLTB");
+        pageContractBid.updateCheckBoxStatus_WhenOpenModal("NLNS");
+        pageContractBid.updateCheckBoxStatus_WhenOpenModal("NLTC");
+
+        //List Event
+        pageContractBid.storeCheckBoxVal("XHS_NLKN");
+        pageContractBid.storeCheckBoxVal("XHS_NLNS");
+        pageContractBid.storeCheckBoxVal("XHS_NLTB");
+        pageContractBid.storeCheckBoxVal("XHS_NLTC");
+
+        pageContractBid.popupAddNlnsEvent();
+
+    </script>
+}

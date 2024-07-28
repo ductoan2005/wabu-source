@@ -1,0 +1,316 @@
+﻿@model FW.ViewModels.ConstructionVM
+@{
+    var lstArea = ViewBag.ListArea;
+    var selectListConstructionForm = ViewBag.selectListConstructionForm;
+
+    var buildingPermitDateVal = Model.BuildingPermitDate.HasValue == true ? Model.BuildingPermitDate.Value.ToString("dd/MM/yyyy") : "";
+}
+
+@functions
+    {
+    public string GetOptionByNumber(int areaId)
+    {
+        return Model.AreaId == areaId ? "selected=\"selected\"" : "";
+    }
+}
+
+<div class="modal-dialog">
+    <div class="modal-content animated fadeIn">
+        <form id="frmEditConstruction" method="post" enctype="multipart/form-data">
+            @Html.HiddenFor(x => x.Id)
+            @Html.HiddenFor(x => x.IsDisplayContact)
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Chỉnh sửa công trình</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Tên công trình *</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" id="ConstructionName" name="ConstructionName" placeholder="Tên công trình" class="form-control"
+                                   data-val="true"
+                                   data-val-required="Vui lòng nhập tên công trình"
+                                   aria-describedby="msg-err-ContructionName"
+                                   value="@Model.ConstructionName" />
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="ConstructionName">
+                                <span id="msg-err-ConstructionName" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Chủ đầu tư *</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" id="InvestorName" name="InvestorName" placeholder="Chủ đầu tư" class="form-control"
+                                   data-val-required="Vui lòng nhập tên chủ đầu tư"
+                                   data-val="true"
+                                   aria-describedby="msg-err-InvestorName"
+                                   value="@Model.InvestorName" />
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="InvestorName">
+                                <span id="msg-err-InvestorName" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Địa điểm XD *</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" id="AddressBuild" name="AddressBuild" placeholder="Địa điểm xây dựng" class="form-control"
+                                   data-val-required="Vui lòng nhập địa điểm xây dựng"
+                                   data-val="true"
+                                   aria-describedby="msg-err-AddressBuild"
+                                   value="@Model.AddressBuild" />
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="AddressBuild">
+                                <span id="msg-err-AddressBuild" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Khu vực *</label>
+
+                        <div class="col-lg-9">
+                            @Html.DropDownListFor(x => x.AreaId, new SelectList(lstArea as System.Collections.IEnumerable, "Value", "Text", "Selected"),
+                             new
+                             {
+                                 @class = "form-control",
+                                 tabindex = "2",
+                                 data_val_required = "Vui lòng chọn địa điểm xây dựng",
+                                 data_val = "true",
+                                 aria_describedby = "msg-err-AreaId"
+                             })
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="AreaId">
+                                <span id="msg-err-AreaId" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Số tầng *</label>
+
+                        <div class="col-lg-4">
+                            <input type="number" id="Scale" name="Scale" placeholder="Nhập số tầng" class="form-control"
+                                   data-val-required="Vui lòng nhập quy mô công trình"
+                                   data-val-number="Vui lòng chỉ nhập số"
+                                   data-val="true"
+                                   aria-describedby="msg-err-Scale"
+                                   value="@Model.Scale" />
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Scale">
+                                <span id="msg-err-Scale" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Số tầng hầm</label>
+                        <div class="col-lg-9">
+                            <input type="number" id="Basement" name="Basement" placeholder="Nhập số tầng hầm" class="form-control"
+                                   data-val-number="Vui lòng chỉ nhập số"
+                                   data-val="true"
+                                   aria-describedby="msg-err-Basement"
+                                   value="@Model.Basement">
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="Basement">
+                                <span id="msg-err-Basement" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Tổng DT sàn XD *</label>
+
+                        <div class="col-lg-9">
+                            <input type="number" id="AcreageBuild" name="AcreageBuild" placeholder="Tổng diện tích sàn xây dựng" class="form-control"
+                                   data-val-required="Vui lòng nhập tổng diện tích sàn xây dựng"
+                                   data-val-number="Vui lòng chỉ nhập số"
+                                   data-val="true"
+                                   aria-describedby="msg-err-AcreageBuild"
+                                   value="@Model.AcreageBuild" />
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="AcreageBuild">
+                                <span id="msg-err-AcreageBuild" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Hình thức XD *</label>
+                        <div class="col-lg-9">
+                            @Html.DropDownListFor(x => x.ConstructionForm, new SelectList(selectListConstructionForm as System.Collections.IEnumerable, "Value", "Text", "Selected"),
+                                           new { @class = "form-control",
+                                               tabindex = "2",
+                                               data_val_required = "Vui lòng chọn hình thức xây dựng",
+                                               data_val = "true",
+                                               aria_describedby = "msg-err-ConstructionForm"
+                                           })
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="ConstructionForm">
+                                <span id="msg-err-ConstructionForm" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">GPXD số</label>
+                        <div class="col-lg-9">
+                            <input type="text" id="BuildingPermit" name="BuildingPermit" placeholder="Giấy phép xây dựng số" class="form-control"
+                                   data-val="true"
+                                   aria-describedby="msg-err-BuildingPermit"
+                                   value="@Model.BuildingPermit" />
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="BuildingPermit">
+                                <span id="msg-err-BuildingPermit" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Ngày cấp GPXD</label>
+                        <div class="col-lg-4">
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar color-date"></i></span>
+                                <input id="EditBuildingPermitDateTime" type="text" name="BuildingPermitDateTime" class="form-control" placeholder="dd/MM/yyyy"
+                                       data-val="true"
+                                       aria-describedby="msg-err-BuildingPermitDateTime"
+                                       value="@buildingPermitDateVal" />
+                            </div>
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="BuildingPermitDateTime">
+                                <span id="msg-err-BuildingPermitDateTime" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Mô tả hiện trạng công trình *</label>
+
+                        <div class="col-lg-9">
+                            <textarea rows="4" id="ConstructionDescription" name="ConstructionDescription" placeholder="Mô tả hiện trạng công trình" class="form-control"
+                                      data-val-required="Vui lòng nhập mô tả hiện trạng công trình"
+                                      data-val="true"
+                                      aria-describedby="msg-err-ConstructionDescription">@Model.ConstructionDescription</textarea>
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="ConstructionDescription">
+                                <span id="msg-err-ConstructionDescription" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Người liên hệ *</label>
+                        <div class="col-lg-9">
+                            <input type="text"
+                                   data-val-required="Vui lòng nhập tên người liên hệ"
+                                   name="ContactName"
+                                   id="ContactName"
+                                   data-val="true"
+                                   placeholder="Chỉ đơn vị trúng thầu thấy thông tin này."
+                                   value="@Model.ContactName"
+                                   class="form-control">
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-for="ContactName" data-valmsg-replace="true">
+                                <span id="msg-err-ContactName" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Số điện thoại *</label>
+                        <div class="col-lg-4">
+                            <input type="text"
+                                   data-val-required="Vui lòng nhập số điện thoại liên hệ"
+                                   name="ContactPhoneNumber"
+                                   id="ContactPhoneNumber"
+                                   data-val="true"
+                                   placeholder="Chỉ đơn vị trúng thầu thấy thông tin này."
+                                   value="@Model.ContactPhoneNumber"
+                                   class="form-control">
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-for="ContactPhoneNumber" data-valmsg-replace="true">
+                                <span id="msg-err-ContactPhoneNumber" class=""></span>
+                            </span>
+                        </div>
+                  
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Email *</label>
+
+                        <div class="col-lg-9">
+                            <input type="text"
+                                   data-val-required="Vui lòng nhập email"
+                                   data-val-email="Vui lòng nhập email hợp lệ"
+                                   name="ContactEmail"
+                                   data-val="true"
+                                   aria-describedby="msg-err-ContactEmail"
+                                   id="ContactEmail"
+                                   placeholder="Chỉ đơn vị trúng thầu thấy thông tin này."
+                                   value="@Model.ContactEmail" class="form-control">
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-for="ContactEmail" data-valmsg-replace="true">
+                                <span id="msg-err-ContactEmail" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <span class="btn btn-file">
+                                        @{
+                                            string src = "../Content/Common/img/no-thumbnail.png";
+                                            string src1 = string.Empty;
+                                            //string src2 = string.Empty;
+                                            //string src3 = string.Empty;
+                                            if (Model.Image1FilePath != null)
+                                            {
+                                                src1 = "/" + Model.Image1FilePath;
+                                            }
+                                            else
+                                            {
+                                                src1 = src;
+                                            }
+
+                                            //if (Model.Image2FilePath != null)
+                                            //{
+                                            //    src2 = "/" + Model.Image2FilePath;
+                                            //}
+                                            //else
+                                            //{
+                                            //    src2 = src;
+                                            //}
+
+                                            //if (Model.Image3FilePath != null)
+                                            //{
+                                            //    src3 = "/" + Model.Image3FilePath;
+                                            //}
+                                            //else
+                                            //{
+                                            //    src3 = src;
+                                            //}
+                                        }
+                                        <input type="file" name="ImageFile1" onchange="commonJS.validateSingleInput(this, 'image')" />
+                                        <img id="previewEditImageContruction1" src="@src1" alt="ImageContruction" width="100%" class="img-thumbnail" />
+                                    </span>
+                                </div>
+                                <label class="col-lg-12 fix-text-center-image">Hình ảnh 1</label>
+                            </div>
+
+                            @*<div class="col-md-4">
+                                <div class="fileinput fileinput-new fix-image-border" data-provides="fileinput">
+                                    <span class="btn btn-file">
+                                        <input type="file" name="ImageFile2" onchange="commonJS.validateSingleInput(this, 'image')" />
+                                        <img id="previewEditImageContruction2" src="@src2" alt="ImageContruction" width="100%" class="img-thumbnail" />
+                                    </span>
+                                </div>
+                                <label class="col-lg-12 fix-text-center-image">Hình ảnh 2</label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="fileinput fileinput-new fix-image-border" data-provides="fileinput">
+                                    <span class="btn btn-file">
+                                        <input type="file" name="ImageFile3" onchange="commonJS.validateSingleInput(this, 'image')" />
+                                        <img id="previewEditImageContruction3" src="@src3" alt="ImageContruction" width="100%" class="img-thumbnail" />
+                                    </span>
+                                </div>
+                                <label class="col-lg-12 fix-text-center-image">Hình ảnh 3</label>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Thoát</button>
+                <button type="button" class="btn btn-primary" onclick="constructionJS.updateConstruction(event)">Lưu</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/app/WabuCommonJS/commonJS.js"></script>

@@ -1,0 +1,373 @@
+﻿@model FW.ViewModels.ContractorInformationVM
+@using WABU.Utilities;
+<div class="ibox-content">
+    <form enctype="multipart/form-data" class="form-horizontal" id="frmEditCompany" name="frmUserCompany" method="post">
+        @*@Html.HiddenFor(x => x.Id)
+            @Html.HiddenFor(x => x.Authority)*@
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <input type="hidden" name="userId" value="@SessionObjects.UserProfile.UserID" />
+        <h3 class="m-t-none m-b">Thông tin công ty</h3>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">Giới thiệu công ty*</label>
+            <div class="col-lg-9">
+                <textarea placeholder="Giới thiệu vài nét về công ty của bạn." name="contentcompany" rows="6" class="form-control">@Model.Contentcompany</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">Tên công ty</label>
+            <div class="col-lg-9">
+                <input type="text"
+                       placeholder="Tên công ty"
+                       class="form-control"
+                       id="namecompany"
+                       name="namecompany"
+                       data-val="true"
+                       value="@Model.Namecompany" />
+                <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="namecompany">
+                    <span id="msg-err-Address" class=""></span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">Đại diện hợp pháp</label>
+            <div class="col-lg-4">
+                <input type="text"
+                       placeholder="Đại diện hợp pháp"
+                       class="form-control"
+                       id="legalrepresentative"
+                       name="legalrepresentative"
+                       data-val="true"
+                       value="@Model.Legalrepresentative" />
+                <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="legalrepresentative">
+                    <span id="msg-err-Address" class=""></span>
+                </span>
+            </div>
+            <label class="col-lg-2 control-label">Chức vụ</label>
+            <div class="col-lg-3">
+                <input type="text"
+                       placeholder="Chức vụ"
+                       class="form-control"
+                       id="position"
+                       name="position"
+                       data-val="true"
+                       value="@Model.Position" />
+                <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="position">
+                    <span id="msg-err-Address" class=""></span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">Địa chỉ công ty</label>
+            <div class="col-lg-9">
+                <input type="text"
+                       placeholder="Địa chỉ công ty"
+                       class="form-control"
+                       id="addresscompany"
+                       name="addresscompany"
+                       data-val="true"
+                       value="@Model.Addresscompany" />
+                <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="addresscompany">
+                    <span id="msg-err-Address" class=""></span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">Số điện thoại công ty</label>
+            <div class="col-lg-9">
+                <input type="text"
+                       placeholder="Số điện thoại công ty"
+                       class="form-control"
+                       id="phonecompany"
+                       name="phonecompany"
+                       data-val="true"
+                       value="@Model.Phonecompany" />
+                <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="phonecompany">
+                    <span id="msg-err-Address" class=""></span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">Giấy phép đăng ký kinh doanh số</label>
+            <div class="col-lg-5">
+                <input type="text"
+                       placeholder="Giấy phép đăng ký kinh doanh số"
+                       class="form-control"
+                       id=""
+                       name="BussinessLicense"
+                       data-val="true"
+                       value="@Model.BussinessLicense" />
+                <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="BussinessLicense">
+                    <span id="msg-err-BussinessLicense" class=""></span>
+                </span>
+            </div>
+            <div class="col-lg-4">
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-file">
+                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <input type="file" name="BussinessLicenseFile" data-val="true" onchange="commonJS.validateSingleInput(this, 'file');" />
+                    </span>
+                    <span class="fileinput-filename"></span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">Năm thành lập</label>
+            <div class="col-lg-9">
+                <input type="text"
+                       placeholder="Năm thành lập"
+                       class="form-control"
+                       id="yearestablish"
+                       name="yearestablish"
+                       data-val="true"
+                       value="@Model.Yearestablish" />
+                <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="yearestablish">
+                    <span id="msg-err-Address" class=""></span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">Vốn điều lệ</label>
+            <div class="col-lg-9">
+                <input type="text"
+                       placeholder="Vốn điều lệ"
+                       class="form-control"
+                       id="invalidcapital"
+                       name="invalidcapital"
+                       data-val="true"
+                       value="@Model.Invalidcapital" />
+                <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="invalidcapital">
+                    <span id="msg-err-Address" class=""></span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">Mã số thuế</label>
+            <div class="col-lg-9">
+                <input type="text"
+                       placeholder="Mã số thuế"
+                       class="form-control"
+                       id="taxid"
+                       name="taxid"
+                       data-val="true"
+                       value="@Model.Taxid" />
+                <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="taxid">
+                    <span id="msg-err-Address" class=""></span>
+                </span>
+            </div>
+        </div>
+        <h3 class="m-t-none m-b">Danh sách ban lãnh đạo và nhân sự chủ chốt của công ty</h3>
+        <table id="tbl-Staff" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">STT</th>
+                    <th class="text-center">Họ và Tên</th>
+                    <th class="text-center">Chức vụ</th>
+                    <th class="text-center">Số Điện Thoại liên hệ</th>
+                    <th class="text-center">Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Staffs.Any())
+                {
+                    <tr id="row-default-Staff">
+                        <td><input type="text" id="txt-stt" name="staffNum" class="form-control" placeholder="Nhập STT"></td>
+                        <td><input type="text" id="txt-name" name="staffName" class="form-control" placeholder="Nhập họ tên"></td>
+                        <td><input type="text" id="txt-position" name="staffPosition" class="form-control" placeholder="Nhập chức vụ"></td>
+                        <td><input type="number" id="txt-phone" name="staffPhone" class="form-control text-center" placeholder="số điện thoại"></td>
+                        <td class="text-center">
+                            <a href="#" id="btn-add-row-NLMM" onclick="DeleteRowStaff(event);" class="display-normal"><i class="fa fa-minus-circle font_25 color-red"></i></a>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr id="row-default-Staff">
+                        <td><input type="text" id="txt-stt" name="staffNum" class="form-control" placeholder="Nhập STT"></td>
+                        <td><input type="text" id="txt-name" name="staffName" class="form-control" placeholder="Nhập họ tên"></td>
+                        <td><input type="text" id="txt-position" name="staffPosition" class="form-control" placeholder="Nhập chức vụ"></td>
+                        <td><input type="number" id="txt-phone" name="staffPhone" class="form-control text-center" placeholder="số điện thoại"></td>
+                        <td class="text-center">
+                            <a href="#" id="btn-add-row-NLMM" onclick="AddRowCompanyStaff(event);" class="display-normal"><i class="fa fa-plus-square font_25 greenblue"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">Sơ đồ tổ chức công ty</label>
+            <div class="col-lg-9">
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-file">
+                        <span class="fileinput-new"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <span class="fileinput-exists"><i class="fa fa fa-paperclip font_20 greenblue"></i></span>
+                        <input type="file" name="organization" id="organization" data-val="true" onchange="commonJS.validateSingleInput(this, 'file');" />
+                    </span>
+                    <span class="fileinput-filename"></span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                <button class="btn btn-sm btn-primary" type="submit">Cập nhật thông tin công ty</button>
+            </div>
+        </div>
+    </form>
+</div>
+@*<script>
+    $(document).ready(function () {
+
+        // variable common
+        var rowIdStaff = 0;
+        var dataStaff = { listStaff: [] };
+        var trDefault = "<tr id='row-default-Staff' class='text-center'>"
+            + "<td> <input type='text' id='txt-stt' name='staffNum' class='form-control' placeholder='STT' disabled></td>"
+            + "<td><input type='text' id='txt-name' name='staffName' class='form-control' placeholder='Nhập họ tên'></td>"
+            + "<td><input type='text' id='txt-position' name='staffPosition' class='form-control' placeholder='Nhập chức vụ'></td>"
+            + "<td><input type='number' id='txt-phone' name='staffPhone' class='form-control text-center' placeholder='số điện thoại'></td>"
+            + "<td class='text-center'><a href='#' id=btn-add-row-NLMM' onclick='AddRowCompanyStaff(event);' class='display-normal'><i class='fa fa-plus-square font_25 greenblue'></i></a></td>"
+            + "</tr>";
+            var staff = {};
+            @foreach (var staff in Model.Staffs)
+            {
+                @:staff = { staffNum: @staff.StaffNum, staffName: '@staff.StaffName', staffPosition: '@staff.StaffPosition', staffPhone: '@staff.StaffPhone'};
+                @:InitialCompanyStaff(staff);
+            }
+
+            //======================================================
+            $("#frmEditCompany").submit(function (e) {
+                e.preventDefault();
+                var form = document.getElementById('frmEditCompany');
+                var dataForm = new FormData(form);
+
+                var staff = "";
+                if (dataStaff.listStaff.length > 0) {
+                    staffs = JSON.stringify(dataStaff.listStaff);
+                    for (var i = 0; i < dataStaff.listStaff.length; i++) {
+                        dataForm.append('CompanyId', dataStaff.listStaff[i].staffNum);
+                        dataForm.append('StaffName', dataStaff.listStaff[i].staffName);
+                        dataForm.append('StaffPosition', dataStaff.listStaff[i].staffposition);
+                        dataForm.append('StaffPhone', dataStaff.listStaff[i].staffPhone);
+                    }
+                    dataForm.append('CompanyStaff', staffs);
+                }
+
+                //var temp = JSON.stringify(dataForm);
+                //var object = {};
+                //dataForm.forEach(function (value, key) {
+                //    object[key] = value;
+                //});
+                //var json = JSON.stringify(object);
+                debugger
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Contractor/UpdateContractorInformation",
+                    data: dataForm,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (resultData) {
+                        toastr.success("Cập nhật thành công");
+                    }
+                });
+            });
+        
+
+        function drawStaffRow(trAccept) {
+            if ($('#tbl-Staff tbody #row-default-Staff').length) {
+                $('#tbl-Staff #row-default-Staff').remove(); //remove tr
+
+                $('#tbl-Staff tbody').append(trAccept);
+                $('#tbl-Staff tbody').append(trDefault);
+            }
+        }
+        function InitialCompanyStaff(staff) {
+            rowIdStaff++;
+            var idRow = "row_NLMM_" + rowIdStaff;
+
+            var trAccept = "<tr id='" + idRow + "' class='text-center'>"
+            + "<td><p>" + rowIdStaff + "</p></td>"
+            + "<td><p>" + staff.staffName + "</p></td>"
+            + "<td><p>" + staff.staffPosition + "</p></td>"
+            + "<td><p>" + staff.staffPhone + "</p></td>"
+            + '<td><a href="#" id="btn-delete-row-NLMM" onclick="DeleteRowStaff(\'' + idRow + '\',event);" class="display-normal"><i class="fa fa-minus-square font_25 color-red"></i></a></td></tr > ';
+
+            dataStaff.listStaff.push(
+                {
+                    id: idRow,
+                    staffNum: staff.staffNum,
+                    staffName: staff.staffName,
+                    staffposition: staff.staffPosition,
+                    staffPhone: staff.staffPhone
+                });
+            drawStaffRow(trAccept);
+        };
+        function AddRowCompanyStaff(e) {
+            e.preventDefault();
+            if ($('#txt-name').val() === "") {
+                toastr.error("Vui lòng nhập tên nhân viên muốn thêm!");
+                return;
+            }
+
+            var jsUrl = '/Scripts/Common/plugins/iCheck/icheck.min.js';
+            $.getScript(jsUrl, function () {
+                rowIdStaff++;
+                var idRow = "row_NLMM_" + rowIdStaff;
+
+                var trAccept = "<tr id='" + idRow + "' class='text-center'>"
+                            + "<td><p>" + rowIdStaff + "</p></td>"
+                            + "<td><p>" + $('#txt-name').val() + "</p></td>"
+                            + "<td><p>" + $('#txt-position').val() + "</p></td>"
+                            + "<td><p>" + $('#txt-phone').val() + "</p></td>"
+                            + '<td><a href="#" id="btn-delete-row-NLMM" onclick="DeleteRowStaff(\'' + idRow + '\',event);" class="display-normal"><i class="fa fa-minus-square font_25 color-red"></i></a></td></tr > ';
+
+                dataStaff.listStaff.push(
+                    {
+                        id: idRow,
+                        staffNum: null,
+                        staffName: $('#txt-name').val(),
+                        staffposition: $('#txt-position').val(),
+                        staffPhone: $('#txt-phone').val()
+                    });
+
+                // draw tr
+                drawStaffRow(trAccept);
+            });
+        }
+
+        function DeleteRowStaff(idRow, e) {
+            e.preventDefault();
+            $('#tbl-Staff tbody tr#' + idRow).remove(); //remove tr
+            var data = $.grep(dataStaff.listStaff, function (e) {
+                return e.id != idRow;
+            });
+
+            dataStaff.listStaff = data;
+        }
+
+        function updateContractorInformation(e) {
+
+            var file_bussinessLicense = $('#bussinessLicense').prop('files')[0];
+            var file_organization = $('#organization').prop('files')[0];
+
+            var dataForm = new FormData(form);
+
+            $.ajax({
+                type: "POST",
+                url: "/Contractor/UpdateContractorInformation",
+                data: dataForm,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (resultData) {
+                    toastr.success("Cập nhật thành công");
+                }
+            });
+        }
+    });
+</script>*@

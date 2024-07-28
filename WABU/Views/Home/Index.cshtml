@@ -1,0 +1,325 @@
+﻿@model FW.ViewModels.BiddingNewsCommonVM
+
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout_Home.cshtml";
+}
+@{
+    var listBiddingNewsBest = ViewBag.BiddingNewsBest;
+    var listBiddingPackage = ViewBag.BiddingPackage;
+}
+<div id="home-screen">
+    <div class="slider">
+        <div class="carousel slide" id="carousel2">
+            <div class="container">
+                <div class="col-md-9 col-xs-12 filter">
+                    <div class="row">
+                        <h1><strong>Hãy Lựa Chọn Tin Thầu Phù Hợp Với Bạn!</strong></h1>
+                        <div class="col-md-4">
+                            <i class="fa fa-search icon_search_slider"></i><input type="text" placeholder="Gói thầu, giá khởi điểm..." class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fa fa-list icon_list_slider"></i>
+                            <select data-placeholder="Chọn gói thầu..." class="form-control chosen-select" tabindex="1">
+                                @if (listBiddingPackage != null && listBiddingPackage.Count != 0)
+                                {
+                                    foreach (var item in listBiddingPackage)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fa fa-location-arrow icon_list_slider"></i>
+                            <select class="form-control" id="AreaId" name="AreaId" tabindex="2" data-placeholder="Chọn khu vực..."
+                                    data-val-required="Vui lòng chọn địa điểm xây dựng"
+                                    data-val="true"
+                                    aria-describedby="msg-err-AreaId"></select>
+                            <span class="help-block m-b-none text-danger font-weight" data-valmsg-replace="true" data-valmsg-for="AreaId">
+                                <span id="msg-err-AreaId" class=""></span>
+                            </span>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="@Url.Action("Search", "BiddingNews")" class="btn btn-outline btn-search-top full100">Tìm Kiếm</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <ol class="carousel-indicators">
+                <li data-slide-to="0" data-target="#carousel2" class="active"></li>
+                <li data-slide-to="1" data-target="#carousel2" class=""></li>
+                @*<li data-slide-to="2" data-target="#carousel2" class=""></li>*@
+            </ol>
+            <div class="carousel-inner">
+                @*<div class="item active">
+                        <div class="container"></div>
+                        <div class="header-back" style="background: url(../Content/Common/img/SLICE_1.png) no-repeat;background-size: cover;background-position: bottom;"></div>
+                    </div>*@
+                <div class="item active">
+                    <div class="header-back" style="background: url(../Content/Common/img/SLICE_2.png) no-repeat;background-size: cover;background-position: bottom;"></div>
+                </div>
+                <div class="item">
+                    <div class="header-back" style="background: url(../Content/Common/img/SLICE_3.png) no-repeat;background-size: cover;background-position: bottom;"></div>
+                </div>
+            </div>
+            <a data-slide="prev" href="#carousel2" class="left carousel-control">
+                <span class="icon-prev"></span>
+            </a>
+            <a data-slide="next" href="#carousel2" class="right carousel-control">
+                <span class="icon-next"></span>
+            </a>
+        </div>
+        <div class="list_tb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-md-push-3">
+                        @if (listBiddingNewsBest != null && listBiddingNewsBest.Count != 0)
+                        {
+                            <div class="slick_demo_1">
+                                @foreach (var item in listBiddingNewsBest)
+                                {
+                                    <div>
+                                        <div class="ibox-content">
+                                            <div class="row">
+                                                <div class="col-md-3" style="text-align: center;">
+                                                    <div class="image-item">
+                                                        @if (!string.IsNullOrWhiteSpace(item.Image))
+                                                        {
+                                                            <img src="@item.Image" alt="" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="/Content/Common/img/no-thumnail.jpg" alt="" />
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-9 none-hover-link">
+                                                    <a href="@Url.Action("Index", "BidContractionDetail", new { id = item.BiddingNewsId})" class="text-white">
+                                                        <h3 style="height: 20px;">
+                                                            <span class="title-news">@item.ConstructionName </span>
+                                                        </h3>
+                                                        <p class="mb5">Gói thầu: @item.BiddingPackageName </p>
+                                                        <p class="mb5">Khu vực: @item.AreaName - Lượt đấu thầu: @item.NumberBidded</p>
+                                                        <p class="mb5">Ngày mở thầu: @(item.NewsApprovalDate?.ToString("dd/MM/yyyy")) - Ngày đóng thầu: @item.BidCloseDate.ToString("dd/MM/yyyy")</p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="content-ads">*@
+    <div class="">
+        @*<div class="container animated fadeIn filterads">*@
+        <div class="container animated fadeIn filterads" style="color:black;">
+            <div class="row">
+                @*<h1 class="text-center">Chủ Đầu Tư Uy Tín</h1>*@
+            </div>
+            <div class="row ads-logo">
+                @*@Html.Partial("_LstCompanyReputation")*@
+            </div>
+        </div>
+    </div>
+    <div class="content-home">
+        <div class="container tab_home">
+            <div class="row">
+                <h1>Những Gói Thầu Bạn Sẽ Thích</h1>
+            </div>
+            <div class="col-lg-12">
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#tab-new" aria-expanded="true">Gói Thầu Mới</a></li>
+                        <li class=""><a data-toggle="tab" href="#tab-qt" aria-expanded="false">Gói Thầu Quan Tâm</a></li>
+                        @*<li class=""><a data-toggle="tab" href="#tab-x" aria-expanded="false">Gói Thầu Đề Xuất</a></li>*@
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-new" class="tab-pane active">
+                            @Html.Partial("_LstBiddingNewsNewest")
+                        </div>
+                        <div id="tab-qt" class="tab-pane">
+                            @Html.Partial("_LstBiddingNewsInterest")
+                        </div>
+                        @*<div id="tab-x" class="tab-pane">
+                                @Html.Partial("_LstBiddingNewsSuggest")
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="contractor_top">
+        <div class="container">
+            <div class="row">
+                <h1 class="text-center">Nhà Thầu Nổi Bật</h1>
+            </div>
+            @Html.Partial("_LstCompanyHighlights")
+        </div>
+    </div>
+    <div class="ads_home">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <h1 class="text-center">Danh Sách Nhà Thầu </h1>
+                    </div>
+                    <div class="ibox">
+                        <div id="content-company">
+                            @Html.Partial("_LstCompany")
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="ads_home_contractor">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <h1 class="text-center">Thương Hiệu Uy Tín</h1>
+                    </div>
+                    <div class="row ads-logo">
+                        <div class="col-md-2 col-sm-6 col-xs-4">
+                            @*<a class="single-bnr" target="_blank" href="/contractor/contractordetail">*@
+                            <div class="single-bnr">
+                                <img class="salesLogoImage" src="~/Content/Common/img/logo/American Standar.jpg" width="150" />
+                                <span class="ad-slogan"></span>
+                            </div>
+
+                        </div>
+                        <div class="col-md-2 col-sm-6 col-xs-4">
+                            <div class="single-bnr">
+                                <img class="salesLogoImage" src="~/Content/Common/img/logo/Cadivi.jpg" width="150" />
+                                <span class="ad-slogan"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-6 col-xs-4">
+                            <div class="single-bnr">
+                                <img class="salesLogoImage" src="~/Content/Common/img/logo/Dong Tam.jpg" width="150" />
+                                <span class="ad-slogan"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-6 col-xs-4">
+                            <div class="single-bnr">
+                                <img class="salesLogoImage" src="~/Content/Common/img/logo/Leowood.jpg" width="150" />
+                                <span class="ad-slogan"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-6 col-xs-4">
+                            <div class="single-bnr">
+                                <img class="salesLogoImage" src="~/Content/Common/img/logo/MicroEngine.jpg" width="150" />
+                                <span class="ad-slogan"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-6 col-xs-4">
+                            <div class="single-bnr">
+                                <img class="salesLogoImage" src="~/Content/Common/img/logo/Nhua Binh Minh.jpg" width="150" />
+                                <span class="ad-slogan"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-6 col-xs-4">
+                            <div class="single-bnr">
+                                <img class="salesLogoImage" src="~/Content/Common/img/logo/Panasonic.jpg" width="150" />
+                                <span class="ad-slogan"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-6 col-xs-4">
+                            <div class="single-bnr">
+                                <img class="salesLogoImage" src="~/Content/Common/img/logo/Pergo.jpg" width="150" />
+                                <span class="ad-slogan"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-6 col-xs-4">
+                            <div class="single-bnr">
+                                <img class="salesLogoImage" src="~/Content/Common/img/logo/Son Dulux.jpg" width="150" />
+                                <span class="ad-slogan"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-6 col-xs-4">
+                            <div class="single-bnr">
+                                <img class="salesLogoImage" src="~/Content/Common/img/logo/TBVS ToTo.jpg" width="150" />
+                                <span class="ad-slogan"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-6 col-xs-4">
+                            <div class="single-bnr">
+                                <img class="salesLogoImage" src="~/Content/Common/img/logo/Thep Viet Nhat.jpg" width="150" />
+                                <span class="ad-slogan"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-6 col-xs-4">
+                            <div class="single-bnr">
+                                <img class="salesLogoImage" src="~/Content/Common/img/logo/Xi mang Holcim.jpg" width="150" />
+                                <span class="ad-slogan"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <!-- slick carousel-->
+    <script src="/Scripts/Common/plugins/slick/slick.min.js"></script>
+    <script src="~/Scripts/app/AreaManage/areaManageJS.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.slick_product').slick({
+                infinite: true,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                //centerMode: true,
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 4,
+                            slidesToScroll: 4,
+                            infinite: true,
+                            dots: true
+                        }
+                    },
+                    {
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+            $('.slick_demo_1').slick({
+                dots: true,
+                autoplay: true,
+                autoplaySpeed: 5000,
+                arrows: false
+            });
+            $('.chosen-select').chosen({ width: "100%" });
+            $('.scroll_content').slimscroll({ height: '600px' });
+            $('.scroll_content_ads_home').slimscroll({ height: '725px' });
+            areaManageJS.getArea();
+
+        });
+    </script>
+}
+

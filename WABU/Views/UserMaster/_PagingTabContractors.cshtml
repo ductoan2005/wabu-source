@@ -1,0 +1,86 @@
+﻿@{
+    var pagingUserContractors = ViewBag.pagingUserContractors;
+
+    var currentPageContractors = int.Parse(ViewData["CurrentPageContractors"].ToString());
+    var itemsPerPageContractors = int.Parse(ViewData["ItemsPerPageContractors"].ToString());
+    var totalItemsContractors = int.Parse(ViewData["TotalItemsContractors"].ToString());
+    var maxPageShowContractors = 5;// int.Parse(ViewData["MaxPageShow"].ToString());
+
+    int totalPageContractors = pagingUserContractors.TotalPages;
+    if (totalPageContractors > 0 && currentPageContractors > totalPageContractors)
+    {
+        currentPageContractors = totalPageContractors;
+    }
+    var halfPageContractors = maxPageShowContractors / 2;
+    var startPageContractors = currentPageContractors - halfPageContractors;
+    if (startPageContractors < 1)
+    {
+        startPageContractors = 1;
+    }
+    var endPageContractors = currentPageContractors + halfPageContractors;
+    if (endPageContractors > totalPageContractors)
+    {
+        endPageContractors = totalPageContractors;
+    }
+}
+<div class="row">
+    <div class="col-sm-6">
+        <div class="dataTables_info" id="paging-info" role="status" aria-live="polite">
+            @{
+                if (pagingUserContractors.TotalItems > 0)
+                {
+                    if (totalPageContractors == startPageContractors)
+                    {
+                        <span>Tổng item(s) là @totalItemsContractors</span>
+                    }
+                    else if(currentPageContractors == 1)
+                    {
+                        <span>Hiển thị @currentPageContractors đến @(itemsPerPageContractors * currentPageContractors) của tổng @totalItemsContractors items</span>
+                    }
+                    else if (currentPageContractors < endPageContractors)
+                    {
+                        <span>Hiển thị @(((currentPageContractors - 1) * itemsPerPageContractors) + 1) đến @(itemsPerPageContractors * currentPageContractors) của tổng @totalItemsContractors items</span>
+                    }
+                    else if (currentPageContractors == endPageContractors)
+                    {
+                        <span>Hiển thị @(((currentPageContractors - 1) * itemsPerPageContractors) + 1) đến @totalItemsContractors của tổng @totalItemsContractors items</span>
+                    }
+                }
+                else
+                {
+                    <span>Tổng item(s) là 0</span>
+                }
+            }
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="dataTables_paginate paging_simple_numbers text-right" id="paging-list-contractors">
+            <ul class="pagination">
+                @{
+                    if (pagingUserContractors.TotalItems > 0)
+                    {
+                        if (startPageContractors > 1)
+                        {
+                            <li class="prev"><a href="#" onclick="userMaster.changePageOnListContractors(@(currentPageContractors-1), event);">← Previous</a></li>
+                        }
+                        for (var i = startPageContractors; i < endPageContractors + 1; i++)
+                        {
+                            if (i == currentPageContractors)
+                            {
+                                <li class="active"><a href="javascript:void(0)">@i</a></li>
+                            }
+                            else
+                            {
+                                <li class="paginate_button"><a href="#" onclick="userMaster.changePageOnListContractors(@i, event)">@i</a></li>
+                            }
+                        }
+                        if (endPageContractors < totalPageContractors)
+                        {
+                            <li class="next"><a href="#" onclick="userMaster.changePageOnListContractors(@(currentPageContractors+1), event);"> Next → </a></li>
+                        }
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>

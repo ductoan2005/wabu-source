@@ -1,0 +1,104 @@
+﻿@using FW.Common.Enum
+@using FW.Common.Helpers
+@{
+    var biddingNewsVmList = ViewBag.biddingNewsVmList;
+    var pagingPackageList = ViewBag.pagingPackageList;
+    if (pagingPackageList != null)
+    {
+        ViewData["CurrentPagePackage"] = pagingPackageList.CurrentPage;
+        ViewData["ItemsPerPagePackage"] = pagingPackageList.ItemsPerPage;
+        ViewData["TotalItemsPackage"] = pagingPackageList.TotalItems;
+    }
+    else
+    {
+        ViewData["CurrentPagePackage"] = 0;
+        ViewData["ItemsPerPagePackage"] = 1;
+        ViewData["TotalItemsPackage"] = 0;
+    }
+    var authority = ViewBag.Authority;
+}
+<thead>
+    <tr>
+        <th>Tên công trình</th>
+        <th>Tên gói thầu</th>
+        @if (authority != 2)
+        {
+            <th>Chủ đầu tư</th>
+        }
+        @if (authority != 3)
+        {
+            <th>Nhà thầu tham gia</th>
+        }
+
+        <th class="center">Trạng thái</th>
+
+    </tr>
+</thead>
+<tbody>
+    @if (biddingNewsVmList != null)
+    {
+        foreach (var biddingNewsVm in biddingNewsVmList)
+        {
+            <tr class="footable-even" style="">
+                <td class="footable-visible footable-first-column">
+                    <span class="footable-toggle"></span>
+                    <a href="@Url.Action("Index", "BidContractionDetail", new { id = biddingNewsVm.Id})">@biddingNewsVm.ContructionName</a>
+                </td>
+                <td class="footable-visible footable-first-column">
+                    <span class="footable-toggle"></span>
+                    @biddingNewsVm.BiddingPackageName
+                </td>
+                @if (authority != 2)
+                {
+                    <td class="footable-visible">
+                        @biddingNewsVm.InvestorName
+                    </td>
+                }
+                @if (authority != 3)
+                {
+                    <td class="footable-visible">
+                        @biddingNewsVm.NumberBidded
+                    </td>
+                }
+                @*@if (biddingNewsVm.BidStartDate != null)
+                    {
+                        <td class="footable-visible">
+                            @biddingNewsVm.BidStartDate.ToString("dd/MM/yyyy")
+                        </td>
+                    }*@
+                <td class="footable-visible">
+                    @{
+                        var statusBidding = biddingNewsVm.StatusBiddingNews;
+
+                        var statusTextDisplay = EnumHelper<StatusBidding>.GetDisplayValue((StatusBidding)statusBidding);
+                        if (biddingNewsVm.IsActived != true)
+                        {
+                            <span class="label label-default fix-lable-status">Đang chờ duyệt</span>
+                        }
+                        else if ((StatusBidding)statusBidding == StatusBidding.Opening)
+                        {
+                            <span class="label label-primary fix-lable-status">@statusTextDisplay</span>
+
+                        }
+                        else if ((StatusBidding)statusBidding == StatusBidding.Negotiation)
+                        {
+                            <span class="label label-warning fix-lable-status">@statusTextDisplay</span>
+
+                        }
+                        else if ((StatusBidding)statusBidding == StatusBidding.Implementing)
+                        {
+                            <span class="label label-danger fix-lable-status">@statusTextDisplay</span>
+
+                        }
+                        else if ((StatusBidding)statusBidding == StatusBidding.Finished)
+                        {
+                            <span class="label label-default fix-lable-status">@statusTextDisplay</span>
+                        }
+                    }
+                </td>
+            </tr>
+                            }
+                        }
+</tbody>
+@Html.Partial("_PagingPackageDetail")
+

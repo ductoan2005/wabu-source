@@ -1,0 +1,35 @@
+﻿@{
+    var companyAbilityEquipmentList = ViewBag.companyAbilityEquipmentList;
+}
+<thead>
+    <tr>
+        <th></th>
+        <th>Loại máy móc</th>
+        <th>Số lượng</th>
+        <th>Công suất</th>
+    </tr>
+</thead>
+<tbody>
+    @if (companyAbilityEquipmentList != null)
+    {
+        var maxItemQuantity = companyAbilityEquipmentList.Count <= 3 ? companyAbilityEquipmentList.Count : 3;
+        for (int i = 0; i < maxItemQuantity; i++)
+        {
+            <tr class="footable-even" style="">
+                <td><input type="checkbox" class="i-checks XHS_NLTB" name="input[]" value="@companyAbilityEquipmentList[i].Id"></td>
+                <td class="footable-visible footable-first-column">
+                    <span class="footable-toggle"></span>
+                    <a onclick="pageContractBid.getCompanyAbilityEquipmentDetail(@companyAbilityEquipmentList[i].Id)">
+                        @companyAbilityEquipmentList[i].EquipmentType
+                    </a>
+                </td>
+                <td class="footable-visible">
+                    @companyAbilityEquipmentList[i].Quantity
+                </td>
+                <td class="footable-visible">
+                    @companyAbilityEquipmentList[i].Capacity
+                </td>
+            </tr>
+        }
+    }
+</tbody>
