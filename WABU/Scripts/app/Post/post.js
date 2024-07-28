@@ -40,7 +40,6 @@ var postManagement = function () {
         var title = $("input[name='Title']").val();
         var username = $("input[name='Username']").val();
         var isEnable = document.getElementById("IsEnableP").checked;
-        //var isEnable = document.getElementById("IsEnable").checked;
         var createdDate = $("input[name='PostCreatedDatetime']").val();
         var lastUpdatedDate = $("input[name='PostUpdatedDatetime']").val();
 
@@ -68,10 +67,68 @@ var postManagement = function () {
             }
         });
     }
+    // Direct về modal create post
+    function directToPartialViewCreate() {
+        $.ajax({
+            type: "POST",
+            url: "/Posts/DirectToPartialCreateView",
+            async: false,
+            success: function (data) {
+                $('#frmPost').html(data.patialView);
+                $("#frmPost").modal("show");
+            },
+            error: function (xhr, status, error) {
+                console.error("Error: " + error);
+            }
+        });
+    }
+
+    //Tạo mới bài viết
+    function createPost() {
+        if (validForm("frmPost")) {
+            var dataForm = $("#frmPost").serialize();
+
+            $.ajax({
+                type: "POST",
+                url: "/Posts/Create",
+                data: dataForm,
+                //dataType: "text",
+                async: false,
+                success: function (resultData) {
+                    if (resultData && resultData.succeed === "0") {
+
+                        var authority = $("#Authority").val();
+                        switch (authority) {
+                            case "0":
+                            case "1":
+                                changePageOnListAdmin(1, event);
+                                break;
+                            case "2":
+                                changePageOnListInvestor(1, event);
+                                break;
+                            case "3":
+                                changePageOnListContractors(1, event);
+                                break;
+                            default:
+                                break;
+                        }
+
+                        toastr.success("Thành Công.");
+                        clearFormAfterCreate();
+                    }
+                    else {
+                        toastr.error(resultData);
+                    }
+                }
+            });
+        }
+    }
 
     return {
         init: init,
         initPostSearchResult: initPostSearchResult,
         filterPostSearch: filterPostSearch,
+        directToPartialViewCreate: directToPartialViewCreate,
+        createPost: createPost
     }
 }();

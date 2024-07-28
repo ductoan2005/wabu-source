@@ -83,6 +83,13 @@ namespace WABU.Controllers.Admin
         }
 
         // GET: Posts/Create
+        [HttpPost]
+        public ActionResult DirectToPartialCreateView()
+        {
+            return Json(new { patialView = RenderPartialView(this, "_PopUpCreatePost", new Post()) });
+        }
+
+        // GET: Posts/Create
         public ActionResult Create()
         {
             return View();
@@ -93,7 +100,7 @@ namespace WABU.Controllers.Admin
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Title,Username,Content,IsDeleted,DateInserted,DateUpdated")] Post post)
+        public async Task<ActionResult> Create(Post post)
         {
             if (ModelState.IsValid)
             {

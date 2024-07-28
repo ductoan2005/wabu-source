@@ -72,6 +72,9 @@
                             <div class="col-sm-4 col-sm-offset-2">
                                 <button class="btn btn-primary" type="submit" id="searchFilterPost" onclick="postManagement.filterPostSearch(event)">Tìm Kiếm</button>
                             </div>
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-success" type="submit" id="createPost" onclick="postManagement.directToPartialViewCreate()">Tạo mới bài viết</button>
+                            </div>
                         </div>
                     </div>
                     <hr />
@@ -84,69 +87,7 @@
     </div>
 </div>
 
-@*Tạo Bài Viết Mới*@
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Tìm Kiếm Bài Viết</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Tên bài viết </label>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" id="Title" name="Title">
-                            </div>
-                            <label class="col-md-2 control-label">Người đăng tin </label>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" id="Username" name="Username">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Ngày tạo</label>
-                                <div class="col-md-3" id="PostCreatedDatetime">
-                                    <div class="input-group date">
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" id="PostCreatedDatetime" class="form-control" name="PostCreatedDatetime">
-                                    </div>
-                                </div>
-                                <label class="col-md-2 control-label">Ngày cập nhật</label>
-                                <div class="col-md-3" id="PostUpdatedDatetime">
-                                    <div class="input-group date">
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input type="text" id="PostUpdatedDatetime" class="form-control" name="PostUpdatedDatetime">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Trạng Thái</label>
-                            <div class="col-md-3 custom-radio-button" id="IsEnable">
-                                <input type="checkbox" class="js-switch" id="IsEnableP" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-4 col-sm-offset-2">
-                                <button class="btn btn-primary" type="submit" id="searchFilterPost" onclick="postManagement.filterPostSearch(event)">Tìm Kiếm</button>
-                            </div>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="table-responsive">
-                        @Html.Partial("_FilterPostResult")
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="modal inmodal" id="frmPost" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 </div>
 
 <style>
@@ -163,8 +104,8 @@
 </style>
 
 @section scripts{
-    <script src="~/Scripts/jquery.countdown.min.js"></script>
     <script src="~/Scripts/app/Post/post.js"></script>
+    <script src="~/Scripts/app/AreaManage/areaManageJS.js"></script>
     <script>
         $(document).ready(function () {
 

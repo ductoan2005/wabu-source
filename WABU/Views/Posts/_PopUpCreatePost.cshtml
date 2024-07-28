@@ -1,0 +1,99 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+<div class="modal-dialog">
+    <div class="modal-content animated fadeIn">
+        <form id="frmPost" name="frmPost" method="post">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Thêm bài viết</h4>
+                <small class="font-bold">Tính năng thêm bài viết</small>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    @*Title*@
+                    <div id="div-Title" class="form-group">
+                        <label class="col-lg-2 control-label">Tiêu đề bài viết</label>
+                        <div class="col-lg-10">
+                            <input type="text"
+                                   placeholder="Tiêu đề bài viết"
+                                   class="form-control"
+                                   id="Title"
+                                   name="Title"
+                                   data-val-required="Tiêu đề bài viết là gì?"
+                                   data-val="true"
+                                   aria-describedby="msg-err-Title" />
+                            <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="Title">
+                                <span id="msg-err-Title" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*Username*@
+                    <div id="div-Username" class="form-group">
+                        <label class="col-lg-2 control-label">Tên người đăng tin</label>
+                        <div class="col-lg-10">
+                            <input type="text"
+                                   placeholder="Tên người đăng tin"
+                                   class="form-control"
+                                   id="Username"
+                                   name="Username"
+                                   data-val-length-max="50"
+                                   data-val-length="Tên người đăng tin 50 ký tự"
+                                   data-val-required="Tên người đăng tin là gì?"
+                                   data-val="true"
+                                   aria-describedby="msg-err-Username" />
+                            <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="Username">
+                                <span id="msg-err-Username" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*Content*@
+                    <div id="div-Content" class="form-group">
+                        <label class="col-lg-2 control-label">Nội dung bài viết</label>
+                        <div class="col-lg-10">
+                            <textarea type="text"
+                                        placeholder="Nội dung bài viết"
+                                        class="form-control"
+                                        id="Content"
+                                        name="Content"
+                                        data-val="true"
+                                        aria-describedby="msg-err-Content" />
+                            <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="Content">
+                                <span id="msg-err-Content" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*IsEnable*@
+                    <div id="div-IsEnable" class="form-group">
+                        <label class="col-lg-2 control-label">Cho phép bật</label>
+                        <div class="col-lg-10">
+                            <div class="i-checks">
+                                <label>
+                                    <input type="checkbox"
+                                           value="true"
+                                           checked="checked"
+                                           id="IsEnable"
+                                           name="IsEnable"
+                                           data-val="true"
+                                           aria-describedby="msg-err-IsEnable" />
+                                    <i></i> bật
+                                </label>
+                            </div>
+                            <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="IsEnable">
+                                <span id="msg-err-IsEnable" class=""></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Thoát</button>
+                <button type="button" class="btn btn-primary" id="btnSaveUser" onclick="CreateUser(event);">Lưu</button>
+            </div>
+        </form>
+    </div>
+</div>
