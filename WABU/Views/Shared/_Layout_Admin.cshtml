@@ -25,7 +25,7 @@
     <link href="/Content/Common/css/style.css" rel="stylesheet">
     <link href="~/Content/toastr.min.css" rel="stylesheet" />
     <link href="~/Content/WABU.css" rel="stylesheet" />
-
+   
     @*@Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")*@
 </head>
@@ -97,9 +97,9 @@
                                         }
                                     }
                                     @*0.root
-                        1.admin
-                        2.chu dau tu
-                        3.nha thau*@
+                                        1.admin
+                                        2.chu dau tu
+                                        3.nha thau*@
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
@@ -115,6 +115,7 @@
                         var activeInvalidFilterBidding = ViewBag.activemenu == "InvalidFilterBidding" ? "active" : "";
                         var activeUserMaster = ViewBag.activemenu == "UserMaster" ? "active" : "";
                         var activeConstructionManagement = ViewBag.activemenu == "ConstructionManagement" ? "active" : "";
+                        var activePost = ViewBag.activemenu == "Post" ? "active" : "";
 
 
                         <li class="@activeFilterBidding">
@@ -128,6 +129,9 @@
                         </li>
                         <li class="@activeConstructionManagement">
                             <a href="@Url.Action("Index", "ConstructionManagement")"><i class="fa fa-th-large"></i> <span class="nav-label">Quản Lý Công Trình</span></a>
+                        </li>
+                        <li class="@activePost">
+                            <a href="@Url.Action("Index", "Posts")"><i class="fa fa-th-large"></i> <span class="nav-label">Quản Lý Bài Viết</span></a>
                         </li>
                     }
                 </ul>
@@ -291,6 +295,19 @@
     <script src="/Scripts/Common/plugins/pace/pace.min.js"></script>
     <script src="~/Scripts/toastr.min.js"></script>
     <script src="~/Scripts/WABU.js"></script>
+
+    <!-- Place the first <script> tag in your HTML's <head> -->
+    <script src="https://cdn.tiny.cloud/1/ngaoi61pmmbajqk62b4oyt0gh9yn6a5vf9kvjdoi7v7vyuf9/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
+    <script>
+        tinymce.init({
+            selector: 'textarea#tiny',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+        });
+    </script>
     @*@Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")*@
     @RenderSection("scripts", required: false)

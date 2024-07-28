@@ -105,6 +105,7 @@
     <Compile Include="Implementations\HomeBL.cs" />
     <Compile Include="Implementations\LoginBL.cs" />
     <Compile Include="Implementations\NotificationBL.cs" />
+    <Compile Include="Implementations\PostBL.cs" />
     <Compile Include="Implementations\RegisterBL.cs" />
     <Compile Include="Implementations\UserMasterBL.cs" />
     <Compile Include="Implementations\CompanyMasterBL.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Interfaces\ILoginBL.cs" />
     <Compile Include="Interfaces\INotificationBL.cs" />
     <Compile Include="Interfaces\IPageContract.cs" />
+    <Compile Include="Interfaces\IPostBL.cs" />
     <Compile Include="Interfaces\IRegisterBL.cs" />
     <Compile Include="Interfaces\IUserMasterBL.cs" />
     <Compile Include="Interfaces\ICompanyMasterBL.cs" />

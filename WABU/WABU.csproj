@@ -182,6 +182,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Admin\AreaManageController.cs" />
     <Compile Include="Controllers\Admin\ConstructionManagementController.cs" />
+    <Compile Include="Controllers\Admin\PostsController.cs" />
     <Compile Include="Controllers\User\BiddingNewsBookmarkController.cs" />
     <Compile Include="Controllers\User\BidShowContractDetailController.cs" />
     <Compile Include="Controllers\Admin\FilterBiddingNewsController.cs" />
@@ -1251,6 +1252,7 @@
     <Content Include="Scripts\app\Construction\construction.js" />
     <Content Include="Scripts\app\FilterBiddingNews\filterBiddingNews.js" />
     <Content Include="Scripts\app\PageContractBid\pageContractBid.js" />
+    <Content Include="Scripts\app\Post\post.js" />
     <Content Include="Scripts\app\Register\register.js" />
     <Content Include="Scripts\app\WabuCommonJS\commonJS.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -1806,6 +1808,12 @@
     <Content Include="Views\ConstructionManagement\Index.cshtml" />
     <Content Include="Views\FilterBiddingNews\IndexInvalid.cshtml" />
     <Content Include="Views\FilterBiddingNews\_FilterInvalidBiddingResult.cshtml" />
+    <Content Include="Views\Posts\Create.cshtml" />
+    <Content Include="Views\Posts\Delete.cshtml" />
+    <Content Include="Views\Posts\Details.cshtml" />
+    <Content Include="Views\Posts\Edit.cshtml" />
+    <Content Include="Views\Posts\Index.cshtml" />
+    <Content Include="Views\Posts\_FilterPostResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

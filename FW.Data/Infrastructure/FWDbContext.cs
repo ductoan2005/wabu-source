@@ -1,6 +1,6 @@
-﻿using System.Data.Entity;
+﻿using FW.Models;
+using System.Data.Entity;
 using System.Threading.Tasks;
-using FW.Models;
 
 namespace FW.Data.Infrastructure
 {
@@ -30,6 +30,8 @@ namespace FW.Data.Infrastructure
         public DbSet<CompanyProfile> CompanyProfile { get; set; }
         public DbSet<Company> Company { get; set; }
         public DbSet<Notification> Notification { get; set; }
+
+        public DbSet<Post> Post { get; set; }
 
         public DbExecutionResult DbExecutionResult { get; set; }
 

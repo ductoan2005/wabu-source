@@ -1,13 +1,13 @@
 ﻿using FW.Common.Pagination;
+using FW.Data.Infrastructure.Interfaces;
 using FW.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Linq.Dynamic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
-using FW.Data.Infrastructure.Interfaces;
 
 namespace FW.Data.Infrastructure
 {
@@ -43,7 +43,8 @@ namespace FW.Data.Infrastructure
 
         public virtual void AddRange(List<T> entityList)
         {
-            entityList.ForEach(x => {
+            entityList.ForEach(x =>
+            {
                 x.DateInserted = x.DateUpdated = DateTime.Now;
                 x.IsDeleted = false;
             });
@@ -63,7 +64,8 @@ namespace FW.Data.Infrastructure
 
         public virtual void BulkUpdate(List<T> entityList, bool needToAttach = true)
         {
-            entityList.ForEach(x => {
+            entityList.ForEach(x =>
+            {
                 x.DateUpdated = DateTime.Now;
                 if (needToAttach)
                 {
@@ -72,7 +74,7 @@ namespace FW.Data.Infrastructure
                     dataContext.Entry(x).Property(p => p.DateInserted).IsModified = false;
                 }
             });
-            
+
         }
 
         public virtual void Delete(T entity, bool needToAttach = true)
@@ -145,5 +147,7 @@ namespace FW.Data.Infrastructure
         public virtual async Task<T> GetWithConditionAsync(Expression<Func<T, bool>> where) => await dbSet.Where(where).AsNoTracking().FirstOrDefaultAsync();
 
         public virtual async Task<T> GetAsync(Expression<Func<T, bool>> where) => await dbSet.Where(where).AsNoTracking().FirstOrDefaultAsync();
+
+        public virtual async Task<IEnumerable<T>> GetListWithConditionsAsync(Expression<Func<T, bool>> where) => await dbSet.Where(where).AsNoTracking().ToListAsync();
     }
 }

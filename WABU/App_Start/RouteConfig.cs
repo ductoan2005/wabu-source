@@ -35,6 +35,16 @@ namespace WABU
 
             #endregion About
 
+            #region
+
+            routes.MapRoute(
+                name: "Quan Ly Bai Viet",
+                url: "quanly-baiviet",
+                defaults: new { controller = "Posts", action = "Index" }
+            );
+
+            #endregion
+
             #region About
 
             routes.MapRoute(
@@ -126,7 +136,7 @@ namespace WABU
             routes.MapRoute(
               name: "Quen Mat Khau",
               url: "forgotpassword",
-              defaults: new { controller = "Login", action = "ForgetPassword"}
+              defaults: new { controller = "Login", action = "ForgetPassword" }
             );
 
             routes.MapRoute(
@@ -165,7 +175,7 @@ namespace WABU
             routes.MapRoute(
              name: "Xac Nhan Email",
              url: "confirmEmail",
-             defaults: new { controller = "Register", action = "RedirectEmail"}
+             defaults: new { controller = "Register", action = "RedirectEmail" }
            );
 
             #endregion Register

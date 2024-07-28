@@ -1,15 +1,15 @@
-﻿using System;
+﻿using FW.Common.Pagination;
 using FW.Data.Infrastructure;
+using FW.Data.Infrastructure.Interfaces;
 using FW.Data.RepositoryInterfaces;
 using FW.Models;
-using System.Collections.Generic;
-using System.Linq;
-using FW.Common.Pagination;
-using FW.Data.Infrastructure.Interfaces;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using FW.ViewModels;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FW.Data.EFs.Repositories
 {
@@ -22,8 +22,8 @@ namespace FW.Data.EFs.Repositories
         public IEnumerable<Construction> GetAllConstructionByUserId(long? userId)
         {
             IEnumerable<Construction> resultList = from c in dbSet
-                         where c.UserId == userId && c.IsDeleted != true
-                         select c;
+                                                   where c.UserId == userId && c.IsDeleted != true
+                                                   select c;
             return resultList.ToList();
         }
 
@@ -66,7 +66,9 @@ namespace FW.Data.EFs.Repositories
             }
 
             var constructionConditionVm = JsonConvert.DeserializeObject<ConstructionVM>(condition);
-            IQueryable<Construction> query2 = dbSet;            //Search Construction name
+            IQueryable<Construction> query2 = dbSet;
+
+            //Search Construction name
             if (!string.IsNullOrEmpty(constructionConditionVm.ConstructionName))
             {
                 query2 = query2.Where(x => x.ConstructionName.Contains(constructionConditionVm.ConstructionName));

@@ -3,7 +3,7 @@
     public static class CommonConstants
     {
         #region STATUSCODE
-        
+
         //Success
         public const string STR_ZERO = "0";
 
@@ -70,6 +70,7 @@
         public const string SCREEN_BID_CONTRACTION_DETAIL = "SCREEN_BID_CONTRACTION_DETAIL";
         public const string SCREEN_CONSTRUCTION = "SCR_CONSTRUCTION";
         public const string SCREEN_FILTER_BIDDINGNEWS = "SCREEN_FILTER_BIDDINGNEWS";
+        public const string SCREEN_FILTER_POST = "SCREEN_FILTER_POST";
         public const string SCREEN_BIDDING_NEWS_BOOKMARK = "SCREEN_BIDDING_NEWS_BOOKMARK";
         public const string SCREEN_ACCOUNT_PAGECONTRACT = "SCREEN_ACCOUNT_PAGECONTRACT";
         public const string SCREEN_PAGECONTRACTBID = "SCREEN_PAGECONTRACTBID";

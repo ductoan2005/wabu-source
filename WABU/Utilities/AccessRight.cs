@@ -42,6 +42,10 @@ namespace WABU.Utilities
                         EAuthority.Root,
                         EAuthority.Administrator
                     });
+                MapRoles.Add(CommonConstants.SCREEN_FILTER_POST,
+                    new List<EAuthority> {
+                        EAuthority.Root,
+                        EAuthority.Administrator});
 
                 MapRoles.Add(CommonConstants.SCREEN_CONSTRUCTION,
                    new List<EAuthority> {

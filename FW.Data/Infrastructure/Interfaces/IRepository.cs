@@ -39,5 +39,7 @@ namespace FW.Data.Infrastructure.Interfaces
         Task<T> GetWithConditionAsync(Expression<Func<T, bool>> where);
 
         Task<T> GetAsync(Expression<Func<T, bool>> where);
+
+        Task<IEnumerable<T>> GetListWithConditionsAsync(Expression<Func<T, bool>> where);
     }
 }

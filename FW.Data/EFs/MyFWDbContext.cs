@@ -6,7 +6,6 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace FW.Data.EFs
@@ -53,6 +52,7 @@ namespace FW.Data.EFs
             var biddingDetailFilesConfiguration = new BiddingDetailFilesConfiguration();
             var biddingNewsBookmarkConfiguration = new BiddingNewsBookmarkConfiguration();
             var notificationConfiguration = new NotificationConfiguration();
+            var postConfiguration = new PostConfiguration();
 
             modelBuilder.Configurations.Add(companyConfiguration);
             modelBuilder.Configurations.Add(companyAbilityEquipmentConfiguration);
@@ -79,7 +79,7 @@ namespace FW.Data.EFs
             modelBuilder.Configurations.Add(biddingDetailFilesConfiguration);
             modelBuilder.Configurations.Add(biddingNewsBookmarkConfiguration);
             modelBuilder.Configurations.Add(notificationConfiguration);
-
+            modelBuilder.Configurations.Add(postConfiguration);
         }
 
         public override DbExecutionResult Commit()

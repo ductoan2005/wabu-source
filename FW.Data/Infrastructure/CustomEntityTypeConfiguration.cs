@@ -1,10 +1,10 @@
-﻿using System;
+﻿using FW.Common.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using FW.Common.Helpers;
 
 namespace FW.Data.Infrastructure
 {
@@ -92,7 +92,7 @@ namespace FW.Data.Infrastructure
                     colList.Add(pi);
                 }
 
-                CustomEntityTypeConfigurationData.FullTextIndexMap.Add(ftsIndexName, colList);
+                CustomEntityTypeConfigurationData.FullTextIndexMap?.Add(ftsIndexName, colList);
             }
             return this;
         }
@@ -104,7 +104,7 @@ namespace FW.Data.Infrastructure
                 return this;
             }
 
-            var exclusivePropInfoMap = exclusivePropExpressions?.Select(pe => pe.GetPropertyInfo())?.ToDictionary(pi => pi.Name);
+            var exclusivePropInfoMap = exclusivePropExpressions?.Select(pe => pe.GetPropertyInfo()).ToDictionary(pi => pi.Name);
 
             var entityType = this.GetType().BaseType.GetGenericArguments()?[0];
             var entityPropInfoList = entityType?.GetProperties();
@@ -122,7 +122,7 @@ namespace FW.Data.Infrastructure
                     colList.Add(pi);
                 }
 
-                CustomEntityTypeConfigurationData.FullTextIndexMap.Add(ftsIndexName, colList);
+                CustomEntityTypeConfigurationData.FullTextIndexMap?.Add(ftsIndexName, colList);
             }
             return this;
         }

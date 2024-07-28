@@ -98,6 +98,7 @@
     <Compile Include="PageContractBid\ResponseAddNewCompanyAbilityFinanceVM.cs" />
     <Compile Include="PageContractBid\ResponseDeleteAbilityProfileVM.cs" />
     <Compile Include="PageContractVM.cs" />
+    <Compile Include="PostVM.cs" />
     <Compile Include="RegisterUserInformationVM.cs" />
     <Compile Include="UserMasterVM.cs" />
     <Compile Include="CompanyMasterVM.cs" />
