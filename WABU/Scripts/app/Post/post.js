@@ -1,20 +1,19 @@
 "use strict";
 
-var postManagement = function () {
+let postManagement = function () {
 
-    var sortOptionDefault = [{
+    let sortOptionDefault = [{
         "FieldName": "DateUpdated",
         "SortType": "desc"
     }];
 
     function init() {
-
     }
 
     function initPostSearchResult(e) {
         e.preventDefault();
 
-        var data = JSON.stringify({
+        let data = JSON.stringify({
             page: 1,
             "condition": "",
             "sortOption": sortOptionDefault
@@ -37,22 +36,21 @@ var postManagement = function () {
     function filterPostSearch(e) {
         e.preventDefault();
 
-        var title = $("input[name='Title']").val();
-        var username = $("input[name='Username']").val();
-        var isEnable = document.getElementById("IsEnableP").checked;
-        var createdDate = $("input[name='PostCreatedDatetime']").val();
-        var lastUpdatedDate = $("input[name='PostUpdatedDatetime']").val();
+        let title = $("input[name='Title']").val();
+        let username = $("input[name='Username']").val();
+        let isEnable = document.getElementById("IsEnableP").checked;
+        let createdDate = $("input[name='PostCreatedDatetime']").val();
+        let lastUpdatedDate = $("input[name='PostUpdatedDatetime']").val();
 
-        var conditionStr = JSON.stringify({
+        let conditionStr = JSON.stringify({
             Title: title, Username: username, IsEnable: isEnable, CreatedDate: createdDate, LastUpdatedDate: lastUpdatedDate
         });
 
-        var data = JSON.stringify({
+        let data = JSON.stringify({
             page: 1,
             "condition": conditionStr,
             "sortOption": sortOptionDefault
         });
-        //var conditionHistory = conditionStr;
 
         $.ajax({
             url: "/Posts/GetPostsByFilters",
@@ -70,23 +68,16 @@ var postManagement = function () {
     // Direct về modal create post
     function directToPartialViewCreate() {
         $.ajax({
-            type: "POST",
-            url: "/Posts/DirectToPartialCreateView",
-            async: false,
-            success: function (data) {
-                $('#frmPost').html(data.patialView);
-                $("#frmPost").modal("show");
-            },
-            error: function (xhr, status, error) {
-                console.error("Error: " + error);
-            }
+            type: "GET",
+            url: "/Posts/Create",
+            async: false
         });
     }
 
     //Tạo mới bài viết
     function createPost() {
         if (validForm("frmPost")) {
-            var dataForm = $("#frmPost").serialize();
+            let dataForm = $("#frmPost").serialize();
 
             $.ajax({
                 type: "POST",
@@ -97,7 +88,7 @@ var postManagement = function () {
                 success: function (resultData) {
                     if (resultData && resultData.succeed === "0") {
 
-                        var authority = $("#Authority").val();
+                        let authority = $("#Authority").val();
                         switch (authority) {
                             case "0":
                             case "1":

@@ -48,7 +48,6 @@ namespace FW.Data.EFs.Repositories
                     .ToList();
             return await Task.FromResult(result);
         }
-
         private static void FilterPaging(PostVM conditions, ref IQueryable<Post> query2)
         {
             string format = "dd/MM/yyyy";

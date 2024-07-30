@@ -5,7 +5,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
-        <h2>Duyệt Tin</h2>
+        <h2>Quản lí bài viết</h2>
         <ol class="breadcrumb">
             <li>
                 <a href="/usermaster">Home</a>
@@ -73,7 +73,7 @@
                                 <button class="btn btn-primary" type="submit" id="searchFilterPost" onclick="postManagement.filterPostSearch(event)">Tìm Kiếm</button>
                             </div>
                             <div class="col-sm-4 col-sm-offset-2">
-                                <button class="btn btn-success" type="submit" id="createPost" onclick="postManagement.directToPartialViewCreate()">Tạo mới bài viết</button>
+                                <button class="btn btn-success" type="submit" id="createPost" onclick="location.href='@Url.Action("Create")'">Tạo mới bài viết</button>
                             </div>
                         </div>
                     </div>
@@ -85,9 +85,6 @@
             </div>
         </div>
     </div>
-</div>
-
-<div class="modal inmodal" id="frmPost" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 </div>
 
 <style>

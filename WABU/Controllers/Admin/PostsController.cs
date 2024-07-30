@@ -83,10 +83,9 @@ namespace WABU.Controllers.Admin
         }
 
         // GET: Posts/Create
-        [HttpPost]
         public ActionResult DirectToPartialCreateView()
         {
-            return Json(new { patialView = RenderPartialView(this, "_PopUpCreatePost", new Post()) });
+            return View("_PopUpCreatePost");
         }
 
         // GET: Posts/Create
@@ -102,14 +101,20 @@ namespace WABU.Controllers.Admin
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Post post)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Post.Add(post);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
+                bool result = await _postBL.CreatePostAsync(post);
 
-            return View(post);
+                if (result)
+                {
+                    return Json(new { succeed = CommonConstants.STR_ZERO });
+                }
+                return Json(new { error = CommonConstants.STR_MINUS_ONE });
+            }
+            catch (Exception ex)
+            {
+                return ExportMsgExcaption(ex);
+            }
         }
 
         // GET: Posts/Edit/5
