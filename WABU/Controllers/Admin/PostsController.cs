@@ -3,12 +3,10 @@ using FW.Common.Helpers;
 using FW.Common.Objects;
 using FW.Common.Pagination;
 using FW.Common.Utilities;
-using FW.Data.EFs;
 using FW.Models;
 using FW.Resources;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -25,7 +23,6 @@ namespace WABU.Controllers.Admin
         {
             _postBL = postBL;
         }
-        private readonly MyFWDbContext db = new MyFWDbContext();
 
         // GET: Posts
         public async Task<ActionResult> Index()
@@ -68,18 +65,19 @@ namespace WABU.Controllers.Admin
         }
 
         // GET: Posts/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public async Task<ActionResult> Details(int id)
         {
-            if (id == null)
+            if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = await db.Post.FindAsync(id);
+            Post post = await _postBL.GetPostByIdAsync(id);
             if (post == null)
             {
                 return HttpNotFound();
             }
-            return View(post);
+            ViewBag.PostDetail = post;
+            return View();
         }
 
         // GET: Posts/Create
@@ -98,12 +96,69 @@ namespace WABU.Controllers.Admin
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Post post)
         {
             try
             {
                 bool result = await _postBL.CreatePostAsync(post);
+
+                if (result)
+                {
+                    return RedirectToRoute("Quan Ly Bai Viet");
+                }
+                return Json(new { error = CommonConstants.STR_MINUS_ONE });
+            }
+            catch (Exception ex)
+            {
+                return ExportMsgExcaption(ex);
+            }
+        }
+
+        // GET: Posts/Edit/5
+        public async Task<ActionResult> Edit(int id)
+        {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Post post = await _postBL.GetPostByIdAsync(id);
+            if (post == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.PostDetail = post;
+            return View();
+        }
+
+        // POST: Posts/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Username,Content,IsDeleted")] Post post)
+        {
+            try
+            {
+                bool result = await _postBL.UpdatePostAsync(post);
+
+                if (result)
+                {
+                    return RedirectToRoute("Quan Ly Bai Viet");
+                }
+                return Json(new { error = CommonConstants.STR_MINUS_ONE });
+            }
+            catch (Exception ex)
+            {
+                return ExportMsgExcaption(ex);
+            }
+        }
+
+        // DELETE: Posts/Delete/5
+        [HttpDelete, ActionName("Delete")]
+        public async Task<ActionResult> DeleteConfirmed(int id)
+        {
+            try
+            {
+                bool result = await _postBL.DeletePostAsync(id);
 
                 if (result)
                 {
@@ -115,72 +170,6 @@ namespace WABU.Controllers.Admin
             {
                 return ExportMsgExcaption(ex);
             }
-        }
-
-        // GET: Posts/Edit/5
-        public async Task<ActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Post post = await db.Post.FindAsync(id);
-            if (post == null)
-            {
-                return HttpNotFound();
-            }
-            return View(post);
-        }
-
-        // POST: Posts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Username,Content,IsDeleted,DateInserted,DateUpdated")] Post post)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(post).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View(post);
-        }
-
-        // GET: Posts/Delete/5
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Post post = await db.Post.FindAsync(id);
-            if (post == null)
-            {
-                return HttpNotFound();
-            }
-            return View(post);
-        }
-
-        // POST: Posts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
-        {
-            Post post = await db.Post.FindAsync(id);
-            db.Post.Remove(post);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

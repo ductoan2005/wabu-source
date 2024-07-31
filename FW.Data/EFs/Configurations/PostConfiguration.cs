@@ -1,7 +1,5 @@
 ﻿using FW.Data.Infrastructure;
 using FW.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.Infrastructure.Annotations;
 
 namespace FW.Data.EFs.Configurations
 {
@@ -14,16 +12,10 @@ namespace FW.Data.EFs.Configurations
 
             //Id
             HasKey(u => u.Id);
-            PropertyComment(u => u.Id, "user ID");
+            PropertyComment(u => u.Id, "post ID");
 
             //UserName
-            Property(u => u.Username).IsRequired().HasMaxLength(20)
-                .HasColumnAnnotation(
-                    "Index",
-                    new IndexAnnotation(
-                            new IndexAttribute("IX_users_1", 4) { IsUnique = true }
-                        )
-                );
+            Property(u => u.Username).IsRequired().HasMaxLength(20);
 
             //Title
             Property(u => u.Title).IsRequired().HasMaxLength(20);

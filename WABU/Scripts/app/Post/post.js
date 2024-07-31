@@ -1,5 +1,3 @@
-"use strict";
-
 let postManagement = function () {
 
     let sortOptionDefault = [{
@@ -60,16 +58,16 @@ let postManagement = function () {
             data: data,
             success: function (responsed) {
                 $(".table-responsive").html(responsed.patialView);
-                $('#filterPostTable').DataTable({
-                });
+                $('#filterPostTable').DataTable({});
+                toastr.success("Thành Công.");
             }
         });
     }
     // Direct về modal create post
-    function directToPartialViewCreate() {
+    function directToIndex() {
         $.ajax({
             type: "GET",
-            url: "/Posts/Create",
+            url: "/Posts/Index",
             async: false
         });
     }
@@ -77,36 +75,98 @@ let postManagement = function () {
     //Tạo mới bài viết
     function createPost() {
         if (validForm("frmPost")) {
+
+            let title = $("input[name='Title']").val();
+            let username = $("input[name='Username']").val();
+            let content = $("textarea[name='Content']").val();
+            let isEnable = document.getElementById("IsDeleted").checked ?? false;
+
+            let conditionStr = JSON.stringify({
+                Title: title, Username: username, IsDeleted: isEnable, Content: content
+            });
+
             let dataForm = $("#frmPost").serialize();
 
+            dataForm.IsDeleted = isEnable;
             $.ajax({
                 type: "POST",
                 url: "/Posts/Create",
-                data: dataForm,
-                //dataType: "text",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: conditionStr,
+                async: false,
+                success: function (resultData) {
+                    directToIndex();
+                    toastr.success("Thành Công.");
+                    //else {
+                    //    toastr.error(resultData);
+                    //}
+                }
+            });
+        }
+    }
+
+    //Chỉnh sửa bài viết
+    function updatePost(id) {
+        if (validForm("frmPost")) {
+
+            let title = $("input[name='Title']").val();
+            let username = $("input[name='Username']").val();
+            let content = $("textarea[name='Content']").val();
+            let isEnable = document.getElementById("IsDeleted").checked ?? false;
+
+            let conditionStr = JSON.stringify({
+                Title: title, Username: username, IsDeleted: isEnable, Content: content, Id: id
+            });
+
+            let dataForm = $("#frmPost").serialize();
+
+            dataForm.IsDeleted = isEnable;
+            $.ajax({
+                type: "POST",
+                url: "/Posts/Edit",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: conditionStr,
+                async: false,
+                success: function (resultData) {
+                    //directToIndex();
+                    toastr.success("Thành Công.");
+                    //if (resultData && resultData.succeed === "0") {
+
+                        
+                    //}
+                    //else {
+                    //    toastr.error(resultData);
+                    //}
+                }
+            });
+        }
+    }
+
+    //Xóa bài viết
+    function deletePost(id) {
+        if (validForm("frmPost")) {
+            let conditionStr = JSON.stringify({
+                Id: id
+            });
+
+            let dataForm = $("#frmPost").serialize();
+
+            dataForm.IsDeleted = isEnable;
+            $.ajax({
+                type: "DELETE",
+                url: "/Posts/Delete",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: conditionStr,
                 async: false,
                 success: function (resultData) {
                     if (resultData && resultData.succeed === "0") {
 
-                        let authority = $("#Authority").val();
-                        switch (authority) {
-                            case "0":
-                            case "1":
-                                changePageOnListAdmin(1, event);
-                                break;
-                            case "2":
-                                changePageOnListInvestor(1, event);
-                                break;
-                            case "3":
-                                changePageOnListContractors(1, event);
-                                break;
-                            default:
-                                break;
-                        }
-
+                        directToIndex();
                         toastr.success("Thành Công.");
-                        clearFormAfterCreate();
-                    }
+                        }
                     else {
                         toastr.error(resultData);
                     }
@@ -115,11 +175,25 @@ let postManagement = function () {
         }
     }
 
+    //showConfirmDeleteBox
+    function showConfirmDeleteBox(id) {
+        $('#confirmUpdateBox button[data-bb-handler="confirm"][type="button"]').unbind("click");
+        if (validForm(formId)) {
+            $("#openConfirmUpdateBox").click();
+            $('#confirmUpdateBox button[data-bb-handler="confirm"][type="button"]').click(function (id) {
+                updateUser(id);
+            });
+        }
+    }
+
     return {
         init: init,
         initPostSearchResult: initPostSearchResult,
         filterPostSearch: filterPostSearch,
-        directToPartialViewCreate: directToPartialViewCreate,
-        createPost: createPost
+        directToIndex: directToIndex,
+        createPost: createPost,
+        updatePost: updatePost,
+        showConfirmDeleteBox: showConfirmDeleteBox,
+        deletePost: deletePost
     }
 }();

@@ -25,11 +25,8 @@
     </div>
 </div>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <form id="frmEditUser" name="frmUser" method="post">
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
@@ -46,40 +43,67 @@
                             <div class="form-group">
                                 <label class="col-md-2 control-label">Tiêu đề bài viết </label>
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                    <input type="text"
+                                           placeholder="Tiêu đề bài viết"
+                                           class="form-control"
+                                           id="Title"
+                                           name="Title"
+                                           data-val-required="Tiêu đề bài viết là gì?"
+                                           data-val="true"
+                                           aria-describedby="msg-err-Title" />
+                                    <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="Title">
+                                        <span id="msg-err-Title" class=""></span>
+                                    </span>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-md-2 control-label">Người đăng tin </label>
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                                    <input type="text"
+                                           placeholder="Tên người đăng tin"
+                                           class="form-control"
+                                           id="Username"
+                                           name="Username"
+                                           data-val-length-max="50"
+                                           data-val-length="Tên người đăng tin 50 ký tự"
+                                           data-val-required="Tên người đăng tin là gì?"
+                                           data-val="true"
+                                           aria-describedby="msg-err-Username" />
+                                    <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="Username">
+                                        <span id="msg-err-Username" class=""></span>
+                                    </span>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-lg-2 control-label">Nội dung bài viết</label>
                                 <div class="col-md-10">
-                                    @Html.TextAreaFor(model => model.Content, new { @id = "Content" })
-                                    @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                                    <textarea type="text"
+                                              placeholder="Nội dung bài viết"
+                                              class="form-control"
+                                              id="Content"
+                                              name="Content"
+                                              data-val="true"
+                                              aria-describedby="msg-err-Content"></textarea>
+                                    <span class="help-block m-b-none text-danger" data-valmsg-replace="true" data-valmsg-for="Content">
+                                        <span id="msg-err-Content" class=""></span>
+                                    </span>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-md-2 control-label">Trạng Thái</label>
                                 <div class="col-md-10">
-                                    <div class="checkbox">
-                                        @Html.EditorFor(model => model.IsDeleted)
-                                        @Html.ValidationMessageFor(model => model.IsDeleted, "", new { @class = "text-danger" })
+                                    <div class="col-md-3 custom-radio-button">
+                                        <input type="checkbox" class="js-switch" id="IsDeleted" name="IsDeleted" />
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-md-10">
-                                    <input type="submit" value="Lưu" class="btn btn-default" />
+                                    <button class="btn btn-primary" type="submit" id="createPost" onclick="postManagement.createPost()">Lưu</button>
                                 </div>
                             </div>
                         </div>
@@ -87,16 +111,30 @@
                 </div>
             </div>
         </div>
-    </div>
+    </form>
+</div>
 
-    @section scripts{
-        <script src="~/Scripts/app/Post/post.js"></script>
-        <script src="~/Scripts/app/AreaManage/areaManageJS.js"></script>
-        <script>
-            $(document).ready(function () {
-
-                var elem = document.querySelector('.js-switch');
-                var switchery = new Switchery(elem, { color: '#0D5C63' });
-        </script>
+<style>
+    .custom-radio-button > span {
+        height: 20px;
+        width: 40px;
+        margin-top: 5px;
     }
+
+        .custom-radio-button > span > small {
+            height: 20px;
+            width: 20px;
+        }
+</style>
+
+@section scripts{
+    <script src="~/Scripts/app/Post/post.js"></script>
+    <script src="~/Scripts/app/AreaManage/areaManageJS.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            var elem = document.querySelector('.js-switch');
+            var switchery = new Switchery(elem, { color: '#0D5C63' });
+    </script>
 }
+

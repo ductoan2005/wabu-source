@@ -64,19 +64,43 @@ namespace FW.BusinessLogic.Implementations
             return true;
         }
 
-        public Task<bool> UpdatePostAsync(Post post)
+        public async Task<bool> UpdatePostAsync(Post post)
         {
-            throw new System.NotImplementedException();
+            bool isValidModel = CleanCheckPost(post);
+            if (!isValidModel) return false;
+
+            Post postDetail = await GetPostByIdAsync(post.Id);
+            if (postDetail == null) return false;
+
+            postDetail.Username = post.Username;
+            postDetail.Content = post.Content;
+            postDetail.Title = post.Title;
+            postDetail.IsDeleted = post.IsDeleted;
+            postDetail.DateUpdated = DateTime.Now;
+            _postRepository.Update(postDetail);
+            // tra ve ket qua sau khi thao tac DB
+            DbExecutionResult result = await _unitOfWork.CommitAsync();
+            CheckDbExecutionResultAndThrowIfAny(result);
+            return true;
         }
 
-        public Task<bool> DeletePostAsync(int id)
+        public async Task<bool> DeletePostAsync(int id)
         {
-            throw new System.NotImplementedException();
+            Post postDetail = await GetPostByIdAsync(id);
+            if (postDetail == null) return false;
+
+            _postRepository.Delete(postDetail);
+            // tra ve ket qua sau khi thao tac DB
+            DbExecutionResult result = await _unitOfWork.CommitAsync();
+            CheckDbExecutionResultAndThrowIfAny(result);
+            return true;
         }
 
-        public Task<Post> GetPostByIdAsync(int id)
+        public async Task<Post> GetPostByIdAsync(int id)
         {
-            throw new System.NotImplementedException();
+            Post post = await _postRepository.GetByIdAsync(id);
+            if (post == null) return null;
+            return post;
         }
 
         private bool CleanCheckPost(Post post)
