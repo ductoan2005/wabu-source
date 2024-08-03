@@ -1,10 +1,15 @@
-﻿@model FW.Models.Post
-
+﻿﻿@model FW.Models.Post
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
 }
+@functions{
 
+    public static string GetCheckByBoolean(bool isChecked)
+    {
+        return isChecked ? "checked='checked'" : "";
+    }
+}
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
         <h2>Quản lí bài viết</h2>
@@ -26,7 +31,7 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <form id="frmEditUser" name="frmUser" method="post">
+    <form id="frmCreatePost" name="frmCreatePost" method="post">
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
@@ -94,16 +99,18 @@
 
                             <div class="form-group">
                                 <label class="col-md-2 control-label">Trạng Thái</label>
-                                <div class="col-md-10">
-                                    <div class="col-md-3 custom-radio-button">
-                                        <input type="checkbox" class="js-switch" id="IsDeleted" name="IsDeleted" />
-                                    </div>
+                                <div class="col-md-3 custom-radio-button">
+                                    <input type="checkbox"
+                                           class="js-switch"
+                                           id="IsActive"
+                                           name="IsActive"
+                                           checked="checked" />
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-md-10">
-                                    <button class="btn btn-primary" type="submit" id="createPost" onclick="postManagement.createPost()">Lưu</button>
+                                    <button class="btn btn-primary" type="submit" id="createPost">Lưu</button>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +136,6 @@
 
 @section scripts{
     <script src="~/Scripts/app/Post/post.js"></script>
-    <script src="~/Scripts/app/AreaManage/areaManageJS.js"></script>
     <script>
         $(document).ready(function () {
 

@@ -202,6 +202,7 @@
     <Compile Include="Controllers\User\NotificationController.cs" />
     <Compile Include="Controllers\User\PageContractBidController.cs" />
     <Compile Include="Controllers\User\RegisterController.cs" />
+    <Compile Include="Controllers\User\UserPostsController.cs" />
     <Compile Include="Filters\CustomAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1809,12 +1810,12 @@
     <Content Include="Views\FilterBiddingNews\IndexInvalid.cshtml" />
     <Content Include="Views\FilterBiddingNews\_FilterInvalidBiddingResult.cshtml" />
     <Content Include="Views\Posts\Create.cshtml" />
-    <Content Include="Views\Posts\Delete.cshtml" />
-    <Content Include="Views\Posts\Details.cshtml" />
     <Content Include="Views\Posts\Edit.cshtml" />
     <Content Include="Views\Posts\Index.cshtml" />
     <Content Include="Views\Posts\_FilterPostResult.cshtml" />
-    <Content Include="Views\Posts\_PopUpCreatePost.cshtml" />
+    <Content Include="Views\UserPosts\Details.cshtml" />
+    <Content Include="Views\UserPosts\Index.cshtml" />
+    <Content Include="Views\UserPosts\_PostSearchResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

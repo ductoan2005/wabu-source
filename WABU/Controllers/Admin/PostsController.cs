@@ -5,6 +5,7 @@ using FW.Common.Pagination;
 using FW.Common.Utilities;
 using FW.Models;
 using FW.Resources;
+using FW.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -15,7 +16,7 @@ using WABU.Utilities;
 
 namespace WABU.Controllers.Admin
 {
-    [CustomAuthorize(FunctionKey = CommonConstants.SCREEN_FILTER_POST, NeedReloadData = true)]
+    [CustomAuthorize(FunctionKey = CommonConstants.SCREEN_ADMIN_POST, NeedReloadData = true)]
     public class PostsController : BaseController
     {
         private readonly IPostBL _postBL;
@@ -31,6 +32,14 @@ namespace WABU.Controllers.Admin
             ViewBag.pagingFilterPostResult = new PaginationInfo(1, 20);
             ViewBag.activemenu = "Post";
 
+            string json = "{Title:'',Username:'',IsEnable:false,CreatedDate:'',LastUpdatedDate:''}";
+            int page = 1;
+
+            var userProfile = SessionObjects.UserProfile;
+            var paging = new PaginationInfo(page, int.MaxValue);
+            var listPostVM = await _postBL.GetPostsByFilters(paging, userProfile, json);
+            ViewBag.pagingFilterPostResult = paging;
+            ViewBag.filterPostVmList = listPostVM;
             return View(listPost);
         }
 
@@ -64,28 +73,6 @@ namespace WABU.Controllers.Admin
             }
         }
 
-        // GET: Posts/Details/5
-        public async Task<ActionResult> Details(int id)
-        {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Post post = await _postBL.GetPostByIdAsync(id);
-            if (post == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.PostDetail = post;
-            return View();
-        }
-
-        // GET: Posts/Create
-        public ActionResult DirectToPartialCreateView()
-        {
-            return View("_PopUpCreatePost");
-        }
-
         // GET: Posts/Create
         public ActionResult Create()
         {
@@ -96,7 +83,7 @@ namespace WABU.Controllers.Admin
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<ActionResult> Create(Post post)
+        public async Task<ActionResult> Create(PostVM post)
         {
             try
             {
@@ -104,13 +91,19 @@ namespace WABU.Controllers.Admin
 
                 if (result)
                 {
-                    return RedirectToRoute("Quan Ly Bai Viet");
+                    TempData["SuccessMessage"] = "Tạo mới bài viết thành công";
                 }
-                return Json(new { error = CommonConstants.STR_MINUS_ONE });
+                else
+                {
+                    TempData["ErrorMessage"] = "Tạo bài viết thất bại, vui lòng liên hệ admin";
+                }
+                return RedirectToRoute("Quan Ly Bai Viet");
             }
             catch (Exception ex)
             {
-                return ExportMsgExcaption(ex);
+                TempData["ErrorMessage"] = "Xóa bài viết thất bại, vui lòng liên hệ admin" + ex.Message;
+                ExportMsgExcaption(ex);
+                return RedirectToRoute("Quan Ly Bai Viet");
             }
         }
 
@@ -134,27 +127,32 @@ namespace WABU.Controllers.Admin
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Username,Content,IsDeleted")] Post post)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Username,Content,IsActive")] PostVM post)
         {
             try
             {
                 bool result = await _postBL.UpdatePostAsync(post);
-
                 if (result)
                 {
-                    return RedirectToRoute("Quan Ly Bai Viet");
+                    TempData["SuccessMessage"] = "Cập nhật bài viết thành công";
                 }
-                return Json(new { error = CommonConstants.STR_MINUS_ONE });
+                else
+                {
+                    TempData["ErrorMessage"] = "Cập nhật bài viết thất bại, vui lòng liên hệ admin";
+                }
+                return RedirectToRoute("Quan Ly Bai Viet");
             }
             catch (Exception ex)
             {
-                return ExportMsgExcaption(ex);
+                TempData["ErrorMessage"] = "Xóa bài viết thất bại, vui lòng liên hệ admin" + ex.Message;
+                ExportMsgExcaption(ex);
+                return RedirectToRoute("Quan Ly Bai Viet");
             }
         }
 
         // DELETE: Posts/Delete/5
-        [HttpDelete, ActionName("Delete")]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        [HttpGet]
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
@@ -162,13 +160,19 @@ namespace WABU.Controllers.Admin
 
                 if (result)
                 {
-                    return Json(new { succeed = CommonConstants.STR_ZERO });
+                    TempData["SuccessMessage"] = "Xóa bài viết thành công";
                 }
-                return Json(new { error = CommonConstants.STR_MINUS_ONE });
+                else
+                {
+                    TempData["ErrorMessage"] = "Xóa bài viết thất bại, vui lòng liên hệ admin";
+                }
+                return RedirectToRoute("Quan Ly Bai Viet");
             }
             catch (Exception ex)
             {
-                return ExportMsgExcaption(ex);
+                TempData["ErrorMessage"] = "Xóa bài viết thất bại, vui lòng liên hệ admin" + ex.Message;
+                ExportMsgExcaption(ex);
+                return RedirectToRoute("Quan Ly Bai Viet");
             }
         }
     }

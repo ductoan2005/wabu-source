@@ -61,7 +61,7 @@
                         @item.Username
                     </td>
                     <td>
-                        @item.Content
+                        <a target="_blank" href="@Url.Action(actionName: "Details", controllerName: "UserPosts", new { id = item.Id})">Chi tiết bài viết</a>
                     </td>
                     <td>
                         @(item.IsDeleted ? "Bật" : "Tắt")
@@ -81,3 +81,7 @@
         }
     </tbody>
 </table>
+
+@section scripts{
+    <script src="~/Scripts/app/Post/post.js"></script>
+}

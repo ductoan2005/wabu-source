@@ -1,0 +1,96 @@
+﻿@using FW.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_Home.cshtml";
+    var userInfo = (UserProfile)ViewBag.userInfo;
+}
+
+<link href="/Content/Common/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/ionRangeSlider/ion.rangeSlider.skinHTML5.css" rel="stylesheet">
+<link href="/Content/Common/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+<div id="posts-screen">
+    <section class="Createbuilder">
+        <form id="postsSearch">
+            <div class="row PC">
+                <div class="background-top-new"></div>
+                <div class="container">
+                    <div class="col-md-12 col-xs-12 filterPageSearch">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <i class="fa fa-search icon_search_slider"></i>
+                                <input type="text" placeholder="Tiêu đề bài viết..." class="form-control" name="Title">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-w-m btn-search-top full100" onclick="postManagement.userFilterPostSearch(event)">Tìm Kiếm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row PC">
+                <div class="container">
+                    <div class="col-lg-12  col-xs-12 resultPageSearch">
+                        <div class="ibox-title">
+                            <p class="pull-right">Xếp theo: <a id="orderByDay" data-value="desc">Ngày</a>@*|Độ chính xác*@</p>
+                        </div>
+                        <div id="postsSearchResult">
+                            @Html.Partial("_PostSearchResult")
+                        </div>
+                    </div>
+                    <div class="col-lg-1"></div>
+                </div>
+                @Html.Hidden("Authority", userInfo?.Authority)
+                @Html.Hidden("UserId", userInfo?.UserID)
+            </div>
+                   
+</form>
+    </section>
+</div>
+
+@section scripts{
+    <script src="/Scripts/Common/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/app/Post/post.js"></script>
+    <!-- IonRangeSlider -->
+    <script src="/Scripts/Common/plugins/ionRangeSlider/ion.rangeSlider.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            //Init Post search page result
+            postManagement.initUserPostsSearchResult(event);
+
+        });
+    </script>
+
+}
+
+
+<style>
+    #posts-screenn .Createbuilder .ibox-title {
+        margin-top: 20px;
+    }
+    #posts-screen .ss-content li {
+        list-style: none;
+        padding-top: 0;
+    }
+    #posts-screen .form-control {
+        padding-left: 35px;
+        height: auto;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    #posts-screen .removePaddingLeft {
+        padding-left: 12px;
+    }
+
+    .resultPageSearch {
+        box-shadow: none;
+        background: #03A84E;
+        color: #fff;
+        padding: 30px 20px 20px 20px;
+        z-index: 100;
+    }
+</style>
+

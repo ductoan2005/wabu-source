@@ -5,6 +5,7 @@ using FW.Data.Infrastructure;
 using FW.Data.Infrastructure.Interfaces;
 using FW.Data.RepositoryInterfaces;
 using FW.Models;
+using FW.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -45,8 +46,16 @@ namespace FW.BusinessLogic.Implementations
             return listPosts;
         }
 
-        public async Task<bool> CreatePostAsync(Post post)
+        public async Task<bool> CreatePostAsync(PostVM post)
         {
+            if (post.IsActive == "on")
+            {
+                post.IsEnable = true;
+            }
+            else
+            {
+                post.IsEnable = false;
+            }
             bool isValidModel = CleanCheckPost(post);
             if (!isValidModel) return false;
             var postCreate = new Post()
@@ -54,7 +63,7 @@ namespace FW.BusinessLogic.Implementations
                 Content = post.Content,
                 Title = post.Title,
                 Username = post.Username,
-                IsDeleted = post.IsDeleted,
+                IsDeleted = post.IsEnable,
                 DateInserted = DateTime.Now
             };
             _postRepository.Add(postCreate);
@@ -64,8 +73,16 @@ namespace FW.BusinessLogic.Implementations
             return true;
         }
 
-        public async Task<bool> UpdatePostAsync(Post post)
+        public async Task<bool> UpdatePostAsync(PostVM post)
         {
+            if (post.IsActive == "on")
+            {
+                post.IsEnable = true;
+            }
+            else
+            {
+                post.IsEnable = false;
+            }
             bool isValidModel = CleanCheckPost(post);
             if (!isValidModel) return false;
 
@@ -75,7 +92,7 @@ namespace FW.BusinessLogic.Implementations
             postDetail.Username = post.Username;
             postDetail.Content = post.Content;
             postDetail.Title = post.Title;
-            postDetail.IsDeleted = post.IsDeleted;
+            postDetail.IsDeleted = post.IsEnable;
             postDetail.DateUpdated = DateTime.Now;
             _postRepository.Update(postDetail);
             // tra ve ket qua sau khi thao tac DB
@@ -103,7 +120,7 @@ namespace FW.BusinessLogic.Implementations
             return post;
         }
 
-        private bool CleanCheckPost(Post post)
+        private bool CleanCheckPost(PostVM post)
         {
             if (post == null || string.IsNullOrEmpty(post.Username) || string.IsNullOrEmpty(post.Content) || string.IsNullOrEmpty(post.Title))
             {

@@ -35,12 +35,41 @@ namespace WABU
 
             #endregion About
 
-            #region
+            #region Posts
 
             routes.MapRoute(
                 name: "Quan Ly Bai Viet",
                 url: "quanly-baiviet",
                 defaults: new { controller = "Posts", action = "Index" }
+            );
+
+            routes.MapRoute(
+               name: "Tao Moi Bai Viet",
+               url: "quanly-baiviet/taobaiviet/",
+               defaults: new { controller = "Posts", action = "Create" }
+            );
+
+            routes.MapRoute(
+               name: "Cap Nhat Bai Viet",
+               url: "quanly-baiviet/capnhatbaiviet/{id}",
+               defaults: new { controller = "Posts", action = "Edit", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+               name: "Xoa Bai Viet",
+               url: "quanly-baiviet/xoabaiviet/{id}",
+               defaults: new { controller = "Posts", action = "Delete", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "Bai Viet",
+                url: "baiviet",
+                defaults: new { controller = "UserPosts", action = "Index" }
+            );
+            routes.MapRoute(
+                name: "Chi Tiet Bai Viet",
+                url: "baiviet/chitietbaiviet/{id}",
+                defaults: new { controller = "UserPosts", action = "Details", id = UrlParameter.Optional }
             );
 
             #endregion

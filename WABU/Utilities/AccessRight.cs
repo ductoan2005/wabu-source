@@ -42,7 +42,15 @@ namespace WABU.Utilities
                         EAuthority.Root,
                         EAuthority.Administrator
                     });
-                MapRoles.Add(CommonConstants.SCREEN_FILTER_POST,
+
+                MapRoles.Add(CommonConstants.SCREEN_USER_POST,
+                    new List<EAuthority> {
+                        EAuthority.Root,
+                        EAuthority.Administrator,
+                        EAuthority.Investor,
+                        EAuthority.Contractor});
+
+                MapRoles.Add(CommonConstants.SCREEN_ADMIN_POST,
                     new List<EAuthority> {
                         EAuthority.Root,
                         EAuthority.Administrator});
