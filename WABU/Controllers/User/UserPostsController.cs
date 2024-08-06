@@ -1,5 +1,4 @@
 ﻿using FW.BusinessLogic.Interfaces;
-using FW.Common.Helpers;
 using FW.Common.Objects;
 using FW.Common.Pagination;
 using FW.Common.Utilities;
@@ -10,12 +9,10 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using WABU.Filters;
 using WABU.Utilities;
 
 namespace WABU.Controllers.User
 {
-    [CustomAuthorize(FunctionKey = CommonConstants.SCREEN_USER_POST, NeedReloadData = true)]
     public class UserPostsController : BaseController
     {
         private readonly IPostBL _postBL;
