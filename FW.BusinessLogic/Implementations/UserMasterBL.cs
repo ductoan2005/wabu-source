@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
-using FW.Common.Pagination.Interfaces;
+﻿using AutoMapper;
+using FW.BusinessLogic.Interfaces;
+using FW.BusinessLogic.Services;
+using FW.Common.Helpers;
 using FW.Common.Pagination;
-using FW.ViewModels;
+using FW.Common.Pagination.Interfaces;
+using FW.Common.TemplateEmail;
+using FW.Common.Utilities;
+using FW.Data.Infrastructure;
 using FW.Data.Infrastructure.Interfaces;
 using FW.Data.RepositoryInterfaces;
-using FW.Data.Infrastructure;
-using FW.BusinessLogic.Interfaces;
-using AutoMapper;
 using FW.Models;
-using FW.Common.Helpers;
 using FW.Resources;
+using FW.ViewModels;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using FW.Common.Utilities;
-using System.IO;
-using System.Configuration;
-using FW.Common.TemplateEmail;
 
 namespace FW.BusinessLogic.Implementations
 {
@@ -26,17 +26,22 @@ namespace FW.BusinessLogic.Implementations
         private readonly ICompanyRepository _iCompanyRepository;
         private readonly IUserMasterRepository userRepository;
         private readonly IUnitOfWork unitOfWork;
+        private readonly IAttachmentsToDOServices _attachmentsToDOServices;
 
         internal const string ORDER_BY_DEFAULT = "Id";
 
         private static string GetStoragePath(string id) => Path.Combine(FileUtils.GetServerStoragePath(), CommonSettings.GetUserAvatarFolderName, id);
 
 
-        public UserMasterBL(IUserMasterRepository userRepository, IUnitOfWork unitOfWork, ICompanyRepository iCompanyRepository)
+        public UserMasterBL(IUserMasterRepository userRepository,
+                            IUnitOfWork unitOfWork,
+                            ICompanyRepository iCompanyRepository,
+                            IAttachmentsToDOServices attachmentsToDOServices)
         {
             _iCompanyRepository = iCompanyRepository;
             this.userRepository = userRepository;
             this.unitOfWork = unitOfWork;
+            _attachmentsToDOServices = attachmentsToDOServices;
         }
 
         #region Create
@@ -96,14 +101,15 @@ namespace FW.BusinessLogic.Implementations
                 //Check avatar is update
                 if (userMasterVM.AvatarFile?.ContentLength > 0)
                 {
-                    if (!string.IsNullOrEmpty(user.AvatarPath))
-                    {
-                        user.AvatarPath = StringUtils.GetAbsolutePath(user.AvatarPath);
-                        FileUtils.DeleteFileIfExists(user.AvatarPath);
-                    }
 
-                    user.AvatarPath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(userMasterVM.AvatarFile, GetStoragePath(user.Id.ToString())), FileUtils.GetDomainAppPathPath());
+                    var listIFormFile = new List<IFormFile>();
+
+                    listIFormFile.Add(FileUtils.ConvertToIFormFile(userMasterVM.AvatarFile));
+                    await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                    await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+
                     user.AvatarName = userMasterVM.AvatarFile.FileName;
+                    user.AvatarPath = ConfigurationManager.AppSettings["AttachmentUrl"] + user.AvatarName;
                 }
 
                 user.FullName = userMasterVM.FullName;
@@ -129,15 +135,12 @@ namespace FW.BusinessLogic.Implementations
                         //Check avatar is update
                         if (userMasterVM.AdvertisingBackgroundImageFile?.ContentLength > 0)
                         {
-                            if (!string.IsNullOrEmpty(company.AdvertisingBackgroundImage))
-                            {
-                                FileUtils.DeleteFileIfExists(company.AdvertisingBackgroundImage);
-                            }
+                            var listIFormFile = new List<IFormFile>();
+                            listIFormFile.Add(FileUtils.ConvertToIFormFile(userMasterVM.AdvertisingBackgroundImageFile));
+                            await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                            await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
 
-                            company.AdvertisingBackgroundImage = StringUtils.GetRelativePath(
-                                FileUtils.SaveFileToServer(userMasterVM.AdvertisingBackgroundImageFile,
-                                    GetStoragePath(company.UserId.ToString())),
-                                FileUtils.GetDomainAppPathPath());
+                            company.AdvertisingBackgroundImage = ConfigurationManager.AppSettings["AttachmentUrl"] + userMasterVM.AdvertisingBackgroundImageFile.FileName;
                         }
 
                         _iCompanyRepository.Update(company);

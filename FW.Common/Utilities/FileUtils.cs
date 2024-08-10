@@ -1,4 +1,6 @@
 ﻿using FW.Common.Helpers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -72,7 +74,7 @@ namespace FW.Common.Utilities
                         }
                     }
                 }
-             }
+            }
 
             return result;
         }
@@ -89,6 +91,33 @@ namespace FW.Common.Utilities
                 {
                     file.MoveTo(Path.Combine(destinationPath, file.Name));
                 }
+            }
+        }
+
+        public static IFormFile ConvertToIFormFile(HttpPostedFileBase file)
+        {
+            var byteArray = ConvertToBytes(file);
+            var formFile = new FormFile(
+                new MemoryStream(byteArray),
+                0,
+                byteArray.Length,
+                file.FileName,
+                file.FileName
+            )
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = file.ContentType
+            };
+
+            return formFile;
+        }
+
+        private static byte[] ConvertToBytes(HttpPostedFileBase file)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                file.InputStream.CopyTo(memoryStream);
+                return memoryStream.ToArray();
             }
         }
     }

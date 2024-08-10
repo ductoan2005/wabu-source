@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Transactions;
-using System.Web.Mvc;
-using AutoMapper;
+﻿using AutoMapper;
 using FW.BusinessLogic.Interfaces;
+using FW.BusinessLogic.Services;
 using FW.Common.Enum;
 using FW.Common.Helpers;
 using FW.Common.Objects;
@@ -19,8 +13,16 @@ using FW.Data.RepositoryInterfaces;
 using FW.Models;
 using FW.ViewModels;
 using FW.ViewModels.PageContractBid;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using System.Transactions;
+using System.Web.Mvc;
 
 namespace FW.BusinessLogic.Implementations
 {
@@ -30,14 +32,16 @@ namespace FW.BusinessLogic.Implementations
         private readonly ICompanyAbilityEquipmentRepository _iCompanyAbilityEquipmentRepository;
         private readonly ICompanyRepository _iCompanyRepository;
         private readonly ICompanyProfileBL _iCompanyProfileBl;
+        private readonly IAttachmentsToDOServices _attachmentsToDOServices;
 
         public CompanyAbilityEquipmentBL(IUnitOfWork iUnitOfWork, ICompanyAbilityEquipmentRepository iCompanyAbilityEquipmentRepository,
-            ICompanyRepository iCompanyRepository, ICompanyProfileBL iCompanyProfileBl)
+            ICompanyRepository iCompanyRepository, ICompanyProfileBL iCompanyProfileBl, IAttachmentsToDOServices attachmentsToDOServices)
         {
             _iCompanyAbilityEquipmentRepository = iCompanyAbilityEquipmentRepository;
             _iUnitOfWork = iUnitOfWork;
             _iCompanyRepository = iCompanyRepository;
             _iCompanyProfileBl = iCompanyProfileBl;
+            _attachmentsToDOServices = attachmentsToDOServices;
         }
 
         public async Task<JsonResult> AddNewCompanyAbilityEquipment(CompanyAbilityEquipmentVM companyAbilityEquipmentVM, long? userId)
@@ -168,17 +172,19 @@ namespace FW.BusinessLogic.Implementations
         {
             if (companyAbilityEquipmentVM.EvidenceInspectionRecordsFile?.ContentLength > 0)
             {
-                companyAbilityEquipment.EvidenceInspectionRecordsFilePath =
-                    StringUtils.GetRelativePath(FileUtils.SaveFileToServer(companyAbilityEquipmentVM.EvidenceInspectionRecordsFile, GetStoragePath(companyName, companyAbilityEquipment.Id.ToString())),
-                    FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityEquipmentVM.EvidenceInspectionRecordsFile));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 companyAbilityEquipment.EvidenceInspectionRecordsFileName = companyAbilityEquipmentVM.EvidenceInspectionRecordsFile.FileName;
+                companyAbilityEquipment.EvidenceInspectionRecordsFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityEquipment.EvidenceInspectionRecordsFileName;
             }
             if (companyAbilityEquipmentVM.EvidenceSaleContractFile?.ContentLength > 0)
             {
-                companyAbilityEquipment.EvidenceSaleContractFilePath =
-                    StringUtils.GetRelativePath(FileUtils.SaveFileToServer(companyAbilityEquipmentVM.EvidenceSaleContractFile, GetStoragePath(companyName, companyAbilityEquipment.Id.ToString())),
-                    FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityEquipmentVM.EvidenceSaleContractFile));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 companyAbilityEquipment.EvidenceSaleContractFileName = companyAbilityEquipmentVM.EvidenceSaleContractFile.FileName;
+                companyAbilityEquipment.EvidenceSaleContractFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityEquipment.EvidenceSaleContractFileName;
             }
 
             return await Task.FromResult(companyAbilityEquipment);

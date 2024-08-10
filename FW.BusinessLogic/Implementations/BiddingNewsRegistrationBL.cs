@@ -1,22 +1,20 @@
 ﻿using AutoMapper;
 using FW.BusinessLogic.Interfaces;
 using FW.BusinessLogic.ManualMapper;
+using FW.BusinessLogic.Services;
 using FW.Common.Helpers;
 using FW.Common.Utilities;
-using FW.Data.Infrastructure;
 using FW.Data.Infrastructure.Interfaces;
 using FW.Data.RepositoryInterfaces;
 using FW.Models;
 using FW.ViewModels;
-using FW.ViewModels.BiddingNews;
 using FW.ViewModels.BiddingNewsRegistration;
-using System;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Threading.Tasks;
 using System.Transactions;
-using System.Web;
-using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace FW.BusinessLogic.Implementations
@@ -31,6 +29,7 @@ namespace FW.BusinessLogic.Implementations
         private readonly IBiddingDetailRepository _biddingDetailRepository;
         private readonly IBiddingDetailFilesRepository _biddingDetailFilesRepository;
         private readonly IUserMasterRepository _userMasterRepository;
+        private readonly IAttachmentsToDOServices _attachmentsToDOServices;
 
         private readonly IUnitOfWork _unitOfWork;
         #endregion
@@ -43,7 +42,8 @@ namespace FW.BusinessLogic.Implementations
             IBiddingDetailRepository biddingDetailRepository,
             IBiddingDetailFilesRepository biddingDetailFilesRepository,
             IUserMasterRepository userMasterRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IAttachmentsToDOServices attachmentsToDOServices)
         {
             _biddingNewsRegistrationRepository = biddingNewsRegistrationRepository;
             _biddingPackageRepository = biddingPackageRepository;
@@ -53,6 +53,7 @@ namespace FW.BusinessLogic.Implementations
             _biddingDetailFilesRepository = biddingDetailFilesRepository;
             _unitOfWork = unitOfWork;
             _userMasterRepository = userMasterRepository;
+            _attachmentsToDOServices = attachmentsToDOServices;
         }
         #endregion
 
@@ -89,27 +90,30 @@ namespace FW.BusinessLogic.Implementations
                 bool hasFile = false;
                 if (biddingNewsRegistrationVM.DrawingFile != null)
                 {
-                    biddingNews.ConstructionDrawingFilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(biddingNewsRegistrationVM.DrawingFile,
-                        GetStoragePath(biddingNews.Id.ToString())), FileUtils.GetDomainAppPathPath());
+                    IFormFile iFormFile = FileUtils.ConvertToIFormFile(biddingNewsRegistrationVM.DrawingFile);
+                    string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                     biddingNews.ConstructionDrawingFileName = biddingNewsRegistrationVM.DrawingFile.FileName;
+                    biddingNews.ConstructionDrawingFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
 
                     hasFile = true;
                 }
 
                 if (biddingNewsRegistrationVM.EstimatesFile != null)
                 {
-                    biddingNews.EstimateVolumeFilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(biddingNewsRegistrationVM.EstimatesFile, GetStoragePath(biddingNews.Id.ToString())),
-                        FileUtils.GetDomainAppPathPath());
+                    IFormFile iFormFile = FileUtils.ConvertToIFormFile(biddingNewsRegistrationVM.EstimatesFile);
+                    string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                     biddingNews.EstimateVolumeFileName = biddingNewsRegistrationVM.EstimatesFile.FileName;
+                    biddingNews.EstimateVolumeFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
 
                     hasFile = true;
                 }
 
                 if (biddingNewsRegistrationVM.MaterialFile != null)
                 {
-                    biddingNews.RequireMaterialFilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(biddingNewsRegistrationVM.MaterialFile, GetStoragePath(biddingNews.Id.ToString())),
-                        FileUtils.GetDomainAppPathPath());
+                    IFormFile iFormFile = FileUtils.ConvertToIFormFile(biddingNewsRegistrationVM.MaterialFile);
+                    string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                     biddingNews.RequireMaterialFileName = biddingNewsRegistrationVM.MaterialFile.FileName;
+                    biddingNews.RequireMaterialFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
 
                     hasFile = true;
                 }

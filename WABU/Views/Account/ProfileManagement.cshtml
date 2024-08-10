@@ -51,7 +51,7 @@
                                             <span class="btn btn-file reset-pd">
                                                 <input type="file" id="AvatarFile" name="AvatarFile" onchange="commonJS.validateSingleInput(this, 'image')" />
                                                 @{
-                                                    string src = string.IsNullOrEmpty(Model.AvatarPath) ? "/Content/Common/img/no-thumnail.jpg" : "/" + Model.AvatarPath;
+                                                    string src = string.IsNullOrEmpty(Model.AvatarPath) ? "/Content/Common/img/no-thumnail.jpg" : Model.AvatarPath;
                                                 }
                                                 <img id="previewAvatar" src="@src" alt="AvatarFile" width="140" class="img-thumbnail" />
                                             </span>

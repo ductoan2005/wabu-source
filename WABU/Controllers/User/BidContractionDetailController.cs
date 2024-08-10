@@ -1,14 +1,13 @@
 ﻿using FW.BusinessLogic.Interfaces;
 using FW.Common.Helpers;
 using FW.Common.Utilities;
-using FW.Models;
 using FW.Resources;
 using FW.ViewModels.BiddingNews;
 using System;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using WABU.Filters;
 using WABU.Utilities;
 
 namespace WABU.Controllers
@@ -94,7 +93,7 @@ namespace WABU.Controllers
                 var company = await _companyMasterBL.GetCompanyByUserId(SessionObjects.UserProfile.UserID.Value);
                 if (company != null && string.IsNullOrEmpty(company.CompanyName))
                 {
-                    return Json(new { succeed = CommonConstants.STR_MINUS_ONE, message = "Vui lòng cập nhật thông tin nhà thầu trước khi đấu thầu"});
+                    return Json(new { succeed = CommonConstants.STR_MINUS_ONE, message = "Vui lòng cập nhật thông tin nhà thầu trước khi đấu thầu" });
                 }
 
                 await _biddingDetailBl.CreateBiddingDetail(printInfoBiddingVm);
@@ -239,19 +238,38 @@ namespace WABU.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public void Download(string path)
+        public async Task Download(string path)
         {
             var methodName = SysLogger.GetMethodFullName();
             try
             {
-                var fileFullPath = Server.MapPath(path);
-                FileInfo fileInfo = new FileInfo(fileFullPath);
-                Response.Clear();
-                Response.ContentType = "application/pdf";
-                Response.AddHeader("content-disposition", "attachment; filename=" + fileInfo.Name);
-                Response.TransmitFile(fileFullPath);
-                Response.Flush();
-                Response.End();
+                using (HttpClient client = new HttpClient())
+                {
+                    // Download the file content from the given URL
+                    using (HttpResponseMessage httpResponse = await client.GetAsync(path))
+                    {
+                        if (httpResponse.IsSuccessStatusCode)
+                        {
+                            using (Stream stream = await httpResponse.Content.ReadAsStreamAsync())
+                            {
+                                // Set content type and headers based on the file type
+                                Response.ContentType = httpResponse.Content.Headers.ContentType.ToString();
+                                string fileName = Path.GetFileName(path);
+                                Response.AddHeader("Content-Disposition", $"attachment; filename=\"{fileName}\"");
+
+                                // Stream the file content directly to the response
+                                await stream.CopyToAsync(Response.OutputStream);
+                            }
+
+                            Response.Flush();
+                        }
+                        else
+                        {
+                            Response.StatusCode = (int)httpResponse.StatusCode;
+                            Response.Write($"Failed to download file: {httpResponse.ReasonPhrase}");
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {

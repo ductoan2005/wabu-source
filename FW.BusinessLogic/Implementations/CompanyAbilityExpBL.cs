@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Transactions;
-using System.Web;
-using System.Web.Mvc;
-using AutoMapper;
+﻿using AutoMapper;
 using FW.BusinessLogic.Interfaces;
+using FW.BusinessLogic.Services;
 using FW.Common.Enum;
 using FW.Common.Helpers;
 using FW.Common.Objects;
@@ -20,6 +13,14 @@ using FW.Data.RepositoryInterfaces;
 using FW.Models;
 using FW.ViewModels;
 using FW.ViewModels.PageContractBid;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Transactions;
+using System.Web.Mvc;
 
 namespace FW.BusinessLogic.Implementations
 {
@@ -30,14 +31,21 @@ namespace FW.BusinessLogic.Implementations
         private readonly ICompanyRepository _iCompanyRepository;
         private readonly ICompanyProfileBL _iCompanyProfileBl;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAttachmentsToDOServices _attachmentsToDOServices;
 
-        public CompanyAbilityExpBL(IUnitOfWork iUnitOfWork, ICompanyAbilityExpRepository iCompanyAbilityExpRepository, ICompanyRepository iCompanyRepository, ICompanyProfileBL iCompanyProfileBl, IUnitOfWork unitOfWork)
+        public CompanyAbilityExpBL(IUnitOfWork iUnitOfWork,
+                                ICompanyAbilityExpRepository iCompanyAbilityExpRepository,
+                                ICompanyRepository iCompanyRepository,
+                                ICompanyProfileBL iCompanyProfileBl,
+                                IUnitOfWork unitOfWork,
+                                IAttachmentsToDOServices attachmentsToDOServices)
         {
             _iCompanyAbilityExpRepository = iCompanyAbilityExpRepository;
             _iUnitOfWork = iUnitOfWork;
             _iCompanyRepository = iCompanyRepository;
             _iCompanyProfileBl = iCompanyProfileBl;
             _unitOfWork = unitOfWork;
+            _attachmentsToDOServices = attachmentsToDOServices;
         }
 
         /// <summary>
@@ -185,28 +193,37 @@ namespace FW.BusinessLogic.Implementations
         /// <param name="companyAbilityExpVM"></param>
         /// <param name="companyName"></param>
         /// <returns></returns>
-        private Task<CompanyAbilityExp> StoreCompanyAbilityExpFiles(CompanyAbilityExp companyAbilityExp, CompanyAbilityExpVM companyAbilityExpVM, string companyName)
+        private async Task<CompanyAbilityExp> StoreCompanyAbilityExpFiles(CompanyAbilityExp companyAbilityExp, CompanyAbilityExpVM companyAbilityExpVM, string companyName)
         {
             if (companyAbilityExpVM.EvidenceBuildingPermitFile?.ContentLength > 0)
             {
-                companyAbilityExp.EvidenceBuildingPermitFilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(companyAbilityExpVM.EvidenceBuildingPermitFile, GetStoragePath(companyName, companyAbilityExp.Id.ToString())),
-                    FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityExpVM.EvidenceBuildingPermitFile));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 companyAbilityExp.EvidenceBuildingPermitFileName = companyAbilityExpVM.EvidenceBuildingPermitFile.FileName;
+                companyAbilityExp.EvidenceBuildingPermitFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityExp.EvidenceBuildingPermitFileName;
             }
             if (companyAbilityExpVM.EvidenceContractFile?.ContentLength > 0)
             {
-                companyAbilityExp.EvidenceContractFilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(companyAbilityExpVM.EvidenceContractFile, GetStoragePath(companyName, companyAbilityExp.Id.ToString())),
-                    FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityExpVM.EvidenceContractFile));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 companyAbilityExp.EvidenceContractFileName = companyAbilityExpVM.EvidenceContractFile.FileName;
+                companyAbilityExp.EvidenceContractFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityExp.EvidenceContractFileName;
             }
             if (companyAbilityExpVM.EvidenceContractLiquidationFile?.ContentLength > 0)
             {
-                companyAbilityExp.EvidenceContractLiquidationFilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(companyAbilityExpVM.EvidenceContractLiquidationFile, GetStoragePath(companyName, companyAbilityExp.Id.ToString())),
-                    FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityExpVM.EvidenceContractLiquidationFile));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 companyAbilityExp.EvidenceContractLiquidationFileName = companyAbilityExpVM.EvidenceContractLiquidationFile.FileName;
+                companyAbilityExp.EvidenceContractLiquidationFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityExp.EvidenceContractLiquidationFileName;
             }
 
-            return Task.FromResult(companyAbilityExp);
+            return await Task.FromResult(companyAbilityExp);
         }
 
         private static string GetStoragePath(string companyName, string id) => Path.Combine(FileUtils.GetServerStoragePath(), CommonSettings.GetCompanyAbilityExpFolderName, companyName, id);

@@ -1,5 +1,6 @@
 ﻿using FW.BusinessLogic.Interfaces;
 using FW.BusinessLogic.ManualMapper;
+using FW.BusinessLogic.Services;
 using FW.Common.Helpers;
 using FW.Common.Utilities;
 using FW.Data.Infrastructure;
@@ -7,12 +8,12 @@ using FW.Data.Infrastructure.Interfaces;
 using FW.Data.RepositoryInterfaces;
 using FW.Models;
 using FW.ViewModels;
-using System;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace FW.BusinessLogic.Implementations
 {
@@ -22,15 +23,21 @@ namespace FW.BusinessLogic.Implementations
         private readonly ICompanyRepository _iCompanyRepository;
         private readonly ICompanyStaffBL _companyStaff;
         private readonly ICompanyProfileBL _companyProfileBL;
+        private readonly IAttachmentsToDOServices _attachmentsToDOServices;
 
         private static string GetStoragePath(string id) => Path.Combine(FileUtils.GetServerStoragePath(), CommonSettings.GetUserAvatarFolderName, id);
 
-        public CompanyBL(IUnitOfWork iUnitOfWork, ICompanyRepository iCompanyRepository, ICompanyStaffBL companyStaff, ICompanyProfileBL companyProfileBL)
+        public CompanyBL(IUnitOfWork iUnitOfWork,
+                        ICompanyRepository iCompanyRepository,
+                        ICompanyStaffBL companyStaff,
+                        ICompanyProfileBL companyProfileBL,
+                        IAttachmentsToDOServices attachmentsToDOServices)
         {
             _iUnitOfWork = iUnitOfWork;
             _iCompanyRepository = iCompanyRepository;
             _companyStaff = companyStaff;
             _companyProfileBL = companyProfileBL;
+            _attachmentsToDOServices = attachmentsToDOServices;
         }
 
         public Task<string> GetCompanyNameFromUserId(long? userId)
@@ -66,7 +73,10 @@ namespace FW.BusinessLogic.Implementations
 
                 _iCompanyRepository.Add(company);
                 DbExecutionResult addResult = await _iUnitOfWork.CommitAsync();
-                company.Logo = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(viewModel.LogoFile, GetStoragePath(company.UserId.ToString())), FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(viewModel.LogoFile));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                company.Logo = ConfigurationManager.AppSettings["AttachmentUrl"] + viewModel.LogoFile.FileName;
                 _iCompanyRepository.Update(company);
             }
             else
@@ -138,13 +148,16 @@ namespace FW.BusinessLogic.Implementations
                 //Check avatar is update
                 if (viewModel.LogoFile?.ContentLength > 0)
                 {
+                    var listIFormFile = new List<IFormFile>();
+                    listIFormFile.Add(FileUtils.ConvertToIFormFile(viewModel.LogoFile));
+
                     if (!string.IsNullOrEmpty(company.Logo))
                     {
-                        company.Logo = StringUtils.GetAbsolutePath(company.Logo);
-                        FileUtils.DeleteFileIfExists(company.Logo);
+                        await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
                     }
 
-                    company.Logo = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(viewModel.LogoFile, GetStoragePath(company.UserId.ToString())), FileUtils.GetDomainAppPathPath());
+                    await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                    company.Logo = ConfigurationManager.AppSettings["AttachmentUrl"] + viewModel.LogoFile.FileName;
                 }
                 UpdateFileToServer(company, viewModel);
                 _iCompanyRepository.Update(company);
@@ -166,53 +179,34 @@ namespace FW.BusinessLogic.Implementations
             CheckDbExecutionResultAndThrowIfAny(result);
         }
 
-        private void UpdateFileToServer(Company model, CompanyVM viewModel)
+        private async Task UpdateFileToServer(Company model, CompanyVM viewModel)
         {
             if (viewModel.NoBusinessLicenseFile?.ContentLength > 0)
             {
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(viewModel.NoBusinessLicenseFile));
                 if (!string.IsNullOrEmpty(model.NoBusinessLicensePath))
                 {
-                    model.NoBusinessLicensePath = StringUtils.GetAbsolutePath(model.NoBusinessLicensePath);
-                    FileUtils.DeleteFileIfExists(model.NoBusinessLicensePath);
+                    await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
                 }
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
 
-                model.NoBusinessLicensePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(viewModel.NoBusinessLicenseFile, GetBusinessLicenseStoragePath(model.Id)), FileUtils.GetDomainAppPathPath());
                 model.NoBusinessLicenseName = viewModel.NoBusinessLicenseFile.FileName;
+                model.NoBusinessLicensePath = ConfigurationManager.AppSettings["AttachmentUrl"] + model.NoBusinessLicenseName;
             }
 
             if (viewModel.OrganizationalChartFile?.ContentLength > 0)
             {
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(viewModel.OrganizationalChartFile));
                 if (!string.IsNullOrEmpty(model.OrganizationalChartPath))
                 {
-                    model.OrganizationalChartPath = StringUtils.GetAbsolutePath(model.OrganizationalChartPath);
-                    FileUtils.DeleteFileIfExists(model.OrganizationalChartPath);
+                    await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
                 }
-
-                model.OrganizationalChartPath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(viewModel.OrganizationalChartFile, GetOrganizationalChartStoragePath(model.Id)), FileUtils.GetDomainAppPathPath());
                 model.OrganizationalChartName = viewModel.OrganizationalChartFile.FileName;
+                model.OrganizationalChartPath = ConfigurationManager.AppSettings["AttachmentUrl"] + model.OrganizationalChartName;
             }
         }
-
-        private void StoreFileToServer(Company model, CompanyVM viewModel)
-        {
-            if (viewModel.NoBusinessLicenseFile?.ContentLength > 0)
-            {
-                model.NoBusinessLicensePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(viewModel.NoBusinessLicenseFile, GetBusinessLicenseStoragePath(model.Id)), FileUtils.GetDomainAppPathPath());
-                model.NoBusinessLicenseName = viewModel.NoBusinessLicenseFile.FileName;
-            }
-
-            if (viewModel.OrganizationalChartFile?.ContentLength > 0)
-            {
-                model.OrganizationalChartPath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(viewModel.OrganizationalChartFile, GetOrganizationalChartStoragePath(model.Id)), FileUtils.GetDomainAppPathPath());
-                model.OrganizationalChartName = viewModel.OrganizationalChartFile.FileName;
-            }
-        }
-
-        private static string GetBusinessLicenseStoragePath(long? companyId)
-            => Path.Combine(FileUtils.GetServerStoragePath(), CommonSettings.GetBusinessLicenseFolderName, companyId.ToString());
-
-        private static string GetOrganizationalChartStoragePath(long? companyId)
-           => Path.Combine(FileUtils.GetServerStoragePath(), CommonSettings.GetCompanyOrganizationFolderName, companyId.ToString());
 
         public async Task<CompanyProfileVM> GetCompanyByCompanyProfileId(long companyProfileId)
         {

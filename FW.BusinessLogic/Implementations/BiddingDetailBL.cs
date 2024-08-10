@@ -1,23 +1,25 @@
-﻿using FW.BusinessLogic.Interfaces;
+﻿using AutoMapper;
+using FW.BusinessLogic.Interfaces;
+using FW.BusinessLogic.Services;
+using FW.Common.Enum;
+using FW.Common.Helpers;
+using FW.Common.TemplateEmail;
+using FW.Common.Utilities;
 using FW.Data.Infrastructure.Interfaces;
 using FW.Data.RepositoryInterfaces;
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using AutoMapper;
-using FW.Common.Helpers;
 using FW.Models;
 using FW.ViewModels;
 using FW.ViewModels.BiddingNews;
-using System.Transactions;
-using FW.Common.Utilities;
-using FW.Common.TemplateEmail;
-using FW.Common.Enum;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Configuration;
+using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Transactions;
+using System.Web.Mvc;
 
 namespace FW.BusinessLogic.Implementations
 {
@@ -44,6 +46,7 @@ namespace FW.BusinessLogic.Implementations
         private readonly ICompanyProfileBL _companyProfileBL;
         private readonly INotificationRepository _notificationRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAttachmentsToDOServices _attachmentsToDOServices;
 
         #endregion
 
@@ -59,7 +62,8 @@ namespace FW.BusinessLogic.Implementations
             ICompanyBL companyBL,
             ICompanyProfileBL companyProfileBL,
             IBiddingNewsRepository biddingNewsRepository,
-            INotificationRepository notificationRepository
+            INotificationRepository notificationRepository,
+            IAttachmentsToDOServices attachmentsToDOServices
             )
         {
             _companyAbilityFinanceRepository = companyAbilityFinanceRepository;
@@ -75,6 +79,7 @@ namespace FW.BusinessLogic.Implementations
             _companyProfileBL = companyProfileBL;
             _biddingNewsRepository = biddingNewsRepository;
             _notificationRepository = notificationRepository;
+            _attachmentsToDOServices = attachmentsToDOServices;
         }
 
         #endregion
@@ -499,63 +504,64 @@ namespace FW.BusinessLogic.Implementations
         /// </summary>
         /// <param name="printInfoBidding"></param>
         /// <returns></returns>
-        private static Task<List<BiddingDetailFiles>> UpdateBiddingDetailFilesModel(List<BiddingDetailFiles> biddingDetailFile, PrintInfoBiddingVM printInfoBidding)
+        private async Task<List<BiddingDetailFiles>> UpdateBiddingDetailFilesModel(List<BiddingDetailFiles> biddingDetailFile, PrintInfoBiddingVM printInfoBidding)
         {
             if (printInfoBidding.FileAttachDrawingConstructionMKT != null)
             {
                 var biddingFile = biddingDetailFile.FirstOrDefault(x => x.BiddingNewsFileType == (byte)EBiddingNewsFileType.DrawingConstruction);
-                FileUtils.DeleteFileIfExists(StringUtils.GetAbsolutePath(biddingFile.FilePath));
-                biddingFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.FileAttachDrawingConstructionMKT,
-                  GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingFile.BiddingDetailId.ToString())), FileUtils.GetDomainAppPathPath());
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachDrawingConstructionMKT);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 biddingFile.FileName = printInfoBidding.FileAttachDrawingConstructionMKT.FileName;
+                biddingFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (printInfoBidding.FileAttachEnvironmentalSanitationMKT != null)
             {
                 var biddingFile = biddingDetailFile.FirstOrDefault(x => x.BiddingNewsFileType == (byte)EBiddingNewsFileType.EnvironmentalSanitation);
-                FileUtils.DeleteFileIfExists(StringUtils.GetAbsolutePath(biddingFile.FilePath));
-                biddingFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.FileAttachEnvironmentalSanitationMKT,
-                  GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingFile.BiddingDetailId.ToString())), FileUtils.GetDomainAppPathPath());
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachEnvironmentalSanitationMKT);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 biddingFile.FileName = printInfoBidding.FileAttachEnvironmentalSanitationMKT.FileName;
+                biddingFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (printInfoBidding.FileAttachFireProtectionMKT != null)
             {
                 var biddingFile = biddingDetailFile.FirstOrDefault(x => x.BiddingNewsFileType == (byte)EBiddingNewsFileType.FireProtection);
-                FileUtils.DeleteFileIfExists(StringUtils.GetAbsolutePath(biddingFile.FilePath));
-                biddingFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.FileAttachFireProtectionMKT,
-                  GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingFile.BiddingDetailId.ToString())), FileUtils.GetDomainAppPathPath());
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachFireProtectionMKT);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 biddingFile.FileName = printInfoBidding.FileAttachFireProtectionMKT.FileName;
+                biddingFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (printInfoBidding.FileAttachMaterialsUseMKT != null)
             {
                 var biddingFile = biddingDetailFile.FirstOrDefault(x => x.BiddingNewsFileType == (byte)EBiddingNewsFileType.MaterialsUse);
-                FileUtils.DeleteFileIfExists(StringUtils.GetAbsolutePath(biddingFile.FilePath));
-                biddingFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.FileAttachMaterialsUseMKT,
-                  GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingFile.BiddingDetailId.ToString())), FileUtils.GetDomainAppPathPath());
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachMaterialsUseMKT);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 biddingFile.FileName = printInfoBidding.FileAttachMaterialsUseMKT.FileName;
+                biddingFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (printInfoBidding.FileAttachProgressScheduleMKT != null)
             {
                 var biddingFile = biddingDetailFile.FirstOrDefault(x => x.BiddingNewsFileType == (byte)EBiddingNewsFileType.ProgressSchedule);
-                FileUtils.DeleteFileIfExists(StringUtils.GetAbsolutePath(biddingFile.FilePath));
-                biddingFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.FileAttachProgressScheduleMKT,
-                  GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingFile.BiddingDetailId.ToString())), FileUtils.GetDomainAppPathPath());
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachProgressScheduleMKT);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 biddingFile.FileName = printInfoBidding.FileAttachProgressScheduleMKT.FileName;
+                biddingFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (printInfoBidding.FileAttachQuotationMKT != null)
             {
+                var listIFormFile = new List<IFormFile>();
                 var biddingFile = biddingDetailFile.FirstOrDefault(x => x.BiddingNewsFileType == (byte)EBiddingNewsFileType.Quotation);
-                FileUtils.DeleteFileIfExists(StringUtils.GetAbsolutePath(biddingFile.FilePath));
-                biddingFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.FileAttachQuotationMKT,
-                  GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingFile.BiddingDetailId.ToString())), FileUtils.GetDomainAppPathPath());
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachQuotationMKT));
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 biddingFile.FileName = printInfoBidding.FileAttachQuotationMKT.FileName;
+                biddingFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (printInfoBidding.FileAttachWorkSafetyMKT != null)
             {
                 var biddingFile = biddingDetailFile.FirstOrDefault(x => x.BiddingNewsFileType == (byte)EBiddingNewsFileType.WorkSafety);
-                FileUtils.DeleteFileIfExists(StringUtils.GetAbsolutePath(biddingFile.FilePath));
-                biddingFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.FileAttachWorkSafetyMKT,
-                  GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingFile.BiddingDetailId.ToString())), FileUtils.GetDomainAppPathPath());
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachWorkSafetyMKT);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 biddingFile.FileName = printInfoBidding.FileAttachWorkSafetyMKT.FileName;
+                biddingFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (printInfoBidding.OtherFiles?.Count > 0)
             {
@@ -566,10 +572,10 @@ namespace FW.BusinessLogic.Implementations
                     {
                         if (printInfoBidding.TechnicalRequirementNameList[i] == biddingFiles.ElementAt(i).BiddingNewsFileTypeName)
                         {
-                            FileUtils.DeleteFileIfExists(StringUtils.GetAbsolutePath(biddingFiles.ElementAt(i).FilePath));
-                            biddingFiles.ElementAt(i).FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.OtherFiles[i],
-                                GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingFiles[i].BiddingDetailId.ToString())), FileUtils.GetDomainAppPathPath());
+                            IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.OtherFiles[i]);
+                            string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                             biddingFiles.ElementAt(i).FileName = printInfoBidding.OtherFiles[i].FileName;
+                            biddingFiles.ElementAt(i).FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
                         }
                     }
                 }
@@ -579,7 +585,7 @@ namespace FW.BusinessLogic.Implementations
             {
                 x.DateUpdated = DateTime.Now;
             });
-            return Task.FromResult(biddingDetailFile);
+            return await Task.FromResult(biddingDetailFile);
         }
 
         /// <summary>

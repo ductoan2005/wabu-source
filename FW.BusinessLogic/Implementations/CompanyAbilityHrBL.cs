@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Transactions;
-using System.Web.Mvc;
-using AutoMapper;
+﻿using AutoMapper;
 using FW.BusinessLogic.Interfaces;
+using FW.BusinessLogic.Services;
 using FW.Common.Enum;
 using FW.Common.Helpers;
 using FW.Common.Objects;
@@ -20,6 +13,16 @@ using FW.Data.RepositoryInterfaces;
 using FW.Models;
 using FW.ViewModels;
 using FW.ViewModels.PageContractBid;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Transactions;
+using System.Web.Mvc;
 
 namespace FW.BusinessLogic.Implementations
 {
@@ -30,15 +33,21 @@ namespace FW.BusinessLogic.Implementations
         private readonly ICompanyRepository _iCompanyRepository;
         private readonly ICompanyAbilityHrDetailRepository _iCompanyAbilityHrDetailRepository;
         private readonly ICompanyProfileBL _iCompanyProfileBl;
+        private readonly IAttachmentsToDOServices _attachmentsToDOServices;
 
-        public CompanyAbilityHrBL(IUnitOfWork iUnitOfWork, ICompanyAbilityHrRepository iCompanyAbilityHrRepository, ICompanyRepository iCompanyRepository,
-            ICompanyAbilityHrDetailRepository iCompanyAbilityHrDetailRepository, ICompanyProfileBL iCompanyProfileBl)
+        public CompanyAbilityHrBL(IUnitOfWork iUnitOfWork,
+                                ICompanyAbilityHrRepository iCompanyAbilityHrRepository,
+                                ICompanyRepository iCompanyRepository,
+                                ICompanyAbilityHrDetailRepository iCompanyAbilityHrDetailRepository,
+                                ICompanyProfileBL iCompanyProfileBl,
+                                IAttachmentsToDOServices attachmentsToDOServices)
         {
             _iCompanyAbilityHrRepository = iCompanyAbilityHrRepository;
             _iUnitOfWork = iUnitOfWork;
             _iCompanyRepository = iCompanyRepository;
             _iCompanyAbilityHrDetailRepository = iCompanyAbilityHrDetailRepository;
             _iCompanyProfileBl = iCompanyProfileBl;
+            _attachmentsToDOServices = attachmentsToDOServices;
         }
 
         /// <summary>
@@ -111,7 +120,7 @@ namespace FW.BusinessLogic.Implementations
                     else
                     {
                         var updateEmployee = companyAbilityHr.CompanyAbilityHRDetails.FirstOrDefault(x => x.Id == em.Id);
-                        if(updateEmployee != null)
+                        if (updateEmployee != null)
                         {
                             updateEmployee.ProjectSimilar = em.ProjectSimilar;
                             updateEmployee.PositionSimilar = em.PositionSimilar;
@@ -228,28 +237,37 @@ namespace FW.BusinessLogic.Implementations
         /// <param name="companyAbilityHrVM"></param>
         /// <param name="companyName"></param>
         /// <returns></returns>
-        private Task<CompanyAbilityHR> StoreCompanyAbilityHrFiles(CompanyAbilityHR companyAbilityHr, CompanyAbilityHRVM companyAbilityHrVM, string companyName)
+        private async Task<CompanyAbilityHR> StoreCompanyAbilityHrFiles(CompanyAbilityHR companyAbilityHr, CompanyAbilityHRVM companyAbilityHrVM, string companyName)
         {
             if (companyAbilityHrVM.EvidenceAppointmentStaffFile?.ContentLength > 0)
             {
-                companyAbilityHr.EvidenceAppointmentStaffFilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(companyAbilityHrVM.EvidenceAppointmentStaffFile, GetStoragePath(companyName, companyAbilityHr.Id.ToString())),
-                    FileUtils.GetDomainAppPathPath());
-                companyAbilityHr.EvidenceAppointmentStaffFileName = companyAbilityHrVM.EvidenceAppointmentStaffFile.FileName;
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityHrVM.EvidenceAppointmentStaffFile));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                companyAbilityHrVM.EvidenceAppointmentStaffFileName = companyAbilityHrVM.EvidenceAppointmentStaffFile.FileName;
+                companyAbilityHrVM.EvidenceAppointmentStaffFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityHrVM.EvidenceAppointmentStaffFileName;
             }
             if (companyAbilityHrVM.EvidenceLaborContractFile?.ContentLength > 0)
             {
-                companyAbilityHr.EvidenceLaborContractFilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(companyAbilityHrVM.EvidenceLaborContractFile, GetStoragePath(companyName, companyAbilityHr.Id.ToString())),
-                    FileUtils.GetDomainAppPathPath());
-                companyAbilityHr.EvidenceLaborContractFileName = companyAbilityHrVM.EvidenceLaborContractFile.FileName;
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityHrVM.EvidenceLaborContractFile));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                companyAbilityHrVM.EvidenceLaborContractFileName = companyAbilityHrVM.EvidenceLaborContractFile.FileName;
+                companyAbilityHrVM.EvidenceLaborContractFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityHrVM.EvidenceLaborContractFileName;
             }
             if (companyAbilityHrVM.EvidenceSimilarCertificatesFile?.ContentLength > 0)
             {
-                companyAbilityHr.EvidenceSimilarCertificatesFilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(companyAbilityHrVM.EvidenceSimilarCertificatesFile, GetStoragePath(companyName, companyAbilityHr.Id.ToString())),
-                    FileUtils.GetDomainAppPathPath());
-                companyAbilityHr.EvidenceSimilarCertificatesFileName = companyAbilityHrVM.EvidenceSimilarCertificatesFile.FileName;
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityHrVM.EvidenceSimilarCertificatesFile));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                companyAbilityHrVM.EvidenceSimilarCertificatesFileName = companyAbilityHrVM.EvidenceSimilarCertificatesFile.FileName;
+                companyAbilityHrVM.EvidenceSimilarCertificatesFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityHrVM.EvidenceSimilarCertificatesFileName;
             }
 
-            return Task.FromResult(companyAbilityHr);
+            return await Task.FromResult(companyAbilityHr);
         }
 
         private static string GetStoragePath(string companyName, string id) => Path.Combine(FileUtils.GetServerStoragePath(), CommonSettings.GetCompanyAbilityHrFolderName, companyName, id);

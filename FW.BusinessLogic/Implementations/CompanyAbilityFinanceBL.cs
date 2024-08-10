@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Transactions;
-using System.Web.Mvc;
-using AutoMapper;
+﻿using AutoMapper;
 using FW.BusinessLogic.Interfaces;
+using FW.BusinessLogic.Services;
 using FW.Common.Enum;
 using FW.Common.Helpers;
 using FW.Common.Objects;
@@ -19,6 +13,14 @@ using FW.Data.RepositoryInterfaces;
 using FW.Models;
 using FW.ViewModels;
 using FW.ViewModels.PageContractBid;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Transactions;
+using System.Web.Mvc;
 
 namespace FW.BusinessLogic.Implementations
 {
@@ -28,15 +30,19 @@ namespace FW.BusinessLogic.Implementations
         private readonly ICompanyAbilityFinanceRepository _iCompanyAbilityFinanceRepository;
         private readonly ICompanyRepository _iCompanyRepository;
         private readonly ICompanyProfileBL _iCompanyProfileBl;
+        private readonly IAttachmentsToDOServices _attachmentsToDOServices;
 
         public CompanyAbilityFinanceBL(IUnitOfWork iUnitOfWork,
-            ICompanyAbilityFinanceRepository iCompanyAbilityFinanceRepository, ICompanyRepository iCompanyRepository,
-            ICompanyProfileBL iCompanyProfileBl)
+                                    ICompanyAbilityFinanceRepository iCompanyAbilityFinanceRepository,
+                                    ICompanyRepository iCompanyRepository,
+                                    ICompanyProfileBL iCompanyProfileBl,
+                                    IAttachmentsToDOServices attachmentsToDOServices)
         {
             _iCompanyAbilityFinanceRepository = iCompanyAbilityFinanceRepository;
             _iUnitOfWork = iUnitOfWork;
             _iCompanyRepository = iCompanyRepository;
             _iCompanyProfileBl = iCompanyProfileBl;
+            _attachmentsToDOServices = attachmentsToDOServices;
         }
 
         /// <summary>
@@ -223,38 +229,46 @@ namespace FW.BusinessLogic.Implementations
         /// <param name="companyAbilityFinanceVM"></param>
         /// <param name="companyName"></param>
         /// <returns></returns>
-        private Task<CompanyAbilityFinance> StoreCompanyAbilityFinanceFiles(CompanyAbilityFinance companyAbilityFinance, CompanyAbilityFinanceVM companyAbilityFinanceVM, string companyName)
+        private async Task<CompanyAbilityFinance> StoreCompanyAbilityFinanceFiles(CompanyAbilityFinance companyAbilityFinance, CompanyAbilityFinanceVM companyAbilityFinanceVM, string companyName)
         {
             if (companyAbilityFinanceVM.EvidenceCheckSettlementFile?.ContentLength > 0)
             {
-                FileUtils.DeleteFileIfExists(StringUtils.GetAbsolutePath(companyAbilityFinance.EvidenceCheckSettlementFilePath));
-                companyAbilityFinance.EvidenceCheckSettlementFilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(companyAbilityFinanceVM.EvidenceCheckSettlementFile, GetStoragePath(companyName, companyAbilityFinance.Id.ToString())),
-                    FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityFinanceVM.EvidenceCheckSettlementFile));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 companyAbilityFinance.EvidenceCheckSettlementFileName = companyAbilityFinanceVM.EvidenceCheckSettlementFile.FileName;
+                companyAbilityFinance.EvidenceCheckSettlementFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityFinance.EvidenceCheckSettlementFileName;
             }
             if (companyAbilityFinanceVM.EvidenceAuditReportFile?.ContentLength > 0)
             {
-                FileUtils.DeleteFileIfExists(StringUtils.GetAbsolutePath(companyAbilityFinance.EvidenceAuditReportFilePath));
-                companyAbilityFinance.EvidenceAuditReportFilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(companyAbilityFinanceVM.EvidenceAuditReportFile, GetStoragePath(companyName, companyAbilityFinance.Id.ToString())),
-                    FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityFinanceVM.EvidenceAuditReportFile));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 companyAbilityFinance.EvidenceAuditReportFileName = companyAbilityFinanceVM.EvidenceAuditReportFile.FileName;
+                companyAbilityFinance.EvidenceAuditReportFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityFinance.EvidenceAuditReportFileName;
             }
             if (companyAbilityFinanceVM.EvidenceCertificationTaxFile?.ContentLength > 0)
             {
-                FileUtils.DeleteFileIfExists(StringUtils.GetAbsolutePath(companyAbilityFinance.EvidenceCertificationTaxFilePath));
-                companyAbilityFinance.EvidenceCertificationTaxFilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(companyAbilityFinanceVM.EvidenceCertificationTaxFile, GetStoragePath(companyName, companyAbilityFinance.Id.ToString())),
-                    FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityFinanceVM.EvidenceCertificationTaxFile));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 companyAbilityFinance.EvidenceCertificationTaxFileName = companyAbilityFinanceVM.EvidenceCertificationTaxFile.FileName;
+                companyAbilityFinance.EvidenceCertificationTaxFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityFinance.EvidenceCertificationTaxFileName;
             }
             if (companyAbilityFinanceVM.EvidenceDeclareTaxFile?.ContentLength > 0)
             {
-                FileUtils.DeleteFileIfExists(StringUtils.GetAbsolutePath(companyAbilityFinance.EvidenceDeclareTaxFilePath));
-                companyAbilityFinance.EvidenceDeclareTaxFilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(companyAbilityFinanceVM.EvidenceDeclareTaxFile, GetStoragePath(companyName, companyAbilityFinance.Id.ToString())),
-                    FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityFinanceVM.EvidenceDeclareTaxFile));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 companyAbilityFinance.EvidenceDeclareTaxFileName = companyAbilityFinanceVM.EvidenceDeclareTaxFile.FileName;
+                companyAbilityFinance.EvidenceDeclareTaxFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityFinance.EvidenceDeclareTaxFileName;
             }
 
-            return Task.FromResult(companyAbilityFinance);
+            return await Task.FromResult(companyAbilityFinance);
         }
 
         private static string GetStoragePath(string companyName, string id) => Path.Combine(FileUtils.GetServerStoragePath(), CommonSettings.GetCompanyAbilityFinanceFolderName, companyName, id);

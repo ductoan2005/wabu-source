@@ -100,20 +100,10 @@
                                             <div class="slick_images">
                                                 @{
                                                     string imageContruction1 = string.IsNullOrEmpty(Model.Construction.Image1FilePath) ? "Content/Common/img/no-thumbnail.png" : Model.Construction.Image1FilePath;
-
-                                                    //string imageContruction2 = string.IsNullOrEmpty(Model.Construction.Image2FilePath) ? "Content/Common/img/no-thumbnail.png" : Model.Construction.Image2FilePath;
-
-                                                    //string imageContruction3 = string.IsNullOrEmpty(Model.Construction.Image3FilePath) ? "Content/Common/img/no-thumbnail.png" : Model.Construction.Image3FilePath;
                                                 }
                                                 <div>
-                                                    <img src="~/@imageContruction1" alt="" width="100%" class="img-thumbnail" />
+                                                    <img src="@imageContruction1" alt="" width="100%" class="img-thumbnail" />
                                                 </div>
-                                                @*<div>
-                                                    <img src="~/@imageContruction2" alt="" width="100%" class="img-thumbnail" />
-                                                </div>
-                                                <div>
-                                                    <img src="~/@imageContruction3" alt="" width="100%" class="img-thumbnail" />
-                                                </div>*@
                                             </div>
                                         </div>
                                         <div class="col-lg-8">
@@ -172,7 +162,7 @@
                                                 @if (!string.IsNullOrEmpty(Model.ConstructionDrawingFilePath))
                                                 {
                                                     <label>- Hồ sơ thiết kế: </label>
-                                                    <a href="#" class="downloadDocument" data-path="~/@Model.ConstructionDrawingFilePath">
+                                                    <a href="#" class="downloadDocument" data-path="@Model.ConstructionDrawingFilePath">
                                                         @Model.ConstructionDrawingFileName
                                                     </a>
                                                     <br />
@@ -688,7 +678,7 @@ Model.BiddingNewsTechnicalOthers.Any())
                                                 }
                                                 else
                                                 {
-                                                    <img src="~/@biddingDetail.CompanyProfile.Company.Logo" alt="" class="img-thumbnail" />
+                                                    <img src="@biddingDetail.CompanyProfile.Company.Logo" alt="" class="img-thumbnail" />
                                                 }
                                             </div>
                                         </div>
@@ -702,7 +692,7 @@ Model.BiddingNewsTechnicalOthers.Any())
                                                     }
                                                     else
                                                     {
-                                                        <img src="~/@biddingDetail.CompanyProfile.Company.Logo" alt="" class="img-thumbnail" />
+                                                        <img src="@biddingDetail.CompanyProfile.Company.Logo" alt="" class="img-thumbnail" />
                                                     }
                                                 </div>
                                             </div>*@
@@ -761,7 +751,7 @@ Model.BiddingNewsTechnicalOthers.Any())
                                                 }
                                                 else
                                                 {
-                                                    <img src="~/@item.CompanyProfile.Company.Logo" alt="" class="img-thumbnail" />
+                                                    <img src="@item.CompanyProfile.Company.Logo" alt="" class="img-thumbnail" />
                                                 }
                                             </div>
                                             <div class='rating-stars'>

@@ -33,7 +33,7 @@
                         dicUI.Add(keyUI, item);
 
                         <tr id="@keyUI">
-                            <td class="client-avatar"><a onclick="userMaster.displayAccountDetail(event, '@item.Id')"><img alt="image" src="~/@item.AvatarPath"></a></td>
+                            <td class="client-avatar"><a onclick="userMaster.displayAccountDetail(event, '@item.Id')"><img alt="image" src="@item.AvatarPath"></a></td>
                             <td><a data-toggle="tab" onclick="userMaster.displayAccountDetail(event, '@item.Id')" class="client-link">@item.FullName</a></td>
                             <td class="contact-type"><i class="fa fa-user"></i></td>
                             <td>@item.UserName</td>

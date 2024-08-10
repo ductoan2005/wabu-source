@@ -1,24 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using FW.BusinessLogic.Interfaces;
+using FW.BusinessLogic.Services;
 using FW.Common.Helpers;
+using FW.Common.Objects;
 using FW.Common.Pagination;
 using FW.Common.Pagination.Interfaces;
-using FW.Data.Infrastructure;
+using FW.Common.Utilities;
 using FW.Data.Infrastructure.Interfaces;
 using FW.Data.RepositoryInterfaces;
 using FW.Models;
 using FW.Resources;
 using FW.ViewModels;
-using System.Web.Mvc;
-using FW.Common.Objects;
-using FW.Common.Utilities;
-using System.IO;
-using System.Transactions;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Transactions;
+using System.Web.Mvc;
 
 namespace FW.BusinessLogic.Implementations
 {
@@ -27,18 +29,21 @@ namespace FW.BusinessLogic.Implementations
         private readonly IConstructionRepository _iContructionRepository;
         private readonly IBiddingNewsRepository _iBiddingNewsRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAttachmentsToDOServices _attachmentsToDOServices;
 
         internal const string ORDER_BY_DEFAULT = "DateUpdated";
 
         public ConstructionBL(
-            IConstructionRepository iContructionRepository,
-            IBiddingNewsRepository iBiddingNewsRepository,
-            IAreaManageRepository iAreaRepository,
-            IUnitOfWork unitOfWork)
+                        IConstructionRepository iContructionRepository,
+                        IBiddingNewsRepository iBiddingNewsRepository,
+                        IAreaManageRepository iAreaRepository,
+                        IUnitOfWork unitOfWork,
+                        IAttachmentsToDOServices attachmentsToDOServices)
         {
             _iContructionRepository = iContructionRepository;
             _iBiddingNewsRepository = iBiddingNewsRepository;
             _unitOfWork = unitOfWork;
+            _attachmentsToDOServices = attachmentsToDOServices;
         }
 
         #region Create
@@ -95,7 +100,7 @@ namespace FW.BusinessLogic.Implementations
             var contructionDetail = await _iContructionRepository.GetAsync(x => x.Id == id && x.IsDeleted != true);
             contructionVmDetail = contructionDetail.IsDeleted != true ? Mapper.Map<Construction, ConstructionVM>(contructionDetail) : null;
 
-            if(contructionVmDetail == null)
+            if (contructionVmDetail == null)
                 return new ConstructionVM();
 
             return contructionVmDetail;
@@ -223,68 +228,68 @@ namespace FW.BusinessLogic.Implementations
 
         #region Private Method
 
-        private static Task<Construction> StoreConstructionImageToServer(Construction construction, ConstructionVM contructionVm)
+        private async Task<Construction> StoreConstructionImageToServer(Construction construction, ConstructionVM contructionVm)
         {
             if (contructionVm.ImageFile1?.ContentLength > 0)
             {
-                construction.Image1FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(contructionVm.ImageFile1, GetStoragePath(construction.Id.ToString())), FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(contructionVm.ImageFile1));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 construction.Image1FileName = contructionVm.ImageFile1.FileName;
+                construction.Image1FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + contructionVm.ImageFile1.FileName;
             }
             if (contructionVm.ImageFile2?.ContentLength > 0)
             {
-                construction.Image2FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(contructionVm.ImageFile2, GetStoragePath(construction.Id.ToString())), FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(contructionVm.ImageFile2));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 construction.Image2FileName = contructionVm.ImageFile2.FileName;
+                construction.Image2FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + contructionVm.ImageFile2.FileName;
             }
             if (contructionVm.ImageFile3?.ContentLength > 0)
             {
-                construction.Image3FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(contructionVm.ImageFile3, GetStoragePath(construction.Id.ToString())), FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(contructionVm.ImageFile3));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 construction.Image3FileName = contructionVm.ImageFile3.FileName;
+                construction.Image3FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + contructionVm.ImageFile3.FileName;
             }
-            return Task.FromResult(construction);
+            return await Task.FromResult(construction);
         }
 
-        private static Task<Construction> UpdateConstructionImageToServer(Construction construction, ConstructionVM contructionVm)
+        private async Task<Construction> UpdateConstructionImageToServer(Construction construction, ConstructionVM contructionVm)
         {
             if (contructionVm.ImageFile1?.ContentLength > 0)
             {
-                if(construction.Image1FilePath != null)
-                {
-                    construction.Image1FilePath = StringUtils.GetAbsolutePath(construction.Image1FilePath);
-                    if (Directory.Exists(construction.Image1FilePath))
-                    {
-                        FileUtils.DeleteFileIfExists(construction.Image1FilePath);
-                    }
-                }
-                construction.Image1FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(contructionVm.ImageFile1, GetStoragePath(construction.Id.ToString())), FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(contructionVm.ImageFile1));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 construction.Image1FileName = contructionVm.ImageFile1.FileName;
+                construction.Image1FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + contructionVm.ImageFile1.FileName;
             }
             if (contructionVm.ImageFile2?.ContentLength > 0)
             {
-                if (construction.Image2FilePath != null)
-                {
-                    construction.Image2FilePath = StringUtils.GetAbsolutePath(construction.Image2FilePath);
-                    if (Directory.Exists(construction.Image2FilePath))
-                    {
-                        FileUtils.DeleteFileIfExists(construction.Image2FilePath);
-                    }
-                }
-                construction.Image2FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(contructionVm.ImageFile2, GetStoragePath(construction.Id.ToString())), FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(contructionVm.ImageFile2));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 construction.Image2FileName = contructionVm.ImageFile2.FileName;
+                construction.Image2FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + contructionVm.ImageFile2.FileName;
             }
             if (contructionVm.ImageFile3?.ContentLength > 0)
             {
-                if (construction.Image3FilePath != null)
-                {
-                    construction.Image3FilePath = StringUtils.GetAbsolutePath(construction.Image3FilePath);
-                    if (Directory.Exists(construction.Image3FilePath))
-                    {
-                        FileUtils.DeleteFileIfExists(construction.Image3FilePath);
-                    }
-                }
-                construction.Image3FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(contructionVm.ImageFile3, GetStoragePath(construction.Id.ToString())), FileUtils.GetDomainAppPathPath());
+                var listIFormFile = new List<IFormFile>();
+                listIFormFile.Add(FileUtils.ConvertToIFormFile(contructionVm.ImageFile3));
+                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
+                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
                 construction.Image3FileName = contructionVm.ImageFile3.FileName;
+                construction.Image3FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + contructionVm.ImageFile3.FileName;
             }
-            return Task.FromResult(construction);
+            return await Task.FromResult(construction);
         }
 
         private static string GetStoragePath(string constructionId)
