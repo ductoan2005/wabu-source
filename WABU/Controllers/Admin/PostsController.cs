@@ -101,7 +101,7 @@ namespace WABU.Controllers.Admin
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Xóa bài viết thất bại, vui lòng liên hệ admin" + ex.Message;
+                TempData["ErrorMessage"] = "Tạo bài viết thất bại, vui lòng liên hệ admin" + ex.Message;
                 ExportMsgExcaption(ex);
                 return RedirectToRoute("Quan Ly Bai Viet");
             }
@@ -127,7 +127,7 @@ namespace WABU.Controllers.Admin
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Username,Content,IsActive")] PostVM post)
+        public async Task<ActionResult> Edit(PostVM post)
         {
             try
             {
@@ -144,7 +144,7 @@ namespace WABU.Controllers.Admin
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Xóa bài viết thất bại, vui lòng liên hệ admin" + ex.Message;
+                TempData["ErrorMessage"] = "Cập nhật bài viết thất bại, vui lòng liên hệ admin" + ex.Message;
                 ExportMsgExcaption(ex);
                 return RedirectToRoute("Quan Ly Bai Viet");
             }

@@ -3,7 +3,6 @@ using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Threading.Tasks;
 
@@ -12,7 +11,7 @@ namespace FW.BusinessLogic.Services
     public interface IAttachmentsToDOServices
     {
         Task<string> UploadAttachmentsToDO(IFormFile file);
-        Task DeleteAttachmentsToDO(IEnumerable<string> files);
+        Task DeleteAttachmentsToDO(string file);
     }
     public class AttachmentsDOServices : IAttachmentsToDOServices
     {
@@ -26,21 +25,18 @@ namespace FW.BusinessLogic.Services
             s3Client = new AmazonS3Client(accessKey, secretKey, config);
         }
 
-        public async Task DeleteAttachmentsToDO(IEnumerable<string> files)
+        public async Task DeleteAttachmentsToDO(string file)
         {
-            if (files == null) return;
+            if (string.IsNullOrEmpty(file)) return;
             try
             {
-                foreach (string file in files)
+                var deleteRequest = new DeleteObjectRequest
                 {
-                    var deleteRequest = new DeleteObjectRequest
-                    {
-                        BucketName = ConfigurationManager.AppSettings["BucketName"],
-                        Key = file
-                    };
+                    BucketName = ConfigurationManager.AppSettings["BucketName"],
+                    Key = file
+                };
 
-                    await s3Client.DeleteObjectAsync(deleteRequest);
-                }
+                await s3Client.DeleteObjectAsync(deleteRequest);
             }
             catch (AmazonS3Exception ex)
             {

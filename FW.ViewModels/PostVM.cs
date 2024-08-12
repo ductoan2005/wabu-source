@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Web;
 using System.Web.Mvc;
 
 namespace FW.ViewModels
@@ -11,7 +11,8 @@ namespace FW.ViewModels
         public bool? IsEnable { get; set; }
         [AllowHtml]
         public string Content { get; set; }
-        public IFormFile Thumbnail { get; set; }
+        public HttpPostedFileBase ThumbnailImage { get; set; }
+        public string ThumbnailImageFilePath { get; set; }
         public string IsActive { get; set; }
         public string CreatedDate { get; set; }
         public string LastUpdatedDate { get; set; }

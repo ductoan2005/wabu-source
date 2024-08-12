@@ -28,37 +28,29 @@
     <div class="ibox-content">
         <div class="scroll_content">
             <div class="ss-content">
-                <ul>
-                    @if (filterPostVmList != null)
-                    {
-                        foreach (var item in filterPostVmList)
+                @if (filterPostVmList != null)
+                {
+                    <div class="ibox-content">
+                        @foreach (var item in filterPostVmList)
                         {
-                            <li class="hot-job">
-                                <div class="ibox-content">
-                                    <div class="row">
-                                        @*<div class="col-md-3" style="text-align: center;">
-                                                <div class="image-item">
-                                                    @{
-                                                        var imagePath = string.IsNullOrEmpty(item.ConstructionVM.Image1FilePath) ? "/Content/Common/img/no-thumnail.jpg" : item.ConstructionVM.Image1FilePath;
-                                                    }
-                                                    <img src="@imagePath" alt="" />
-                                                </div>
-                                            </div>*@
-                                        <div class="col-md-9">
-                                            <a href="@Url.Action("Details", "UserPosts", new { id = item.Id})">
-                                                <h3 style="height: 20px;">
-                                                    <span class="title-news">@item.Title </span>
-                                                </h3>
-                                                <p class="mb5">Người đăng bài: @item.Username </p>
-                                                <p class="mb5">Ngày đăng bài: @item.DateInserted </p>
-                                            </a>
-                                        </div>
+                            <a href="@Url.Action("Details", "UserPosts", new { id = item.Id})">
+                                <div class="post-card">
+                                    @{
+                                        var imagePath = item.ThumbnailImageFilePath ?? "/Content/Common/img/no-thumnail.jpg";
+                                    }
+                                    <div class="image-item">
+                                        <img src="@imagePath" alt="" />
                                     </div>
+                                    <h3 style="height: 20px;">
+                                        <span class="title-news">@item.Title </span>
+                                    </h3>
+                                    <p class="mb5">@item.Username </p>
+                                    <p class="mb5">@item.DateInserted </p>
                                 </div>
-                            </li>
+                            </a>
                         }
-                    }
-                </ul>
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -95,13 +87,12 @@
 </div>
 
 <style>
-    #biddingSearchResult {
-        margin-bottom: 20px;
-    }
-
-        #biddingSearchResult .image-item {
-            height: 210px;
-            margin-bottom: 20px;
-        }
+    .post-card {
+        border: 1px solid #eee;
+        box-shadow: 0 2px 2px #ccc;
+        width: 180px;
+        padding: 10px;
+        margin: 10px;
+        display: inline-block;
     }
 </style>
