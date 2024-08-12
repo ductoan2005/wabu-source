@@ -172,19 +172,17 @@ namespace FW.BusinessLogic.Implementations
         {
             if (companyAbilityEquipmentVM.EvidenceInspectionRecordsFile?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityEquipmentVM.EvidenceInspectionRecordsFile));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(companyAbilityEquipmentVM.EvidenceInspectionRecordsFile);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 companyAbilityEquipment.EvidenceInspectionRecordsFileName = companyAbilityEquipmentVM.EvidenceInspectionRecordsFile.FileName;
-                companyAbilityEquipment.EvidenceInspectionRecordsFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityEquipment.EvidenceInspectionRecordsFileName;
+                companyAbilityEquipment.EvidenceInspectionRecordsFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (companyAbilityEquipmentVM.EvidenceSaleContractFile?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityEquipmentVM.EvidenceSaleContractFile));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(companyAbilityEquipmentVM.EvidenceSaleContractFile);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 companyAbilityEquipment.EvidenceSaleContractFileName = companyAbilityEquipmentVM.EvidenceSaleContractFile.FileName;
-                companyAbilityEquipment.EvidenceSaleContractFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityEquipment.EvidenceSaleContractFileName;
+                companyAbilityEquipment.EvidenceSaleContractFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
 
             return await Task.FromResult(companyAbilityEquipment);

@@ -11,7 +11,7 @@ namespace FW.BusinessLogic.Services
 {
     public interface IAttachmentsToDOServices
     {
-        Task<string> UploadAttachmentsToDO(IFormFile file, string folderName);
+        Task<string> UploadAttachmentsToDO(IFormFile file);
         Task DeleteAttachmentsToDO(IEnumerable<string> files);
     }
     public class AttachmentsDOServices : IAttachmentsToDOServices
@@ -52,7 +52,7 @@ namespace FW.BusinessLogic.Services
             }
         }
 
-        public async Task<string> UploadAttachmentsToDO(IFormFile file, string folderName)
+        public async Task<string> UploadAttachmentsToDO(IFormFile file)
         {
             if (file == null) return string.Empty;
             try

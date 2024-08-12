@@ -233,39 +233,31 @@ namespace FW.BusinessLogic.Implementations
         {
             if (companyAbilityFinanceVM.EvidenceCheckSettlementFile?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityFinanceVM.EvidenceCheckSettlementFile));
-                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(companyAbilityFinanceVM.EvidenceCheckSettlementFile);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 companyAbilityFinance.EvidenceCheckSettlementFileName = companyAbilityFinanceVM.EvidenceCheckSettlementFile.FileName;
-                companyAbilityFinance.EvidenceCheckSettlementFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityFinance.EvidenceCheckSettlementFileName;
+                companyAbilityFinance.EvidenceCheckSettlementFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (companyAbilityFinanceVM.EvidenceAuditReportFile?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityFinanceVM.EvidenceAuditReportFile));
-                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(companyAbilityFinanceVM.EvidenceAuditReportFile);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 companyAbilityFinance.EvidenceAuditReportFileName = companyAbilityFinanceVM.EvidenceAuditReportFile.FileName;
-                companyAbilityFinance.EvidenceAuditReportFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityFinance.EvidenceAuditReportFileName;
+                companyAbilityFinance.EvidenceAuditReportFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (companyAbilityFinanceVM.EvidenceCertificationTaxFile?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityFinanceVM.EvidenceCertificationTaxFile));
-                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(companyAbilityFinanceVM.EvidenceCertificationTaxFile);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 companyAbilityFinance.EvidenceCertificationTaxFileName = companyAbilityFinanceVM.EvidenceCertificationTaxFile.FileName;
-                companyAbilityFinance.EvidenceCertificationTaxFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityFinance.EvidenceCertificationTaxFileName;
+                companyAbilityFinance.EvidenceCertificationTaxFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (companyAbilityFinanceVM.EvidenceDeclareTaxFile?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityFinanceVM.EvidenceDeclareTaxFile));
-                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(companyAbilityFinanceVM.EvidenceDeclareTaxFile);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 companyAbilityFinance.EvidenceDeclareTaxFileName = companyAbilityFinanceVM.EvidenceDeclareTaxFile.FileName;
-                companyAbilityFinance.EvidenceDeclareTaxFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityFinance.EvidenceDeclareTaxFileName;
+                companyAbilityFinance.EvidenceDeclareTaxFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
 
             return await Task.FromResult(companyAbilityFinance);

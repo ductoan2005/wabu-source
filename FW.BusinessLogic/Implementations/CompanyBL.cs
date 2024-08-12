@@ -73,10 +73,9 @@ namespace FW.BusinessLogic.Implementations
 
                 _iCompanyRepository.Add(company);
                 DbExecutionResult addResult = await _iUnitOfWork.CommitAsync();
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(viewModel.LogoFile));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
-                company.Logo = ConfigurationManager.AppSettings["AttachmentUrl"] + viewModel.LogoFile.FileName;
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(viewModel.LogoFile);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
+                company.Logo = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
                 _iCompanyRepository.Update(company);
             }
             else
@@ -148,16 +147,9 @@ namespace FW.BusinessLogic.Implementations
                 //Check avatar is update
                 if (viewModel.LogoFile?.ContentLength > 0)
                 {
-                    var listIFormFile = new List<IFormFile>();
-                    listIFormFile.Add(FileUtils.ConvertToIFormFile(viewModel.LogoFile));
-
-                    if (!string.IsNullOrEmpty(company.Logo))
-                    {
-                        await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                    }
-
-                    await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
-                    company.Logo = ConfigurationManager.AppSettings["AttachmentUrl"] + viewModel.LogoFile.FileName;
+                    IFormFile iFormFile = FileUtils.ConvertToIFormFile(viewModel.LogoFile);
+                    string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
+                    company.Logo = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
                 }
                 UpdateFileToServer(company, viewModel);
                 _iCompanyRepository.Update(company);
@@ -183,28 +175,18 @@ namespace FW.BusinessLogic.Implementations
         {
             if (viewModel.NoBusinessLicenseFile?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(viewModel.NoBusinessLicenseFile));
-                if (!string.IsNullOrEmpty(model.NoBusinessLicensePath))
-                {
-                    await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                }
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
-
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(viewModel.NoBusinessLicenseFile);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 model.NoBusinessLicenseName = viewModel.NoBusinessLicenseFile.FileName;
-                model.NoBusinessLicensePath = ConfigurationManager.AppSettings["AttachmentUrl"] + model.NoBusinessLicenseName;
+                model.NoBusinessLicensePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
 
             if (viewModel.OrganizationalChartFile?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(viewModel.OrganizationalChartFile));
-                if (!string.IsNullOrEmpty(model.OrganizationalChartPath))
-                {
-                    await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                }
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(viewModel.OrganizationalChartFile);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 model.OrganizationalChartName = viewModel.OrganizationalChartFile.FileName;
-                model.OrganizationalChartPath = ConfigurationManager.AppSettings["AttachmentUrl"] + model.OrganizationalChartName;
+                model.OrganizationalChartPath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
         }
 

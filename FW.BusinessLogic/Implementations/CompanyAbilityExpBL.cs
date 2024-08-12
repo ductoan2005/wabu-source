@@ -197,30 +197,24 @@ namespace FW.BusinessLogic.Implementations
         {
             if (companyAbilityExpVM.EvidenceBuildingPermitFile?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityExpVM.EvidenceBuildingPermitFile));
-                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(companyAbilityExpVM.EvidenceBuildingPermitFile);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 companyAbilityExp.EvidenceBuildingPermitFileName = companyAbilityExpVM.EvidenceBuildingPermitFile.FileName;
-                companyAbilityExp.EvidenceBuildingPermitFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityExp.EvidenceBuildingPermitFileName;
+                companyAbilityExp.EvidenceBuildingPermitFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (companyAbilityExpVM.EvidenceContractFile?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityExpVM.EvidenceContractFile));
-                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(companyAbilityExpVM.EvidenceContractFile);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 companyAbilityExp.EvidenceContractFileName = companyAbilityExpVM.EvidenceContractFile.FileName;
-                companyAbilityExp.EvidenceContractFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityExp.EvidenceContractFileName;
+                companyAbilityExp.EvidenceContractFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (companyAbilityExpVM.EvidenceContractLiquidationFile?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(companyAbilityExpVM.EvidenceContractLiquidationFile));
-                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(companyAbilityExpVM.EvidenceContractLiquidationFile);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 companyAbilityExp.EvidenceContractLiquidationFileName = companyAbilityExpVM.EvidenceContractLiquidationFile.FileName;
-                companyAbilityExp.EvidenceContractLiquidationFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + companyAbilityExp.EvidenceContractLiquidationFileName;
+                companyAbilityExp.EvidenceContractLiquidationFilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
 
             return await Task.FromResult(companyAbilityExp);

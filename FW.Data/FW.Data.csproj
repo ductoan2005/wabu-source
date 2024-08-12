@@ -370,6 +370,14 @@
     <Compile Include="Migrations\202407311553503_V2_Remove_unique_index_of_Username_table_post.Designer.cs">
       <DependentUpon>202407311553503_V2_Remove_unique_index_of_Username_table_post.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202408111019412_V3_Add_column_thumbnail_Post.cs" />
+    <Compile Include="Migrations\202408111019412_V3_Add_column_thumbnail_Post.Designer.cs">
+      <DependentUpon>202408111019412_V3_Add_column_thumbnail_Post.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202408111021152_V4_Rename_column_thumbnail_Post.cs" />
+    <Compile Include="Migrations\202408111021152_V4_Rename_column_thumbnail_Post.Designer.cs">
+      <DependentUpon>202408111021152_V4_Rename_column_thumbnail_Post.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryInterfaces\IAreaManageRepository.cs" />
@@ -595,6 +603,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202407311553503_V2_Remove_unique_index_of_Username_table_post.resx">
       <DependentUpon>202407311553503_V2_Remove_unique_index_of_Username_table_post.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202408111019412_V3_Add_column_thumbnail_Post.resx">
+      <DependentUpon>202408111019412_V3_Add_column_thumbnail_Post.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202408111021152_V4_Rename_column_thumbnail_Post.resx">
+      <DependentUpon>202408111021152_V4_Rename_column_thumbnail_Post.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

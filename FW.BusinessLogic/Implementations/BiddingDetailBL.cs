@@ -550,7 +550,7 @@ namespace FW.BusinessLogic.Implementations
             {
                 var listIFormFile = new List<IFormFile>();
                 var biddingFile = biddingDetailFile.FirstOrDefault(x => x.BiddingNewsFileType == (byte)EBiddingNewsFileType.Quotation);
-                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachQuotationMKT));
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachQuotationMKT);
                 string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 biddingFile.FileName = printInfoBidding.FileAttachQuotationMKT.FileName;
                 biddingFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;

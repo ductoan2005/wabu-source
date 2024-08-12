@@ -9,5 +9,6 @@ namespace FW.Models
         public string Username { get; set; }
         [AllowHtml]
         public string Content { get; set; }
+        public string ThumbnailImageFilePath { get; set; }
     }
 }

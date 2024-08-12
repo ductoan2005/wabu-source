@@ -22,6 +22,9 @@ namespace FW.Data.EFs.Configurations
 
             //Content
             Property(u => u.Content);
+
+            //Thumbnail
+            Property(u => u.ThumbnailImageFilePath);
         }
     }
 }

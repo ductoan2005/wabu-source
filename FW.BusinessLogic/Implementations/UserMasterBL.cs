@@ -101,15 +101,11 @@ namespace FW.BusinessLogic.Implementations
                 //Check avatar is update
                 if (userMasterVM.AvatarFile?.ContentLength > 0)
                 {
-
-                    var listIFormFile = new List<IFormFile>();
-
-                    listIFormFile.Add(FileUtils.ConvertToIFormFile(userMasterVM.AvatarFile));
-                    await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                    await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                    IFormFile iFormFile = FileUtils.ConvertToIFormFile(userMasterVM.AvatarFile);
+                    string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
 
                     user.AvatarName = userMasterVM.AvatarFile.FileName;
-                    user.AvatarPath = ConfigurationManager.AppSettings["AttachmentUrl"] + user.AvatarName;
+                    user.AvatarPath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
                 }
 
                 user.FullName = userMasterVM.FullName;
@@ -135,12 +131,10 @@ namespace FW.BusinessLogic.Implementations
                         //Check avatar is update
                         if (userMasterVM.AdvertisingBackgroundImageFile?.ContentLength > 0)
                         {
-                            var listIFormFile = new List<IFormFile>();
-                            listIFormFile.Add(FileUtils.ConvertToIFormFile(userMasterVM.AdvertisingBackgroundImageFile));
-                            await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                            await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                            IFormFile iFormFile = FileUtils.ConvertToIFormFile(userMasterVM.AdvertisingBackgroundImageFile);
+                            string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
 
-                            company.AdvertisingBackgroundImage = ConfigurationManager.AppSettings["AttachmentUrl"] + userMasterVM.AdvertisingBackgroundImageFile.FileName;
+                            company.AdvertisingBackgroundImage = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
                         }
 
                         _iCompanyRepository.Update(company);

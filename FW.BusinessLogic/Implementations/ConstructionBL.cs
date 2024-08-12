@@ -232,30 +232,24 @@ namespace FW.BusinessLogic.Implementations
         {
             if (contructionVm.ImageFile1?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(contructionVm.ImageFile1));
-                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(contructionVm.ImageFile1);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 construction.Image1FileName = contructionVm.ImageFile1.FileName;
-                construction.Image1FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + contructionVm.ImageFile1.FileName;
+                construction.Image1FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (contructionVm.ImageFile2?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(contructionVm.ImageFile2));
-                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(contructionVm.ImageFile2);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 construction.Image2FileName = contructionVm.ImageFile2.FileName;
-                construction.Image2FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + contructionVm.ImageFile2.FileName;
+                construction.Image2FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (contructionVm.ImageFile3?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(contructionVm.ImageFile3));
-                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(contructionVm.ImageFile3);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 construction.Image3FileName = contructionVm.ImageFile3.FileName;
-                construction.Image3FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + contructionVm.ImageFile3.FileName;
+                construction.Image3FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             return await Task.FromResult(construction);
         }
@@ -264,30 +258,24 @@ namespace FW.BusinessLogic.Implementations
         {
             if (contructionVm.ImageFile1?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(contructionVm.ImageFile1));
-                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(contructionVm.ImageFile1);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 construction.Image1FileName = contructionVm.ImageFile1.FileName;
-                construction.Image1FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + contructionVm.ImageFile1.FileName;
+                construction.Image1FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (contructionVm.ImageFile2?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(contructionVm.ImageFile2));
-                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(contructionVm.ImageFile2);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 construction.Image2FileName = contructionVm.ImageFile2.FileName;
-                construction.Image2FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + contructionVm.ImageFile2.FileName;
+                construction.Image2FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             if (contructionVm.ImageFile3?.ContentLength > 0)
             {
-                var listIFormFile = new List<IFormFile>();
-                listIFormFile.Add(FileUtils.ConvertToIFormFile(contructionVm.ImageFile3));
-                await _attachmentsToDOServices.DeleteAttachmentsToDO(listIFormFile.Select(x => x.FileName));
-                await _attachmentsToDOServices.UploadAttachmentsToDO(listIFormFile);
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(contructionVm.ImageFile3);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                 construction.Image3FileName = contructionVm.ImageFile3.FileName;
-                construction.Image3FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + contructionVm.ImageFile3.FileName;
+                construction.Image3FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
             }
             return await Task.FromResult(construction);
         }
