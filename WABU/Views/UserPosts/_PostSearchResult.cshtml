@@ -30,26 +30,25 @@
             <div class="ss-content">
                 @if (filterPostVmList != null)
                 {
-                    <div class="ibox-content">
-                        @foreach (var item in filterPostVmList)
-                        {
-                            <a href="@Url.Action("Details", "UserPosts", new { id = item.Id})">
-                                <div class="post-card">
-                                    @{
-                                        var imagePath = item.ThumbnailImageFilePath ?? "/Content/Common/img/no-thumnail.jpg";
-                                    }
-                                    <div class="image-item">
-                                        <img src="@imagePath" alt="" />
-                                    </div>
-                                    <h3 style="height: 20px;">
-                                        <span class="title-news">@item.Title </span>
-                                    </h3>
-                                    <p class="mb5">@item.Username </p>
-                                    <p class="mb5">@item.DateInserted </p>
+                    foreach (var item in filterPostVmList)
+                    {
+                        <a href="@Url.Action("Details", "UserPosts", new { id = item.Id})">
+
+                            <div class="post-card">
+                                @{
+                                    var imagePath = item.ThumbnailImageFilePath ?? "/Content/Common/img/no-thumnail.jpg";
+                                }
+                                <div class="image-item">
+                                    <img src="@imagePath" alt="" />
                                 </div>
-                            </a>
-                        }
-                    </div>
+                                <h3 style="height: 20px;">
+                                    <span class="title-news">@item.Title </span>
+                                </h3>
+                                <p class="mb5">@item.Username </p>
+                                <p class="mb5">@item.DateInserted </p>
+                            </div>
+                        </a>
+                    }
                 }
             </div>
         </div>
@@ -90,9 +89,13 @@
     .post-card {
         border: 1px solid #eee;
         box-shadow: 0 2px 2px #ccc;
-        width: 180px;
+        width: 250px;
         padding: 10px;
-        margin: 10px;
+        margin: 50px;
         display: inline-block;
+    }
+    .container {
+        justify-content: center;
+        flex-wrap: wrap;
     }
 </style>
