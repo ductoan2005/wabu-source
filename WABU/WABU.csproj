@@ -328,8 +328,11 @@
     <Content Include="Content\Common\css\plugins\images\spritemap.png" />
     <Content Include="Content\Common\css\plugins\ionRangeSlider\ion.rangeSlider.css" />
     <Content Include="Content\Common\css\plugins\ionRangeSlider\ion.rangeSlider.skinFlat.css" />
+    <Content Include="Content\Common\css\plugins\ionRangeSlider\ion.rangeSlider.skinHTML5.css" />
+    <Content Include="Content\Common\css\plugins\ionRangeSlider\ion.rangeSlider.skinModern.css" />
     <Content Include="Content\Common\css\plugins\ionRangeSlider\ion.rangeSlider.skinNice.css" />
     <Content Include="Content\Common\css\plugins\ionRangeSlider\ion.rangeSlider.skinSimple.css" />
+    <Content Include="Content\Common\css\plugins\ionRangeSlider\normalize.css" />
     <Content Include="Content\Common\css\plugins\jasny\jasny-bootstrap.min.css" />
     <Content Include="Content\Common\css\plugins\jqGrid\ui.jqgrid.css" />
     <Content Include="Content\Common\css\plugins\jQueryUI\images\animated-overlay.gif" />
