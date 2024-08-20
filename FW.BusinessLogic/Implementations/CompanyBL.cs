@@ -151,7 +151,7 @@ namespace FW.BusinessLogic.Implementations
                     string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
                     company.Logo = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
                 }
-                UpdateFileToServer(company, viewModel);
+                await UpdateFileToServer(company, viewModel);
                 _iCompanyRepository.Update(company);
             }
             // tra ve ket qua sau khi thao tac DB

@@ -203,24 +203,24 @@
                                                     <li class=""><a data-toggle="tab" href="#tab-info-1" aria-expanded="false">Sơ đồ tổ chức công ty</a></li>
                                                 </ul>
                                                 <div class="tab-content">
-                                                    <div id="tab-info-1" class="tab-pane">
+                                                    <div id="tab-info-1">
                                                         @if (string.IsNullOrEmpty(companyProfileModel.Company.OrganizationalChartPath))
                                                         {
                                                             <div class='panel-body'><p>Đang cập nhật tài liệu</p></div>
                                                         }
                                                         else
                                                         {
-                                                            <div class='panel-body'><object width='100%' height='100%' data='/@companyProfileModel.Company.OrganizationalChartPath' type='application/pdf' class='pdfobject-container'></object></div>
+                                                            <div class='panel-body'><object width='100%' height='100%' data='@companyProfileModel.Company.OrganizationalChartPath' type='application/pdf' class='pdfobject-container'></object></div>
                                                         }
                                                     </div>
-                                                    <div id="tab-info-2" class="tab-pane">
+                                                    <div id="tab-info-2">
                                                         @if (string.IsNullOrEmpty(companyProfileModel.Company.NoBusinessLicensePath))
                                                         {
                                                             <div class='panel-body'><p>Đang cập nhật tài liệu</p></div>
                                                         }
                                                         else
                                                         {
-                                                            <div class='panel-body'><object width='100%' height='100%' data='/@companyProfileModel.Company.NoBusinessLicensePath' type='application/pdf' class='pdfobject-container'></object></div>
+                                                            <div class='panel-body'><object width='100%' height='100%' data='@companyProfileModel.Company.NoBusinessLicensePath' type='application/pdf' class='pdfobject-container'></object></div>
                                                         }
                                                     </div>
                                                 </div>

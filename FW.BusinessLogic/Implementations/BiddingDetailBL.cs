@@ -307,7 +307,7 @@ namespace FW.BusinessLogic.Implementations
                 _biddingDetailRepository.Add(biddingDetail);
                 CheckDbExecutionResultAndThrowIfAny(await _unitOfWork.CommitAsync().ConfigureAwait(false));
 
-                var biddingDetailFiles = await StoreBiddingFilesToServer(printInfoBiddingVm, biddingDetail.Id.ToString()).ConfigureAwait(false);
+                var biddingDetailFiles = await StoreBiddingFilesToServer(printInfoBiddingVm, biddingDetail.Id).ConfigureAwait(false);
                 biddingDetailFiles.ForEach(x =>
                 {
                     x.BiddingDetail = biddingDetail;
@@ -332,21 +332,21 @@ namespace FW.BusinessLogic.Implementations
             var biddingDetail = await _biddingDetailRepository.GetBiddingNewsDetail(printInfoBiddingVm.Id);
 
             // Case just change profile but file uploaded is stil keep
-            if (biddingDetail.CompanyProfileId != printInfoBiddingVm.CompanyProfileId)
-            {
-                if (biddingDetail.BiddingDetailFiles.Any())
-                {
-                    FileUtils.MoveDirectory(GetStoragePath(printInfoBiddingVm.CompanyName, biddingDetail.CompanyProfile.NameProfile, biddingDetail.Id.ToString()),
-                    GetStoragePath(printInfoBiddingVm.CompanyName, printInfoBiddingVm.NameProfile, biddingDetail.Id.ToString()));
-                    FileUtils.DeleteFileInDirectory(GetStoragePath(printInfoBiddingVm.CompanyName, biddingDetail.CompanyProfile.NameProfile, biddingDetail.Id.ToString()));
-                    //Update path in DB
-                    biddingDetail.BiddingDetailFiles.ToList().ForEach(x =>
-                    {
-                        x.FilePath = x.FilePath.Replace(biddingDetail.CompanyProfile.NameProfile, printInfoBiddingVm.NameProfile);
-                    });
-                }
-                biddingDetail.CompanyProfileId = printInfoBiddingVm.CompanyProfileId;
-            }
+            //if (biddingDetail.CompanyProfileId != printInfoBiddingVm.CompanyProfileId)
+            //{
+            //    if (biddingDetail.BiddingDetailFiles.Any())
+            //    {
+            //        FileUtils.MoveDirectory(GetStoragePath(printInfoBiddingVm.CompanyName, biddingDetail.CompanyProfile.NameProfile, biddingDetail.Id.ToString()),
+            //        GetStoragePath(printInfoBiddingVm.CompanyName, printInfoBiddingVm.NameProfile, biddingDetail.Id.ToString()));
+            //        FileUtils.DeleteFileInDirectory(GetStoragePath(printInfoBiddingVm.CompanyName, biddingDetail.CompanyProfile.NameProfile, biddingDetail.Id.ToString()));
+            //        //Update path in DB
+            //        biddingDetail.BiddingDetailFiles.ToList().ForEach(x =>
+            //        {
+            //            x.FilePath = x.FilePath.Replace(biddingDetail.CompanyProfile.NameProfile, printInfoBiddingVm.NameProfile);
+            //        });
+            //    }
+            //    biddingDetail.CompanyProfileId = printInfoBiddingVm.CompanyProfileId;
+            //}
 
             biddingDetail.Price = printInfoBiddingVm.Price;
             biddingDetail.BiddingDetailFiles = await UpdateBiddingDetailFilesModel(biddingDetail.BiddingDetailFiles.ToList(), printInfoBiddingVm);
@@ -367,7 +367,8 @@ namespace FW.BusinessLogic.Implementations
             if (biddingDetail.BiddingDetailFiles != null)
             {
                 //Clear all file in folder
-                FileUtils.DeleteFileInDirectory(GetStoragePath(biddingDetail.CompanyProfile.Company.CompanyName, biddingDetail.CompanyProfile.NameProfile, biddingDetail.Id.ToString()));
+                var listAttachments = await _biddingDetailFilesRepository.GetListWithConditionsAsync(x => x.BiddingDetailId == biddingDetail.Id);
+                await _attachmentsToDOServices.DeleteListAttachmentsAsync(listAttachments.Select(x => x.FilePath));
                 biddingDetail.BiddingDetailFiles.ToList().ForEach(x =>
                 {
                     x.IsDeleted = true;
@@ -594,18 +595,21 @@ namespace FW.BusinessLogic.Implementations
         /// <param name="printInfoBidding"></param>
         /// <param name="biddingDetailId"></param>
         /// <returns></returns>
-        private Task<List<BiddingDetailFiles>> StoreBiddingFilesToServer(PrintInfoBiddingVM printInfoBidding, string biddingDetailId)
+        private async Task<List<BiddingDetailFiles>> StoreBiddingFilesToServer(PrintInfoBiddingVM printInfoBidding, long? biddingDetailId)
         {
             var biddingDetailFiles = new List<BiddingDetailFiles>();
 
             //Clear all file in folder
-            FileUtils.DeleteFileInDirectory(GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingDetailId));
+            var listFilePath = await _biddingDetailFilesRepository.GetListWithConditionsAsync(x => x.BiddingDetailId == biddingDetailId);
+            await _attachmentsToDOServices.DeleteListAttachmentsAsync(listFilePath.Select(x => x.FilePath));
 
             if (printInfoBidding.FileAttachDrawingConstructionMKT?.ContentLength > 0)
             {
                 var biddingDetailFile = new BiddingDetailFiles();
-                biddingDetailFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.FileAttachDrawingConstructionMKT,
-                    GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingDetailId)), FileUtils.GetDomainAppPathPath());
+
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachDrawingConstructionMKT);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
+                biddingDetailFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
                 biddingDetailFile.FileName = printInfoBidding.FileAttachDrawingConstructionMKT.FileName;
                 biddingDetailFile.BiddingNewsFileTypeName = EBiddingNewsFileType.DrawingConstruction.ToString();
                 biddingDetailFile.BiddingNewsFileType = (byte)EBiddingNewsFileType.DrawingConstruction.GetHashCode();
@@ -615,8 +619,9 @@ namespace FW.BusinessLogic.Implementations
             if (printInfoBidding.FileAttachEnvironmentalSanitationMKT?.ContentLength > 0)
             {
                 var biddingDetailFile = new BiddingDetailFiles();
-                biddingDetailFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.FileAttachEnvironmentalSanitationMKT,
-                    GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingDetailId)), FileUtils.GetDomainAppPathPath());
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachEnvironmentalSanitationMKT);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
+                biddingDetailFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
                 biddingDetailFile.FileName = printInfoBidding.FileAttachEnvironmentalSanitationMKT.FileName;
                 biddingDetailFile.BiddingNewsFileTypeName = EBiddingNewsFileType.EnvironmentalSanitation.ToString();
                 biddingDetailFile.BiddingNewsFileType = (byte)EBiddingNewsFileType.EnvironmentalSanitation.GetHashCode();
@@ -626,8 +631,9 @@ namespace FW.BusinessLogic.Implementations
             if (printInfoBidding.FileAttachFireProtectionMKT?.ContentLength > 0)
             {
                 var biddingDetailFile = new BiddingDetailFiles();
-                biddingDetailFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.FileAttachFireProtectionMKT,
-                    GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingDetailId)), FileUtils.GetDomainAppPathPath());
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachFireProtectionMKT);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
+                biddingDetailFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
                 biddingDetailFile.FileName = printInfoBidding.FileAttachFireProtectionMKT.FileName;
                 biddingDetailFile.BiddingNewsFileTypeName = EBiddingNewsFileType.FireProtection.ToString();
                 biddingDetailFile.BiddingNewsFileType = (byte)EBiddingNewsFileType.FireProtection.GetHashCode();
@@ -637,8 +643,9 @@ namespace FW.BusinessLogic.Implementations
             if (printInfoBidding.FileAttachMaterialsUseMKT?.ContentLength > 0)
             {
                 var biddingDetailFile = new BiddingDetailFiles();
-                biddingDetailFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.FileAttachMaterialsUseMKT,
-                    GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingDetailId)), FileUtils.GetDomainAppPathPath());
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachMaterialsUseMKT);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
+                biddingDetailFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
                 biddingDetailFile.FileName = printInfoBidding.FileAttachMaterialsUseMKT.FileName;
                 biddingDetailFile.BiddingNewsFileTypeName = EBiddingNewsFileType.MaterialsUse.ToString();
                 biddingDetailFile.BiddingNewsFileType = (byte)EBiddingNewsFileType.MaterialsUse.GetHashCode();
@@ -648,8 +655,9 @@ namespace FW.BusinessLogic.Implementations
             if (printInfoBidding.FileAttachProgressScheduleMKT?.ContentLength > 0)
             {
                 var biddingDetailFile = new BiddingDetailFiles();
-                biddingDetailFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.FileAttachProgressScheduleMKT,
-                    GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingDetailId)), FileUtils.GetDomainAppPathPath());
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachProgressScheduleMKT);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
+                biddingDetailFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
                 biddingDetailFile.FileName = printInfoBidding.FileAttachProgressScheduleMKT.FileName;
                 biddingDetailFile.BiddingNewsFileTypeName = EBiddingNewsFileType.ProgressSchedule.ToString();
                 biddingDetailFile.BiddingNewsFileType = (byte)EBiddingNewsFileType.ProgressSchedule.GetHashCode();
@@ -659,8 +667,9 @@ namespace FW.BusinessLogic.Implementations
             if (printInfoBidding.FileAttachQuotationMKT?.ContentLength > 0)
             {
                 var biddingDetailFile = new BiddingDetailFiles();
-                biddingDetailFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.FileAttachQuotationMKT,
-                    GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingDetailId)), FileUtils.GetDomainAppPathPath());
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachQuotationMKT);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
+                biddingDetailFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
                 biddingDetailFile.FileName = printInfoBidding.FileAttachQuotationMKT.FileName;
                 biddingDetailFile.BiddingNewsFileTypeName = EBiddingNewsFileType.Quotation.ToString();
                 biddingDetailFile.BiddingNewsFileType = (byte)EBiddingNewsFileType.Quotation.GetHashCode();
@@ -670,8 +679,9 @@ namespace FW.BusinessLogic.Implementations
             if (printInfoBidding.FileAttachWorkSafetyMKT?.ContentLength > 0)
             {
                 var biddingDetailFile = new BiddingDetailFiles();
-                biddingDetailFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.FileAttachWorkSafetyMKT,
-                    GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingDetailId)), FileUtils.GetDomainAppPathPath());
+                IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.FileAttachWorkSafetyMKT);
+                string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
+                biddingDetailFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
                 biddingDetailFile.FileName = printInfoBidding.FileAttachWorkSafetyMKT.FileName;
                 biddingDetailFile.BiddingNewsFileTypeName = EBiddingNewsFileType.WorkSafety.ToString();
                 biddingDetailFile.BiddingNewsFileType = (byte)EBiddingNewsFileType.WorkSafety.GetHashCode();
@@ -683,8 +693,9 @@ namespace FW.BusinessLogic.Implementations
                 for (int i = 0; i < printInfoBidding.OtherFiles.Count; i++)
                 {
                     var biddingDetailFile = new BiddingDetailFiles();
-                    biddingDetailFile.FilePath = StringUtils.GetRelativePath(FileUtils.SaveFileToServer(printInfoBidding.OtherFiles[i],
-                        GetStoragePath(printInfoBidding.CompanyName, printInfoBidding.NameProfile, biddingDetailId)), FileUtils.GetDomainAppPathPath());
+                    IFormFile iFormFile = FileUtils.ConvertToIFormFile(printInfoBidding.OtherFiles[i]);
+                    string fileUploadName = await _attachmentsToDOServices.UploadAttachmentsToDO(iFormFile);
+                    biddingDetailFile.FilePath = ConfigurationManager.AppSettings["AttachmentUrl"] + fileUploadName;
                     biddingDetailFile.FileName = printInfoBidding.OtherFiles[i].FileName;
                     biddingDetailFile.BiddingNewsFileTypeName = printInfoBidding.TechnicalRequirementNameList[i];
                     biddingDetailFile.TechnicalOtherId = printInfoBidding.TechnicalOtherIdList[i];
@@ -693,7 +704,7 @@ namespace FW.BusinessLogic.Implementations
                 }
             }
 
-            return Task.FromResult(biddingDetailFiles);
+            return await Task.FromResult(biddingDetailFiles);
         }
 
         private static string GetStoragePath(string companyName, string companyProfile, string biddingDetailId)

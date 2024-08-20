@@ -25,9 +25,9 @@
                             </div>
                             <div class="col-lg-9">
                                 <span class="btn btn-file reset-pd">
-                                    <input type="file" name="LogoFile" id="LogoFile" data-val-required="Vui lòng thêm ảnh đại diện"   data-val="true" onchange="commonJS.validateSingleInput(this, 'image')" />
+                                    <input type="file" name="LogoFile" id="LogoFile" onchange="commonJS.validateSingleInput(this, 'image')" />
                                     @{
-                                        string src = string.IsNullOrEmpty(companyInfo.Logo) ? "/Content/Common/img/no-thumnail.jpg" : "/" + companyInfo.Logo;
+                                        string src = companyInfo.Logo ?? "/Content/Common/img/no-thumnail.jpg";
                                     }
                                     <img id="previewAvatar" src="@src" alt="Logo" width="140" class="img-thumbnail" />
 
