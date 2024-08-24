@@ -15,13 +15,13 @@ namespace FW.Data.EFs.Configurations
             PropertyComment(u => u.Id, "post ID");
 
             //UserName
-            Property(u => u.Username).IsRequired().HasMaxLength(20);
+            Property(u => u.Username).IsRequired();
 
             //Title
-            Property(u => u.Title).IsRequired().HasMaxLength(20);
+            Property(u => u.Title).IsRequired();
 
             //Content
-            Property(u => u.Content);
+            Property(u => u.Content).HasColumnType("ntext");
 
             //Thumbnail
             Property(u => u.ThumbnailImageFilePath);
