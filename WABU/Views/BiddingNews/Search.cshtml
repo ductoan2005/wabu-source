@@ -41,13 +41,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-1"></div>
-                <div class="col-lg-3 PC">
-                    <div class="row">
-                        <div class="col-lg-12">
+                    <div class="col-md-4 col-xs-4 custom-col">
+                        <div class="col-md-12 custom-col">
                             <div class="ibox-title">
                                 <h5><i class="fa fa-cog"></i> TÌM KIẾM GẦN ĐÂY</h5>
                             </div>
@@ -56,9 +51,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-md-12 custom-col">
                             <div class="ibox-title">
                                 <h5><i class="fa fa-cog"></i> Lọc theo</h5>
                             </div>
@@ -72,10 +65,6 @@
                                         <label>Hợp đồng tương tự đã thực hiện</label>
                                         <input type="text" id="NumberSimilarContractAbilityExp" placeholder="Hợp đồng tương tự đã thực hiện" class="form-control" name="NumberSimilarContractAbilityExp">
                                     </div>
-                                    @*<div class="form-group">
-                                        <label>Doanh thu trung bình</label>
-                                        <input type="text" id="Turnover2YearAbilityFinance" placeholder=" Doanh thu trung bình ... thanh scroll tu 0 toi max" class="form-control" name="Turnover2YearAbilityFinance">
-                                    </div>*@
                                     <div class="form-group">
                                         <label>Vị trí công việc</label>
                                         <input type="text" id="txt_jobPosition" placeholder="vị trí công việc ..." class="form-control removePaddingLeft" name="JobPosition">
@@ -95,28 +84,19 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-7">
-                    <div class="ibox-title">
-                        <p class="pull-right">Xếp theo: <a id="orderByDay" onclick="biddingNewsSearch.changePageOnListBidding(1, event)" data-value="desc">Ngày</a>@*|Độ chính xác*@</p>
+                    <div class="col-md-1 col-xs-1 custom-col">
                     </div>
-                    <div id="biddingSearchResult">
-                        @Html.Partial("_BiddingSearchResult")
-                    </div>
-                </div>
-                <div class="col-lg-1"></div>
-                @*<div class="col-lg-2">
-                <div class="ibox-title">
-                    <p>GỬI VIỆC TƯƠNG TỰ</p>
-                </div>
-                <div class="ibox">
-                    <div class="ibox-content">
-                        Tạo và nhận thông báo qua email khi có công việc mới phù hợp.
-                        <a class="btn btn-outline btn-primary">Tạo thông báo việc làm</a>
+                    <div class="col-md-7 col-xs-7 custom-col">
+                        <div class="ibox-title">
+                            <p class="pull-right">Xếp theo: <a id="orderByDay" onclick="biddingNewsSearch.changePageOnListBidding(1, event)" data-value="desc">Ngày</a>@*|Độ chính xác*@</p>
+                        </div>
+                        <div id="biddingSearchResult">
+                            @Html.Partial("_BiddingSearchResult")
+                        </div>
                     </div>
                 </div>
-            </div>*@
             </div>
+
             @Html.Hidden("Authority", userInfo?.Authority)
             @Html.Hidden("UserId", userInfo?.UserID)
         </form>
@@ -212,3 +192,10 @@
     </script>
 
 }
+
+<style>
+    .custom-col {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+</style>

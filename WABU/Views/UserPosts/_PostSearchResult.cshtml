@@ -30,26 +30,24 @@
             <div class="ss-content">
                 @if (filterPostVmList != null)
                 {
-                    foreach (var item in filterPostVmList)
-                    {
-                        <a href="@Url.Action("Details", "UserPosts", new { id = item.Id})">
+                    <div class="card-container">
+                        @foreach (var item in filterPostVmList)
+                        {
 
-                            <div class="post-card">
-                                @{
-                                    var imagePath = item.ThumbnailImageFilePath ?? "/Content/Common/img/no-thumnail.jpg";
-                                }
-                                <div class="image-item">
-                                    <img src="@imagePath" alt="" />
-                                </div>
-                                <h4>
-                                    <span class="title-news">@item.Title </span>
-                                </h4>
-
-                                <p class="mb5">@item.Username </p>
-                                <p class="mb5">@item.DateInserted </p>
+                        <div class="card">
+                            @{
+                                var imagePath = item.ThumbnailImageFilePath ?? "/Content/Common/img/no-thumnail.jpg";
+                            }
+                            <img src="@imagePath" alt="@imagePath">
+                            <div class="card-content">
+                                <h4>@item.Title</h4>
+                                <p>@item.Username</p>
+                                <p>@item.DateInserted</p>
+                                <a href="@Url.Action("Details", "UserPosts", new { id = item.Id})">Đọc thêm</a>
                             </div>
-                        </a>
-                    }
+                        </div>
+                        }
+                    </div>
                 }
             </div>
         </div>
@@ -87,16 +85,61 @@
 </div>
 
 <style>
-    .post-card {
-        border: 1px solid #eee;
-        box-shadow: 0 2px 2px #ccc;
-        width: 250px;
-        padding: 10px;
-        margin: 50px;
-        display: inline-block;
-    }
-    .container {
-        justify-content: center;
+    .card-container {
+       display: flex;
         flex-wrap: wrap;
+        justify-content: flex-start; /* Căn đều thẻ card bắt đầu từ bên trái */
+        gap: 20px; /* Khoảng cách giữa các thẻ */
     }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Giúp căn các phần tử trong thẻ card đều nhau */
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+        width: calc(33.33% - 20px); /* Đảm bảo mỗi hàng có 3 thẻ */
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+    .card-content {
+        padding: 15px;
+    }
+
+        .card-content h4 {
+            margin: 10px 0;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .card-content p {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .card-content a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #ff6b6b;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+            .card-content a:hover {
+                background: #ff4757;
+            }
 </style>
