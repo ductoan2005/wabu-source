@@ -586,3 +586,385 @@ i.grey-star {
 .downloadDocument {
     color: #01a84e;
 }
+
+/* Default styles */
+#posts-screen .Createbuilder .ibox-title {
+    margin-top: 20px;
+}
+
+#posts-screen .ss-content li {
+    list-style: none;
+    padding-top: 0;
+}
+
+#posts-screen .form-control {
+    padding-left: 35px;
+    height: auto;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+#posts-screen .removePaddingLeft {
+    padding-left: 12px;
+}
+
+.resultPageSearch {
+    box-shadow: none;
+    background: #03A84E;
+    color: #fff;
+    padding: 30px 20px 20px 20px;
+    z-index: 100;
+}
+
+/* Responsive adjustments for tablets (768px and up) */
+@media (min-width: 768px) {
+
+    .Createbuilder .ibox-title {
+        height: auto; /* Ensure auto height */
+        min-height: 50px; /* Prevent collapse */
+    }
+
+    #posts-screen .Createbuilder .ibox-title {
+        margin-top: 15px;
+    }
+
+    #posts-screen .form-control {
+        font-size: 15px;
+    }
+
+    .resultPageSearch {
+        padding: 25px 18px 18px 18px;
+    }
+}
+
+/* Responsive adjustments for mobile devices (max-width 767px) */
+@media (max-width: 767px) {
+
+    #posts-screen .Createbuilder .ibox-title {
+        margin-top: 10px;
+        font-size: 18px; /* Slightly larger for mobile readability */
+    }
+
+    #posts-screen .form-control {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    #posts-screen .removePaddingLeft {
+        padding-left: 8px;
+    }
+
+    .resultPageSearch {
+        padding: 20px 15px 15px 15px;
+    }
+
+    #posts-screen .ss-content li {
+        padding-top: 5px;
+    }
+}
+
+/* Responsive adjustments for very small devices (max-width 480px) */
+@media (max-width: 480px) {
+
+    #posts-screen .Createbuilder .ibox-title {
+        display: inline-block;
+        height: auto; /* Ensure auto height */
+        min-height: 50px; /* Prevent collapse */
+        margin-top: 8px;
+        font-size: 16px; /* Reduced font size */
+    }
+
+    #posts-screen .form-control {
+        font-size: 12px; /* Smaller for compact screens */
+        margin-bottom: 6px;
+    }
+
+    #posts-screen .removePaddingLeft {
+        padding-left: 5px;
+    }
+
+    .resultPageSearch {
+        padding: 15px 10px 10px 10px;
+        font-size: 14px; /* Smaller font to fit the content */
+    }
+
+    #posts-screen .ss-content li {
+        padding-top: 3px;
+        font-size: 13px;
+    }
+}
+
+/* Ultra-small devices or older feature phones (max-width 320px) */
+@media (max-width: 320px) {
+    #posts-screen .Createbuilder .ibox-title {
+        display: inline-block;
+        margin-top: 5px;
+        font-size: 14px;
+    }
+
+    #posts-screen .form-control {
+        font-size: 11px;
+        margin-bottom: 4px;
+    }
+
+    .resultPageSearch {
+        padding: 10px 8px 8px 8px;
+        font-size: 12px;
+    }
+
+    #posts-screen .ss-content li {
+        padding-top: 2px;
+        font-size: 12px;
+    }
+}
+
+
+
+
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px; /* Space between cards */
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    width: calc(33.33% - 20px); /* Default for larger screens: 3 cards per row */
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+    .card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+    }
+
+.card-content {
+    padding: 15px;
+}
+
+    .card-content h4 {
+        margin: 10px 0;
+        font-size: 20px;
+        color: #333;
+    }
+
+    .card-content p {
+        color: #777;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .card-content a {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background: #ff6b6b;
+        color: #fff;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background 0.3s;
+    }
+
+        .card-content a:hover {
+            background: #ff4757;
+        }
+
+/* Responsive adjustments */
+
+/* Tablets and small laptops (up to 1024px) */
+@media (max-width: 1024px) {
+    .card {
+        width: calc(50% - 20px); /* 2 cards per row */
+    }
+}
+
+/* Medium-sized mobile devices (up to 768px) */
+@media (max-width: 768px) {
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px; 
+    }
+
+    .card {
+        width: calc(100% - 20px); /* 1 card per row */
+    }
+
+    .card-content h4 {
+        font-size: 18px;
+    }
+
+    .card-content p {
+        font-size: 13px;
+    }
+
+    .card-content a {
+        padding: 8px 16px;
+    }
+}
+
+/* iPhone X, iPhone 12, and other smaller mobile screens (up to 428px) */
+@media (max-width: 428px) {
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .card {
+        width: calc(100% - 20px); /* 1 card per row */
+    }
+
+    .card-content h4 {
+        font-size: 16px; /* Slightly smaller font for headings */
+    }
+
+    .card-content p {
+        font-size: 12px; /* Adjust paragraph size */
+    }
+
+    .card-content a {
+        padding: 6px 12px; /* Adjust button padding */
+    }
+}
+
+/* Very small mobile screens (up to 390px, for iPhone 12, iPhone X) */
+@media (max-width: 390px) {
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .card {
+        width: calc(100% - 20px); /* Still 1 card per row */
+    }
+
+    .card-content h4 {
+        font-size: 15px; /* Smaller heading for very small screens */
+    }
+
+    .card-content p {
+        font-size: 11px; /* Adjust text size */
+    }
+
+    .card-content a {
+        padding: 5px 10px; /* Even smaller button size */
+    }
+}
+
+
+
+/* Default styles (for larger screens) */
+.text-right {
+    float: right !important;
+}
+
+.padding-top-content {
+    padding-top: 30px;
+}
+
+.display-img {
+    display: flex;
+    justify-content: center;
+}
+
+/* Responsive adjustments for tablets (768px and up) */
+@media (min-width: 768px) {
+    .padding-top-content {
+        padding-top: 25px; /* Reduce padding for smaller screens */
+    }
+
+    .text-right {
+        float: right;
+        margin-right: 10px; /* Add a margin for better spacing */
+    }
+
+    .display-img {
+        justify-content: center; /* Ensure image stays centered on larger screens */
+    }
+
+    .col-xs-9 {
+        flex: none !important;
+    }
+}
+
+/* Responsive adjustments for mobile devices (max-width 767px) */
+@media (max-width: 767px) {
+    .text-right {
+        float: none; /* Disable float for mobile screens */
+        text-align: right; /* Align text to the right */
+    }
+
+    .padding-top-content {
+        padding-top: 15px; /* Reduce padding for compact screens */
+    }
+
+    .display-img {
+        display: flex; /* Switch to block layout for simplicity */
+        text-align: center; /* Ensure the image is centered */
+        padding: 10px 0; /* Add vertical padding to the image */
+    }
+
+    .col-xs-9 {
+        flex: none !important;
+    }
+}
+
+/* Responsive adjustments for very small mobile devices (max-width 480px) */
+@media (max-width: 480px) {
+    .text-right {
+        text-align: center; /* Center align text for ultra-small devices */
+        margin-bottom: 10px; /* Add spacing below for better readability */
+    }
+
+    .padding-top-content {
+        padding-top: 10px; /* Further reduce padding */
+    }
+
+    .display-img {
+        display: flex;
+        text-align: center; /* Keep image centered */
+        padding: 5px 0; /* Adjust padding for very small devices */
+    }
+
+    .col-xs-9 {
+        flex: none !important;
+    }
+}
+
+/* Ultra-small devices or older feature phones (max-width 320px) */
+@media (max-width: 320px) {
+    .text-right {
+        text-align: left; /* Align text to the left for simpler layouts */
+        padding: 0 5px; /* Add a little padding for better fit */
+    }
+
+    .padding-top-content {
+        padding-top: 5px; /* Minimal padding for ultra-small screens */
+    }
+
+    .display-img {
+        display: flex;
+        text-align: left; /* Align the image to the left */
+        padding: 5px; /* Minimal padding */
+    }
+
+    .col-xs-9 {
+        flex: none !important;
+    }
+}

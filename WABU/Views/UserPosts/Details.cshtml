@@ -3,35 +3,37 @@
     Layout = "~/Views/Shared/_Layout_Home.cshtml";
     var postDetail = ViewBag.PostDetail;
 }
+
+<link href="/Content/WABU.css" rel="stylesheet" />
+
 <div id="biddingNewsRegistration-screen">
     <section class="Createbuilder">
         <div class="row" id="bidcontractiondetail">
-            <div class="container">
+            <div class="container padding-top-content">
                 <div class="background-body-bid">
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="ibox-title">
-                                <h5><i class="fa fa-info-circle"></i> @postDetail.Title</h5>
-                            </div>
                             <div class="ibox">
                                 <div class="ibox-content pd_top15_bottom15">
                                     <div class="row">
                                         <div class="col-lg-4">
-                                            @*<div class="slick_images">
-                                                @{
-                                                    string imageContruction1 = string.IsNullOrEmpty(Model.Construction.Image1FilePath) ? "Content/Common/img/no-thumbnail.png" : Model.Construction.Image1FilePath;
-                                                }
-                                                <div>
-                                                    <img src="@imageContruction1" alt="" width="100%" class="img-thumbnail" />
-                                                </div>*@
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-horizontal">
                                             <div class="form-group">
-                                                <h3 class="col-md-3 text-left"><strong>@postDetail.Username</strong></h3>
-                                                <h3 class="col-md-3 text-right"><strong>@postDetail.DateInserted</strong></h3>
+                                                <h1 class="col-md-12 text-center"><strong>@postDetail.Title</strong></h1>
                                             </div>
+                                            <div class="form-group">
+                                                <h4 class="col-md-3 text-right"><strong><i>@postDetail.DateInserted</i></strong></h4>
+                                            </div>
+                                            <div class="form-group display-img">
+                                                @{
+                                                    var imagePath = postDetail.ThumbnailImageFilePath ?? "/Content/Common/img/no-thumnail.jpg";
+                                                }
+                                                <img class="col-md-9 col-xs-9" src="@imagePath" alt="@imagePath">
+                                            </div>
+                                           
                                         </div>
                                         @Html.Raw(postDetail.Content)
                                     </div>
@@ -44,9 +46,3 @@
         </div>
     </section>
 </div>
-
-<style>
-    .text-right {
-        float: right !important
-    }
-</style>
