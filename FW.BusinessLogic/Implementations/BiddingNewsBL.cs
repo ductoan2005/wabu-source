@@ -1,7 +1,12 @@
-﻿using FW.BusinessLogic.Interfaces;
+﻿using AutoMapper;
+using FW.BusinessLogic.Interfaces;
+using FW.Common.Helpers;
 using FW.Common.Pagination;
 using FW.Common.Pagination.Interfaces;
+using FW.Data.Infrastructure.Interfaces;
 using FW.Data.RepositoryInterfaces;
+using FW.Models;
+using FW.Resources;
 using FW.ViewModels;
 using FW.ViewModels.BiddingNews;
 using System;
@@ -9,11 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using AutoMapper;
-using FW.Models;
-using FW.Common.Helpers;
-using FW.Resources;
-using FW.Data.Infrastructure.Interfaces;
 
 namespace FW.BusinessLogic.Implementations
 {
@@ -170,8 +170,8 @@ namespace FW.BusinessLogic.Implementations
         public async Task<BiddingNewsBidContractionDetailVM> ReadBiddingNewsById(long? biddingNewsId, UserProfile user)
         {
             var biddingNews = await _biddingNewsRepository.GetAsync(x => x.Id == biddingNewsId && x.IsDeleted != true).ConfigureAwait(false);
+
             var result = Mapper.Map<BiddingNews, BiddingNewsBidContractionDetailVM>(biddingNews);
-            result.Construction.ConstructionName.ToUpper();
             result.CompanyProfile = user == null ? null : (await _companyRepository.GetWithConditionAsync(x => x.UserId == user.UserID))?.CompanyProfiles;
             if (result.Construction.UserId == user?.UserID)
             {

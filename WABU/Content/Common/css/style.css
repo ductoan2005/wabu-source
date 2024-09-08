@@ -1055,15 +1055,6 @@ ul.nav.navbar-nav.navbar-right {
         min-height: unset !important;
     }
 
-    #biddingSearchResult {
-        margin-bottom: 20px;
-    }
-
-        #biddingSearchResult .image-item {
-            height: 210px;
-            margin-bottom: 20px;
-        }
-
     #infomation_account .col-lg-3, #infomation_account .col-lg-9 {
         padding: 0;
     }
@@ -11052,6 +11043,7 @@ ul.social-all li {
     margin-left: 15px;
 }
 
+/* Base Styles */
 .Createbuilder {
     padding: 0;
 }
@@ -11074,6 +11066,76 @@ ul.social-all li {
         border-bottom: 1px #03A84E solid;
         background-color: #03A84E;
     }
+
+/* Third Block Styles */
+#biddingSearchResult {
+    margin-bottom: 20px;
+}
+
+    #biddingSearchResult .image-item {
+        height: 210px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    #biddingSearchResult img {
+        width: 100%;
+        height: auto;
+    }
+
+/* Responsive Styling */
+
+/* Make sure each block stacks horizontally for small screens */
+@media (max-width: 767px) {
+    /* Stack the columns horizontally for mobile devices */
+    .Createbuilder .row {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .Createbuilder .col-md-3,
+    .Createbuilder #biddingSearchResult {
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .Createbuilder .ibox-title {
+        font-size: 16px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .Createbuilder .ibox-content {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    /* Ensure search result images are responsive */
+    #biddingSearchResult .image-item {
+        height: auto;
+    }
+}
+
+/* Medium devices (tablets, 768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    /* Adjust for medium screens like tablets */
+    .Createbuilder .col-md-3,
+    .Createbuilder #biddingSearchResult {
+        width: 100%;
+    }
+
+    /* Ensure some spacing and correct sizes */
+    .Createbuilder .ibox {
+        width: 100%;
+    }
+
+    #biddingSearchResult .image-item {
+        height: auto;
+    }
+}
+
 
 .border-top-dashed {
     border-top: 2px #03A84E dashed;

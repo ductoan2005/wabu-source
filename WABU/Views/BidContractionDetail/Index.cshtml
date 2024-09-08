@@ -44,7 +44,7 @@
                                         <p><strong>Mã tin thầu:</strong> @("WB" + Model.Id.Value.ToString("000000"))</p>
                                         <p><strong>Chủ đầu tư:</strong> @Model.Construction.InvestorName</p>
                                         <p><strong>Địa điểm xây dựng:</strong> @Model.Construction.AddressBuild</p>
-                                        <p><strong>Khu vực:</strong> @Model.Construction.AreaId</p>
+                                        <p><strong>Khu vực:</strong> @Model.Construction.Area.AreaName</p>
                                         <p>@*<strong>Khu vực:</strong> @Model.Construction.Area.AreaName*@</p>
                                     </div>
                                     <h2 class="fix-inline-block"> @Model.ContructionName</h2>
