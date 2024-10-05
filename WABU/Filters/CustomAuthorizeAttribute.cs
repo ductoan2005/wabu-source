@@ -19,20 +19,20 @@ namespace WABU.Filters
 
         public void OnAuthorization(AuthorizationContext context)
         {
-            lock (objToLock)
-            {
-                if (NeedReloadData && SessionObjects.UserProfile != null)
-                {
-                    var user = LoginBL.GetUserById(SessionObjects.UserProfile.UserID);
-                    // check whether authority is changed
-                    if (user != null)
-                    {
-                        user.OldAuthority = SessionObjects.UserProfile.Authority;
-                    }
+            //lock (objToLock)
+            //{
+            //    if (NeedReloadData && SessionObjects.UserProfile != null)
+            //    {
+            //        var user = LoginBL.GetUserById(SessionObjects.UserProfile.UserID);
+            //        // check whether authority is changed
+            //        if (user != null)
+            //        {
+            //            user.OldAuthority = SessionObjects.UserProfile.Authority;
+            //        }
 
-                    SessionObjects.UserProfile = user;
-                }
-            }
+            //        SessionObjects.UserProfile = user;
+            //    }
+            //}
 
             // check whether user logged in or not
             if (SessionObjects.UserProfile == null)
