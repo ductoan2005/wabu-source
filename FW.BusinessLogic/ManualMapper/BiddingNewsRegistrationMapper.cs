@@ -1,18 +1,13 @@
-﻿using FW.Models;
-using FW.ViewModels;
+﻿using FW.Common.Enum;
+using FW.Common.Helpers;
+using FW.Common.Utilities;
+using FW.Models;
+using FW.ViewModels.BiddingNewsRegistration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FW.ViewModels.BiddingNewsRegistration;
-using FW.Common.Enum;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using Newtonsoft.Json;
-using FW.Common.Utilities;
 using System.IO;
-using FW.Common.Helpers;
 
 namespace FW.BusinessLogic.ManualMapper
 {
@@ -75,7 +70,7 @@ namespace FW.BusinessLogic.ManualMapper
 
             //biddingNews.BidStartDate = DateTimeUtils.ConvertStringToDataTime(biddingNewsRegistrationVM.BidStartDateTime, _dateTimeFormat);
 
-            biddingNews.BidCloseDate = DateTimeUtils.ConvertStringToDataTime(biddingNewsRegistrationVM.BidCloseDateTime, _dateTimeFormat);
+            //biddingNews.BidCloseDate = DateTimeUtils.ConvertStringToDataTime(biddingNewsRegistrationVM.BidCloseDateTime, _dateTimeFormat);
 
             biddingNews.NumberBidder = 10;
             //biddingNews.NumberBidded = biddingNewsRegistrationVM.NumberBidded;

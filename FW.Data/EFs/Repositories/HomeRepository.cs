@@ -2,11 +2,11 @@
 using FW.Data.Infrastructure.Interfaces;
 using FW.Data.RepositoryInterfaces;
 using FW.Models;
+using FW.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using FW.ViewModels;
 using System.Data.Entity;
+using System.Linq;
 
 namespace FW.Data.EFs.Repositories
 {
@@ -35,7 +35,7 @@ namespace FW.Data.EFs.Repositories
                                         b.NumberBidder,
                                         b.NumberBidded,
                                         b.DateUpdated,
-                                        b.BidCloseDate,
+                                        //b.BidCloseDate,
                                         b.BiddingPackageDescription,
                                         b.IsActived,
                                         b.NewsApprovalDate
@@ -43,7 +43,8 @@ namespace FW.Data.EFs.Repositories
                          join a in DbContext.Areas
                          on q.AreaId equals a.Id
 
-                         where q.NewsApprovalDate.Value >= oneWeekAgo && q.IsActived && dateNow <= q.BidCloseDate
+                         where q.NewsApprovalDate.Value >= oneWeekAgo && q.IsActived
+                         //&& dateNow <= q.BidCloseDate
                          select new BiddingNewsCommonVM
                          {
                              BiddingNewsId = q.Id,
@@ -55,7 +56,7 @@ namespace FW.Data.EFs.Repositories
                              NumberBidder = q.NumberBidder,
                              NumberBidded = q.NumberBidded,
                              DateUpdated = q.DateUpdated,
-                             BidCloseDate = q.BidCloseDate,
+                             //BidCloseDate = q.BidCloseDate,
                              BiddingPackageDescription = q.BiddingPackageDescription,
                              NewsApprovalDate = q.NewsApprovalDate
                          }).Take(6).ToList();
@@ -69,7 +70,7 @@ namespace FW.Data.EFs.Repositories
             var oneWeekAgo = DateTime.Now.AddDays(-7).Date;
             var dateNow = DateTime.Now;
 
-           var query = (from q in (from c in dbSet
+            var query = (from q in (from c in dbSet
                                     join b in DbContext.BiddingNews
                                     on c.Id equals b.ConstructionId
                                     select new
@@ -83,7 +84,7 @@ namespace FW.Data.EFs.Repositories
                                         b.NewsApprovalDate,
                                         b.NumberBidded,
                                         b.DateUpdated,
-                                        b.BidCloseDate,
+                                        //b.BidCloseDate,
                                         b.BiddingPackageDescription,
                                         b.IsActived
                                     })
@@ -91,7 +92,8 @@ namespace FW.Data.EFs.Repositories
                          join a in DbContext.Areas
                          on q.AreaId equals a.Id
 
-                         where q.NewsApprovalDate.Value >= oneWeekAgo && q.IsActived && dateNow <= q.BidCloseDate
+                         where q.NewsApprovalDate.Value >= oneWeekAgo && q.IsActived
+                         //&& dateNow <= q.BidCloseDate
                          select new BiddingNewsCommonVM
                          {
                              BiddingNewsId = q.Id,
@@ -103,7 +105,7 @@ namespace FW.Data.EFs.Repositories
                              //NumberBidder = q.NumberBidder,
                              NumberBidded = q.NumberBidded,
                              DateUpdated = q.DateUpdated,
-                             BidCloseDate = q.BidCloseDate,
+                             //BidCloseDate = q.BidCloseDate,
                              BiddingPackageDescription = q.BiddingPackageDescription,
                              NewsApprovalDate = q.NewsApprovalDate
                          }).Take(20).ToList();
@@ -131,7 +133,7 @@ namespace FW.Data.EFs.Repositories
                                         b.NumberBidder,
                                         b.NumberBidded,
                                         b.DateUpdated,
-                                        b.BidCloseDate,
+                                        //b.BidCloseDate,
                                         b.BiddingPackageDescription,
                                         b.IsActived,
                                         b.NewsApprovalDate,
@@ -139,7 +141,8 @@ namespace FW.Data.EFs.Repositories
                          join a in DbContext.Areas
                          on q.AreaId equals a.Id
 
-                         where q.NumberBidded >= 5 && q.NewsApprovalDate.Value >= oneWeekAgo && q.IsActived && dateNow <= q.BidCloseDate
+                         where q.NumberBidded >= 5 && q.NewsApprovalDate.Value >= oneWeekAgo && q.IsActived
+                         //&& dateNow <= q.BidCloseDate
                          select new BiddingNewsCommonVM
                          {
                              BiddingNewsId = q.Id,
@@ -151,7 +154,7 @@ namespace FW.Data.EFs.Repositories
                              NumberBidder = q.NumberBidder,
                              NumberBidded = q.NumberBidded,
                              DateUpdated = q.DateUpdated,
-                             BidCloseDate = q.BidCloseDate,
+                             //BidCloseDate = q.BidCloseDate,
                              BiddingPackageDescription = q.BiddingPackageDescription,
                              NewsApprovalDate = q.NewsApprovalDate
                          }).Take(20).ToList();
@@ -180,7 +183,7 @@ namespace FW.Data.EFs.Repositories
                                         b.NumberBidder,
                                         b.NumberBidded,
                                         b.DateUpdated,
-                                        b.BidCloseDate,
+                                        //b.BidCloseDate,
                                         b.BiddingPackageDescription,
                                         b.IsActived,
                                         b.NewsApprovalDate
@@ -189,7 +192,8 @@ namespace FW.Data.EFs.Repositories
                          join a in DbContext.Areas
                          on q.AreaId equals a.Id
 
-                         where q.NumberBidded <= (q.NumberBidder * 0.2) && q.NewsApprovalDate.Value >= oneWeekAgo && q.IsActived && dateNow <= q.BidCloseDate
+                         where q.NumberBidded <= (q.NumberBidder * 0.2) && q.NewsApprovalDate.Value >= oneWeekAgo && q.IsActived
+                         //&& dateNow <= q.BidCloseDate
                          select new BiddingNewsCommonVM
                          {
                              BiddingNewsId = q.Id,
@@ -200,7 +204,7 @@ namespace FW.Data.EFs.Repositories
                              NumberBidder = q.NumberBidder,
                              NumberBidded = q.NumberBidded,
                              DateUpdated = q.DateUpdated,
-                             BidCloseDate = q.BidCloseDate,
+                             //BidCloseDate = q.BidCloseDate,
                              BiddingPackageDescription = q.BiddingPackageDescription,
                              NewsApprovalDate = q.NewsApprovalDate
                          }).Take(20).ToList();

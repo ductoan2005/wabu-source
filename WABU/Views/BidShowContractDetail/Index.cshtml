@@ -10,6 +10,15 @@
     var biddingNewsId = ViewBag.BiddingNewsId;
     var companyProfileModel = ViewBag.companyProfileModel as CompanyProfileVM;
     var biddingNews = ViewBag.BiddingNews;
+    string classes = string.Empty;
+    if (authority != 3 && biddingNews.BiddingNews.StatusBiddingNews == 2)
+    {
+        classes = "col-md-8";
+    }
+    else
+    {
+        classes = "col-md-10";
+    }
 }
 <link href="/Content/Common/css/plugins/iCheck/custom.css" rel="stylesheet">
 <link href="/Content/Common/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
@@ -21,9 +30,9 @@
 <div id="biddingNewsRegistration-screen">
     <section class="Createbuilder">
         @*<div class="content-success hide">
-            Hệ thống sẽ tự động gửi đến nhà thầu Thông báo trúng thầu và thông tin liên hệ của bạn. Nhà thầu sẽ liên hệ trực tiếp với bạn trong thời gian sớm nhất để tiến hành thương thảo hợp đồng.
-            Quý khách vui lòng xác nhận lại đơn vị trúng thầu trên hệ thống của chúng tôi, sau khi hợp đồng được ký kết nhằm đảm bảo quyền lợi của quý khách.
-        </div>*@
+                Hệ thống sẽ tự động gửi đến nhà thầu Thông báo trúng thầu và thông tin liên hệ của bạn. Nhà thầu sẽ liên hệ trực tiếp với bạn trong thời gian sớm nhất để tiến hành thương thảo hợp đồng.
+                Quý khách vui lòng xác nhận lại đơn vị trúng thầu trên hệ thống của chúng tôi, sau khi hợp đồng được ký kết nhằm đảm bảo quyền lợi của quý khách.
+            </div>*@
         <div class="row">
             <div class="background-top-new"></div>
             <div class="container">
@@ -41,11 +50,11 @@
                                         <img src="@company.Logo" alt="" width="100%" class="img-thumbnail" />
                                     }
                                 </div>
-                                <div class="col-md-8 text-left">
 
+                                <div class=@classes>
                                     <h1 class="word-break">@company.CompanyName</h1>
                                     <hr />
-                                    <div class="col-md-8  reset-pd-right">
+                                    <div class="col-md-8 reset-pd-right">
                                         <h3 class="addresscontruction">@company.CompanyAddress</h3>
                                         <br />
                                         <a href="@companyProfileModel.Company.Link"><h3 class="addresscontruction">@companyProfileModel.Company.Link</h3></a>
@@ -64,73 +73,39 @@
                                                 if (biddingNews.CheckBiddingNewsSelected == false && biddingNews.BiddingNews.StatusBiddingNews == 1)
                                                 {
 
-                                                    if (DateTime.Now > biddingNews.BiddingNews.BidCloseDate)
-                                                    {
-                                                        <div class="action-bid-detail select_contruct">
-                                                            <button type="button" class="btn btn-w-m btn-bid-top full100" id="btn_ctr_ALL_save" data-toggle="modal" data-target="#pop-up-choose-contractor">CHỌN NHÀ THẦU</button>
-                                                        </div>
-                                                    }
-                                                    else
-                                                    {
-                                                        <div class="action-bid-detail select_contruct">
-                                                            <button type="button" class="btn btn-w-m btn-bid-top full100" id="btn_ctr_ALL_save" onclick="WarningInvestor();">CHỌN NHÀ THẦU</button>
-                                                        </div>
-                                                    }
+                                                    <div class="action-bid-detail select_contruct">
+                                                        <button type="button" class="btn btn-w-m btn-bid-top full100" id="btn_ctr_ALL_save" data-toggle="modal" data-target="#pop-up-choose-contractor">CHỌN NHÀ THẦU</button>
+                                                    </div>
                                                 }
                                                 else
                                                 {
-                                                    if (DateTime.Now > biddingNews.BiddingNews.BidCloseDate && biddingNews.BiddingNews.StatusBiddingNews == 2)
+                                                    if (biddingNews.BiddingNews.StatusBiddingNews == 2)
                                                     {
-                                                        if (DateTime.Now > biddingNews.BiddingNews.DateInvestorSelected)
-                                                        {
-                                                            <div class="action-bid-detail2 select_confirm">
-                                                                <button type="button" class="btn btn-w-m btn-confirm-contract" id="btn_ctr_confirm" data-toggle="modal" data-target="#pop-up-confirm-contractor">XÁC NHẬN</button>
-                                                                <button type="button" class="btn btn-w-m btn-cancel-contract" id="btn_ctr_cancel" data-toggle="modal" data-target="#pop-up-cancel-contractor">HỦY CHỌN</button>
-                                                            </div>
-                                                        }
-                                                        else
-                                                        {
-                                                            <div class="action-bid-detail2 select_confirm">
-                                                                <button type="button" class="btn btn-w-m btn-confirm-contract" id="btn_ctr_confirm" onclick="WarningWaitingConfirm();">XÁC NHẬN</button>
-                                                                <button type="button" class="btn btn-w-m btn-cancel-contract" id="btn_ctr_cancel" onclick="WarningWaitingConfirm();">HỦY CHỌN</button>
-                                                            </div>
-                                                        }
-
+                                                        <div class="action-bid-detail2 select_confirm">
+                                                            <button type="button" class="btn btn-w-m btn-confirm-contract" id="btn_ctr_confirm" data-toggle="modal" data-target="#pop-up-confirm-contractor">XÁC NHẬN</button>
+                                                            <button type="button" class="btn btn-w-m btn-cancel-contract" id="btn_ctr_cancel" data-toggle="modal" data-target="#pop-up-cancel-contractor">HỦY CHỌN</button>
+                                                        </div>
                                                     }
                                                 }
                                             }
                                         }
                                     </div>
-
-
                                 </div>
-                                <div class="col-md-2">
-                                    @if (biddingNews != null)
-                                    {
-                                        if (authority != 3 && biddingNews.BiddingNews.StatusBiddingNews < 3)
+
+                                @if (biddingNews != null)
+                                {
+                                    <div class="col-md-2">
+                                        @if (authority != 3 && biddingNews.BiddingNews.StatusBiddingNews == 2)
                                         {
-                                            if (biddingNews.BiddingNews.StatusBiddingNews == 1)
-                                            {
-                                                <div class="time_bid center">
-                                                    <input type="hidden" id="bidCloseDateVal" value="@(biddingNews.BiddingNews.BidCloseDate)" />
-                                                    <span id="countdownBidCloseDate" class="time"></span>
-                                                    <br />
-                                                    <span>Thời gian đóng thầu @biddingNews.BiddingNews.BidCloseDate.ToString("HH:mm:ss") @biddingNews.BiddingNews.BidCloseDate.ToString("dd/MM/yyyy")</span>
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="time_bid center">
-                                                    <input type="hidden" id="dateInvestorSelectedVal" value="@(biddingNews.BiddingNews.DateInvestorSelected)" />
-                                                    <span id="countdownDateInvestorSelected" class="time"></span>
-                                                    <br />
-                                                    <span>Thời gian chờ xác nhận hoặc hủy hợp đồng @biddingNews.BiddingNews.DateInvestorSelected.ToString("HH:mm:ss") @biddingNews.BiddingNews.DateInvestorSelected.ToString("dd/MM/yyyy")</span>
-                                                </div>
-                                            }
+                                            <div class="time_bid center">
+                                                <input type="hidden" id="dateInvestorSelectedVal" value="@(biddingNews.BiddingNews.DateInvestorSelected)" />
+                                                <span id="countdownDateInvestorSelected" class="time"></span>
+                                                <br />
+                                                <span>Thời gian chờ xác nhận hoặc hủy hợp đồng @biddingNews.BiddingNews.DateInvestorSelected.ToString("HH:mm:ss") @biddingNews.BiddingNews.DateInvestorSelected.ToString("dd/MM/yyyy")</span>
+                                            </div>
                                         }
-
-                                    }
-                                </div>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>

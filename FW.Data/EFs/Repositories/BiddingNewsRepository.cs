@@ -1,5 +1,4 @@
 ﻿using FW.Common.Enum;
-using FW.Common.Helpers;
 using FW.Common.Pagination;
 using FW.Data.Infrastructure;
 using FW.Data.Infrastructure.Interfaces;
@@ -14,7 +13,6 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Dynamic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace FW.Data.EFs.Repositories
@@ -54,7 +52,8 @@ namespace FW.Data.EFs.Repositories
                               join bd in DbContext.BiddingDetail on bn.Id equals bd.BiddingNewsId
                               join ctr in DbContext.Contructions on bn.ConstructionId equals ctr.Id
                               where bd.CompanyProfile.Company.UserId == userProfile.UserID && bn.IsDeleted != true
-                              && bn.BidCloseDate >= DateTime.Now && bn.IsActived
+                              //&& bn.BidCloseDate >= DateTime.Now 
+                              && bn.IsActived
                               select new BiddingNewsVM
                               {
                                   Id = bn.Id,
@@ -65,7 +64,7 @@ namespace FW.Data.EFs.Repositories
                                   StatusBiddingNews = bn.StatusBiddingNews,
                                   InvestorName = ctr.InvestorName,
                                   BidStartDate = bn.BidStartDate,
-                                  BidCloseDate = bn.BidCloseDate,
+                                  //BidCloseDate = bn.BidCloseDate,
                                   NumberBidded = bn.NumberBidded,
                                   Authority = userProfile.Authority,
                                   DateInserted = bn.DateInserted,
@@ -90,7 +89,7 @@ namespace FW.Data.EFs.Repositories
                                   StatusBiddingNews = bn.StatusBiddingNews,
                                   InvestorName = ctr.InvestorName,
                                   BidStartDate = bn.BidStartDate,
-                                  BidCloseDate = bn.BidCloseDate,
+                                  //BidCloseDate = bn.BidCloseDate,
                                   NumberBidded = bn.NumberBidded,
                                   Authority = userProfile.Authority,
                                   DateInserted = bn.DateInserted,
@@ -103,7 +102,9 @@ namespace FW.Data.EFs.Repositories
                               join bp in DbContext.BiddingPackages on bn.BiddingPackageId equals bp.Id into bnp
                               from bp in bnp.DefaultIfEmpty()
                               join ctr in DbContext.Contructions on bn.ConstructionId equals ctr.Id
-                              where bn.IsDeleted != true && bn.BidCloseDate >= DateTime.Now && bn.IsActived
+                              where bn.IsDeleted != true
+                              //&& bn.BidCloseDate >= DateTime.Now 
+                              && bn.IsActived
                               select new BiddingNewsVM
                               {
                                   Id = bn.Id,
@@ -113,7 +114,7 @@ namespace FW.Data.EFs.Repositories
                                   StatusBiddingNews = bn.StatusBiddingNews,
                                   InvestorName = ctr.InvestorName,
                                   BidStartDate = bn.BidStartDate,
-                                  BidCloseDate = bn.BidCloseDate,
+                                  //BidCloseDate = bn.BidCloseDate,
                                   NumberBidder = bn.NumberBidder,
                                   Authority = userProfile.Authority,
                                   DateInserted = bn.DateInserted,
@@ -210,7 +211,9 @@ namespace FW.Data.EFs.Repositories
 
             if (string.IsNullOrEmpty(condition))
             {
-                query = dbSet.Where(x => x.IsDeleted != true && x.BidCloseDate >= DateTime.Now && x.IsActived)
+                query = dbSet.Where(x => x.IsDeleted != true
+                                        //&& x.BidCloseDate >= DateTime.Now 
+                                        && x.IsActived)
                     .Join(DbContext.Contructions.Where(x => x.IsDeleted != true),
                     x => x.ConstructionId,
                     y => y.Id,
@@ -221,7 +224,7 @@ namespace FW.Data.EFs.Repositories
                         NumberBidder = x.BiddingNews.NumberBidder,
                         NumberBidded = x.BiddingNews.NumberBidded,
                         BidStartDate = x.BiddingNews.BidStartDate,
-                        BidCloseDate = x.BiddingNews.BidCloseDate,
+                        //BidCloseDate = x.BiddingNews.BidCloseDate,
                         DateInserted = x.BiddingNews.DateInserted,
                         DateUpdated = x.BiddingNews.DateUpdated,
                         NewsApprovalDate = x.BiddingNews.NewsApprovalDate,
@@ -328,7 +331,9 @@ namespace FW.Data.EFs.Repositories
                 query2 = query2.Where(x => x.BiddingPackage.BiddingPackageType == biddingNewsSearchConditionVm.BiddingPackageId);
             }
 
-            query = query2.Where(x => x.IsDeleted != true && x.BidCloseDate >= DateTime.Now && x.IsActived)
+            query = query2.Where(x => x.IsDeleted != true
+                                    //&& x.BidCloseDate >= DateTime.Now 
+                                    && x.IsActived)
                     .Join(DbContext.Contructions.Where(x => x.IsDeleted != true),
                     x => x.ConstructionId,
                     y => y.Id,
@@ -339,7 +344,7 @@ namespace FW.Data.EFs.Repositories
                         NumberBidder = x.BiddingNews.NumberBidder,
                         NumberBidded = x.BiddingNews.NumberBidded,
                         BidStartDate = x.BiddingNews.BidStartDate,
-                        BidCloseDate = x.BiddingNews.BidCloseDate,
+                        //BidCloseDate = x.BiddingNews.BidCloseDate,
                         DateInserted = x.BiddingNews.DateInserted,
                         DateUpdated = x.BiddingNews.DateUpdated,
                         NewsApprovalDate = x.BiddingNews.NewsApprovalDate,
@@ -401,7 +406,7 @@ namespace FW.Data.EFs.Repositories
                         Id = x.BiddingNews.Id,
                         DateInserted = x.BiddingNews.DateInserted,
                         DateUpdated = x.BiddingNews.DateUpdated,
-                        BidCloseDate = x.BiddingNews.BidCloseDate,
+                        //BidCloseDate = x.BiddingNews.BidCloseDate,
                         IsActived = x.BiddingNews.IsActived,
                         ConstructionVM = new ConstructionVM
                         {
@@ -446,13 +451,13 @@ namespace FW.Data.EFs.Repositories
             }
 
             //Search BidCloseDate
-            if (!string.IsNullOrEmpty(biddingNewsSearchConditionVm.ToDate))
-            {
-                DateTime.TryParseExact(biddingNewsSearchConditionVm.ToDate, "dd/MM/yyyy", CultureInfo.InvariantCulture,
-                    DateTimeStyles.None,
-                    out var toDate);
-                query2 = query2.Where(x => DateTime.Compare(toDate, x.BidCloseDate.Value) >= 0);
-            }
+            //if (!string.IsNullOrEmpty(biddingNewsSearchConditionVm.ToDate))
+            //{
+            //    DateTime.TryParseExact(biddingNewsSearchConditionVm.ToDate, "dd/MM/yyyy", CultureInfo.InvariantCulture,
+            //        DateTimeStyles.None,
+            //        out var toDate);
+            //    query2 = query2.Where(x => DateTime.Compare(toDate, x.BidCloseDate.Value) >= 0);
+            //}
 
             //Search with status is active
             query2 = query2.Where(x => x.IsActived == biddingNewsSearchConditionVm.StatusActive);
@@ -478,7 +483,7 @@ namespace FW.Data.EFs.Repositories
                         Id = x.BiddingNews.Id,
                         DateInserted = x.BiddingNews.DateInserted,
                         DateUpdated = x.BiddingNews.DateUpdated,
-                        BidCloseDate = x.BiddingNews.BidCloseDate,
+                        //BidCloseDate = x.BiddingNews.BidCloseDate,
                         IsActived = x.BiddingNews.IsActived,
                         ConstructionVM = new ConstructionVM
                         {

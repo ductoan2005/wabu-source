@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Globalization;
-using System.Linq;
-using System.Linq.Dynamic;
-using System.Text;
-using System.Threading.Tasks;
-using FW.Common.Enum;
+﻿using FW.Common.Enum;
 using FW.Common.Pagination;
 using FW.Data.Infrastructure;
 using FW.Data.Infrastructure.Interfaces;
@@ -14,6 +6,12 @@ using FW.Data.RepositoryInterfaces;
 using FW.Models;
 using FW.ViewModels.BiddingNews;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Globalization;
+using System.Linq;
+using System.Linq.Dynamic;
 
 namespace FW.Data.EFs.Repositories
 {
@@ -70,17 +68,17 @@ namespace FW.Data.EFs.Repositories
                 }
 
                 //Search with status condition
-                if (biddingNewsSearchConditionVm.StatusBidding.HasValue && (StatusBiddingNewsBookmark)biddingNewsSearchConditionVm.StatusBidding.GetHashCode() != StatusBiddingNewsBookmark.All)
-                {
-                    if ((StatusBiddingNewsBookmark)biddingNewsSearchConditionVm.StatusBidding.GetHashCode() == StatusBiddingNewsBookmark.Opening)
-                    {
-                        resultList = resultList.Where(x => currentDateTime < x.BiddingNews.BidCloseDate);
-                    }
-                    else
-                    {
-                        resultList = resultList.Where(x => currentDateTime >= x.BiddingNews.BidCloseDate);
-                    }
-                }
+                //if (biddingNewsSearchConditionVm.StatusBidding.HasValue && (StatusBiddingNewsBookmark)biddingNewsSearchConditionVm.StatusBidding.GetHashCode() != StatusBiddingNewsBookmark.All)
+                //{
+                //    if ((StatusBiddingNewsBookmark)biddingNewsSearchConditionVm.StatusBidding.GetHashCode() == StatusBiddingNewsBookmark.Opening)
+                //    {
+                //        resultList = resultList.Where(x => currentDateTime < x.BiddingNews.BidCloseDate);
+                //    }
+                //    else
+                //    {
+                //        resultList = resultList.Where(x => currentDateTime >= x.BiddingNews.BidCloseDate);
+                //    }
+                //}
 
             }
             resultList = resultList.Where(x => x.UserId == userProfile.UserID && x.IsDeleted != true).AsNoTracking();

@@ -30,16 +30,11 @@
                                         <a href="@Url.Action("Index", "BidContractionDetail", new { id = item.BiddingNewsId})">
                                             <h3 style="height: 20px;">
                                                 <span class="title-news">@item.ConstructionName </span>
-
-                                                @*@if (item.NumberBidder <= 2)
-                {
-                    <span class="score"><span class="label label-danger">HOT</span></span>
-                }*@
                                             </h3>
                                             <p class="mb5">Gói thầu: @item.BiddingPackageName </p>
                                             @*<p class="mb5">Chủ đầu tư: @item.InvestorName</p>*@
                                             <p class="mb5">Khu vực: @item.AreaName - Lượt đấu thầu: @item.NumberBidded</p>
-                                            <p class="mb5">Ngày mở: @(item.NewsApprovalDate?.ToString("dd/MM/yyyy")) - Ngày đóng: @item.BidCloseDate.ToString("dd/MM/yyyy")</p>
+                                            <p class="mb5">Ngày mở: @(item.NewsApprovalDate?.ToString("dd/MM/yyyy"))</p>
 
                                         </a>
                                     </div>

@@ -6,12 +6,9 @@ using FW.Data.Infrastructure.Interfaces;
 using FW.Data.RepositoryInterfaces;
 using FW.Models;
 using FW.ViewModels;
-using FW.ViewModels.BiddingNews;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace FW.BusinessLogic.Implementations
@@ -52,15 +49,7 @@ namespace FW.BusinessLogic.Implementations
             //Change status biddingNews
             result.ForEach(x =>
             {
-                if (currentDateTime < x.BiddingNews.BidCloseDate)
-                {
-                    x.BiddingNews.StatusBiddingNews = 1;
-                }
-                else
-                {
-                    x.BiddingNews.StatusBiddingNews = 4;
-
-                }
+                x.BiddingNews.StatusBiddingNews = 4;
             });
 
             iPaginationInfo.TotalItems = paginationInfo.TotalItems;

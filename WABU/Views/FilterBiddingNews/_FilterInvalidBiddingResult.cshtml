@@ -31,7 +31,7 @@
             <th>Tên Gói Thầu</th>
             <th>Ngày Tạo</th>
             <th>Chủ Đầu Tư</th>
-            <th>Ngày Kết Thúc</th>
+            <th>@*Ngày Kết Thúc*@</th>
             <th>Trạng Thái</th>
             <th>Hạnh Động</th>
         </tr>
@@ -48,7 +48,7 @@
                     <td class="center dateInserted" data-value="@item.DateInserted">@item.DateInserted.ToString("dd/MM/yyyy hh:mm:ss")</td>
                     <td class="center">@item.ConstructionVM.InvestorName</td>
 
-                    <td class="center bidCloseDateVal" data-value="@item.BidCloseDate">@item.BidCloseDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                    @*<td class="center bidCloseDateVal" data-value="@item.BidCloseDate">@item.BidCloseDate.ToString("dd/MM/yyyy hh:mm:ss")</td>*@
                     <td class="center">
                         <i class="fa fa-toggle-@(item.IsActived ? "on" : "off") switchActive"></i>
                     </td>
